@@ -67,7 +67,7 @@ class _GroupfeedState extends State<Groupfeed> {
                       ),
                     ]),
                 width: double.infinity,
-                height: 150.h,
+                height: 180.h,
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
@@ -122,14 +122,18 @@ class _GroupfeedState extends State<Groupfeed> {
                             backgroundColor: darkBlue,
                             foregroundColor: Colors.white),
                         onPressed: () {
-                          print("Group ID: $groupid");
                           capturePhoto(widget.code);
                         },
-                        child: Text(
+                        child: const Text(
                           'Add a Photo',
                           style: TextStyle(fontSize: 16),
                         ),
                       ),
+                      ElevatedButton(
+                          onPressed: () {
+                            handleGlintNow(widget.phoneNumberAsUserId, groupid);
+                          },
+                          child: Text('Glint Now'))
                     ],
                   ),
                 ),
@@ -314,6 +318,65 @@ class _GroupfeedState extends State<Groupfeed> {
     var status = await Permission.camera.status;
     if (!status.isGranted) {
       await Permission.camera.request();
+    }
+  }
+
+  Future<void> handleGlintNow(String userPhoneNumber, String groupid) async {
+    DocumentReference groupRef =
+        FirebaseFirestore.instance.collection('groups').doc(groupid);
+    DocumentSnapshot groupSnapshot = await groupRef.get();
+
+    // Retrieve the current themeSetterIndex and members
+    int themeSetterIndex = groupSnapshot['themesetterindex'];
+    List<dynamic> members =
+        groupSnapshot['members']; // Use dynamic since it's a map
+
+    // Find the index of the current user based on phone number
+    int userIndex =
+        members.indexWhere((member) => member['phone'] == userPhoneNumber);
+
+    // Check if the user is allowed to press Glint Now
+    if (userIndex == themeSetterIndex) {
+      // Show success Snackbar
+      final snackBar = SnackBar(
+        /// need to set following properties for best effect of awesome_snackbar_content
+        elevation: 0,
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.transparent,
+        content: AwesomeSnackbarContent(
+          title: '🌟 Look out!',
+          message:
+              " ${members[userIndex]['name']} just lit up the group with a Glint!",
+
+          /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+          contentType: ContentType.success,
+        ),
+      );
+
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(snackBar);
+
+      // Trigger the countdown and other logic here
+    } else {
+      // Show failure Snackbar
+      const snackBar = SnackBar(
+        /// need to set following properties for best effect of awesome_snackbar_content
+        elevation: 0,
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.transparent,
+        content: AwesomeSnackbarContent(
+          title: '⏳ Hold your horses!',
+          message: " The Glint Now button is off-limits for you!",
+
+          /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+          contentType: ContentType.failure,
+        ),
+      );
+
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(snackBar);
     }
   }
 }
