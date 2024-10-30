@@ -88,7 +88,7 @@ class _HomepageState extends State<Homepage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Hey,${widget.username}',
+                    'Hello,${widget.username}',
                     textAlign: TextAlign.center,
                     style:
                         TextStyle(fontSize: 30, fontWeight: FontWeight.normal),
