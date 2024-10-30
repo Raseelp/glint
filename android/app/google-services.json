@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "988868978555",
+    "project_id": "glint-d1b04",
+    "storage_bucket": "glint-d1b04.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:988868978555:android:17aebaf4aa6ad1d691bfde",
+        "android_client_info": {
+          "package_name": "com.example.glint"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZWs6b1p_PcJ5vYknK07rv8JOf7jQs1xA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
