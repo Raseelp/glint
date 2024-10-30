@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -32,30 +31,6 @@ class Groupfeed extends StatefulWidget {
 }
 
 class _GroupfeedState extends State<Groupfeed> {
-  int _countdown = 120; // 2 minutes in seconds
-  bool _isTimerActive = false;
-  Timer? _timer;
-
-  void _startTimer() {
-    setState(() {
-      _isTimerActive = true; // Activate the timer
-      _countdown = 120; // Reset countdown to 2 minutes
-    });
-
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      if (_countdown > 0) {
-        setState(() {
-          _countdown--; // Decrement the countdown
-        });
-      } else {
-        _timer?.cancel(); // Stop the timer when it reaches zero
-        setState(() {
-          _isTimerActive = false; // Timer is no longer active
-        });
-      }
-    });
-  }
-
   Color beige = const Color(0xFFF7F2E7);
   Color darkBlue = const Color(0xFF4682B4);
   @override
@@ -158,10 +133,7 @@ class _GroupfeedState extends State<Groupfeed> {
                           onPressed: () {
                             handleGlintNow(widget.phoneNumberAsUserId, groupid);
                           },
-                          child: _isTimerActive
-                              ? Text(
-                                  'Time left: ${_countdown ~/ 60}:${(_countdown % 60).toString().padLeft(2, '0')}')
-                              : Text('Glint Now'))
+                          child: Text('Glint Now'))
                     ],
                   ),
                 ),
@@ -365,7 +337,6 @@ class _GroupfeedState extends State<Groupfeed> {
 
     // Check if the user is allowed to press Glint Now
     if (userIndex == themeSetterIndex) {
-      _startTimer();
       // Show success Snackbar
       final snackBar = SnackBar(
         /// need to set following properties for best effect of awesome_snackbar_content
