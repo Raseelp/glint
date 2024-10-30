@@ -11,3 +11,10 @@ GeneratedPluginRegistrant.java
 key.properties
 **/*.keystore
 **/*.jks
+# Flutter/Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+build/
+ios/Flutter/.last_build_id
+pubspec.lock
