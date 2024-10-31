@@ -2,7 +2,7 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:glint/pages/groupfeed.dart';
+
 import 'package:glint/pages/splashScreen.dart';
 import 'package:glint/utils/sharedpreffs.dart';
 

@@ -1,14 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:glint/pages/groupfeed.dart';
-import 'package:glint/pages/homepage.dart';
 import 'package:glint/pages/onbordeing.dart';
 import 'package:glint/pages/splashScreen.dart';
-
 import 'package:glint/provider/auth_provider.dart';
 import 'package:glint/utils/sharedpreffs.dart';
-import 'package:google_fonts/google_fonts.dart';
-
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
