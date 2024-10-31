@@ -160,6 +160,7 @@ class _CreategroupState extends State<Creategroup> {
           'todaystheme': theme,
           'themesetterindex': 0,
           'createdAt': FieldValue.serverTimestamp(),
+          'lastthemeupdatedat': null,
           'members': [
             {
               'name': userName,

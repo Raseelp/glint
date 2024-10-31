@@ -184,8 +184,27 @@ class _GroupSettingsState extends State<GroupSettings> {
               onTap: () async {
                 bool isitCorrectuser =
                     await isCorrectUser(widget.userphone, widget.inviteCode);
+                bool did24HoursPassed =
+                    await has24HoursPassed(widget.inviteCode);
                 if (isitCorrectuser) {
-                  _showOptionsDialog();
+                  if (did24HoursPassed) {
+                    _showOptionsDialog();
+                  } else {
+                    const snackBar = SnackBar(
+                      elevation: 0,
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: Colors.transparent,
+                      content: AwesomeSnackbarContent(
+                        title: 'Oops',
+                        message: "looks like Todays Theme is already set",
+                        contentType: ContentType.failure,
+                      ),
+                    );
+
+                    ScaffoldMessenger.of(context)
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(snackBar);
+                  }
                 }
               },
               child: isEditable
@@ -410,6 +429,7 @@ class _GroupSettingsState extends State<GroupSettings> {
       String groupid, String newThemeByUser) async {
     await FirebaseFirestore.instance.collection('groups').doc(groupid).update({
       'todaystheme': newThemeByUser,
+      'lastthemeupdatedat': FieldValue.serverTimestamp()
     });
     isEditable = false;
     print('theme Updated Succcessfully');
@@ -447,12 +467,12 @@ class _GroupSettingsState extends State<GroupSettings> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Choose an option"),
+          title: const Text("Choose an option"),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                title: Text("Random"),
+                title: const Text("Random"),
                 onTap: () {
                   setState(() {
                     // displayedText = "Random Text"; // Set random text here
@@ -461,7 +481,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                 },
               ),
               ListTile(
-                title: Text("Manual"),
+                title: const Text("Manual"),
                 onTap: () {
                   setState(() {
                     isEditable = true;
@@ -513,5 +533,29 @@ class _GroupSettingsState extends State<GroupSettings> {
 
       return false;
     }
+  }
+
+  Future<bool> has24HoursPassed(String groupId) async {
+    // Reference to the specific group's document
+    DocumentReference groupRef =
+        FirebaseFirestore.instance.collection('groups').doc(groupId);
+
+    // Fetch the group's document to get the 'lastthemeupdatedat' field
+    DocumentSnapshot groupSnapshot = await groupRef.get();
+
+    if (groupSnapshot.exists && groupSnapshot['lastthemeupdatedat'] != null) {
+      Timestamp lastThemeUpdate = groupSnapshot['lastthemeupdatedat'];
+      DateTime lastUpdated = lastThemeUpdate.toDate();
+      DateTime currentTime = DateTime.now();
+
+      // Calculate the difference in hours
+      int hoursSinceLastUpdate = currentTime.difference(lastUpdated).inHours;
+
+      // Check if 24 hours have passed
+      return hoursSinceLastUpdate >= 24;
+    }
+
+    // If 'lastthemeupdatedat' is null (for first-time setup), allow the theme change
+    return true;
   }
 }
