@@ -181,7 +181,13 @@ class _GroupSettingsState extends State<GroupSettings> {
               ],
             ),
             GestureDetector(
-              onTap: _showOptionsDialog,
+              onTap: () async {
+                bool isitCorrectuser =
+                    await isCorrectUser(widget.userphone, widget.inviteCode);
+                if (isitCorrectuser) {
+                  _showOptionsDialog();
+                }
+              },
               child: isEditable
                   ? TextField(
                       textAlign: TextAlign.center,
@@ -468,5 +474,44 @@ class _GroupSettingsState extends State<GroupSettings> {
         );
       },
     );
+  }
+
+  Future<bool> isCorrectUser(String userPhoneNumber, String groupid) async {
+    DocumentReference groupRef =
+        FirebaseFirestore.instance.collection('groups').doc(groupid);
+    DocumentSnapshot groupSnapshot = await groupRef.get();
+
+    // Retrieve the current themeSetterIndex and members
+    int themeSetterIndex = groupSnapshot['themesetterindex'];
+    List<dynamic> members =
+        groupSnapshot['members']; // Use dynamic since it's a map
+
+    // Find the index of the current user based on phone number
+    int userIndex =
+        members.indexWhere((member) => member['phone'] == userPhoneNumber);
+
+    // Check if the user is allowed to press Glint Now
+    if (userIndex == themeSetterIndex) {
+      return true;
+    } else {
+      // Show failure Snackbar
+      const snackBar = SnackBar(
+        elevation: 0,
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.transparent,
+        content: AwesomeSnackbarContent(
+          title: 'Oops',
+          message: " Today's Not Your Day...Maybe Tomarrow??",
+          messageTextStyle: TextStyle(fontWeight: FontWeight.bold),
+          contentType: ContentType.failure,
+        ),
+      );
+
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(snackBar);
+
+      return false;
+    }
   }
 }
