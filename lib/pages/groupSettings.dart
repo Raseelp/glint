@@ -36,6 +36,8 @@ class _GroupSettingsState extends State<GroupSettings> {
   Color beige = const Color(0xFFF7F2E7);
   Color darkBlue = const Color(0xFF4682B4);
   int memberCount = 0;
+  bool isEditable = false;
+  final TextEditingController _themecontroller = TextEditingController();
 
   @override
   void initState() {
@@ -52,6 +54,7 @@ class _GroupSettingsState extends State<GroupSettings> {
 
   @override
   Widget build(BuildContext context) {
+    String todaysTheme = widget.todaysTheme;
     TextEditingController groupnamecontroller =
         TextEditingController(text: widget.groupname);
 
@@ -67,7 +70,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                         SplashScreen(phonenumberToCheck: widget.userphone),
                   ));
             },
-            icon: Icon(Icons.arrow_back)),
+            icon: const Icon(Icons.arrow_back)),
         actions: [
           IconButton(
               onPressed: () {
@@ -78,6 +81,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                   );
                 }
                 changeGroupName(widget.inviteCode, groupnamecontroller.text);
+                changeThemeManuavlly(widget.inviteCode, _themecontroller.text);
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
@@ -85,11 +89,11 @@ class _GroupSettingsState extends State<GroupSettings> {
                           userphone: widget.userphone,
                           groupname: groupnamecontroller.text,
                           inviteCode: widget.inviteCode,
-                          todaysTheme: widget.todaysTheme,
+                          todaysTheme: _themecontroller.text,
                           userid: widget.userid),
                     ));
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.check,
                 size: 25,
               ))
@@ -170,15 +174,30 @@ class _GroupSettingsState extends State<GroupSettings> {
                         ..hideCurrentSnackBar()
                         ..showSnackBar(snackBar);
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.copy,
                       size: 20,
                     ))
               ],
             ),
-            Text(
-              widget.todaysTheme,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal),
+            GestureDetector(
+              onTap: _showOptionsDialog,
+              child: isEditable
+                  ? TextField(
+                      textAlign: TextAlign.center,
+                      decoration: InputDecoration(border: InputBorder.none),
+                      controller: _themecontroller,
+                      onSubmitted: (value) {
+                        todaysTheme = value;
+                        isEditable = false;
+                      },
+                      autofocus: true,
+                    )
+                  : Text(
+                      todaysTheme,
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.normal),
+                    ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -381,6 +400,15 @@ class _GroupSettingsState extends State<GroupSettings> {
     print('GroupName Updated Succcessfully');
   }
 
+  Future<void> changeThemeManuavlly(
+      String groupid, String newThemeByUser) async {
+    await FirebaseFirestore.instance.collection('groups').doc(groupid).update({
+      'todaystheme': newThemeByUser,
+    });
+    isEditable = false;
+    print('theme Updated Succcessfully');
+  }
+
   //for exiting a group
 
   Future<void> exitGroup() async {
@@ -406,5 +434,39 @@ class _GroupSettingsState extends State<GroupSettings> {
     } catch (e) {
       print("Error exiting group: $e");
     }
+  }
+
+  void _showOptionsDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Choose an option"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: Text("Random"),
+                onTap: () {
+                  setState(() {
+                    // displayedText = "Random Text"; // Set random text here
+                  });
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                title: Text("Manual"),
+                onTap: () {
+                  setState(() {
+                    isEditable = true;
+                  });
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }
