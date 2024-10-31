@@ -119,7 +119,6 @@ class _CreategroupState extends State<Creategroup> {
                     onPressed: () async {
                       String codeToShare = await addUserToFirestore();
                       uploadProfilePicture(_imageFile!, codeToShare);
-                      print("Code to Share: $codeToShare");
 
                       Navigator.push(
                           context,
@@ -187,9 +186,20 @@ class _CreategroupState extends State<Creategroup> {
           ..showSnackBar(snackBar);
       } catch (e) {}
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Please enter a group title.'),
-      ));
+      const snackBar = SnackBar(
+        elevation: 0,
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.transparent,
+        content: AwesomeSnackbarContent(
+          title: 'Oops',
+          message: "Please Enter the complete Details",
+          contentType: ContentType.failure,
+        ),
+      );
+
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(snackBar);
     }
 
     String? documentId = await getDocumentIdByGroupName(groupname);
@@ -292,10 +302,21 @@ class _CreategroupState extends State<Creategroup> {
           .update({
         'profilePictureUrl': profilePictureUrl,
       });
-
-      print("Profile picture uploaded and URL saved successfully.");
     } catch (e) {
-      print("Error uploading profile picture: $e");
+      final snackBar = SnackBar(
+        elevation: 0,
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.transparent,
+        content: AwesomeSnackbarContent(
+          title: 'Oops',
+          message: e.toString(),
+          contentType: ContentType.failure,
+        ),
+      );
+
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(snackBar);
     }
   }
 }

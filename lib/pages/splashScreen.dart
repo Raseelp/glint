@@ -15,9 +15,9 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     checkUser();
+    deleteEmptyGroups();
   }
 
   @override
@@ -129,5 +129,27 @@ class _SplashScreenState extends State<SplashScreen> {
     String userName = userDetails['name'] ?? 'Unknown User';
 
     return userName;
+  }
+
+  Future<void> deleteEmptyGroups() async {
+    // Reference to your Firestore collection
+    final CollectionReference groupsCollection =
+        FirebaseFirestore.instance.collection('groups');
+
+    // Fetch all groups
+    QuerySnapshot querySnapshot = await groupsCollection.get();
+
+    // Iterate through the groups
+    for (DocumentSnapshot doc in querySnapshot.docs) {
+      print("Deleted group: with zero members.");
+      // Get the members list
+      List<dynamic> members = doc['members'];
+
+      // Check if the members length is zero
+      if (members.isEmpty) {
+        // Delete the group
+        await groupsCollection.doc(doc.id).delete();
+      }
+    }
   }
 }
