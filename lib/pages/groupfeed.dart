@@ -45,30 +45,6 @@ class _GroupfeedState extends State<Groupfeed> {
     });
   }
 
-  // int _countdown = 120; // 2 minutes in seconds
-  // bool _isTimerActive = false;
-  // Timer? _timer;
-
-  // void _startTimer() {
-  //   setState(() {
-  //     _isTimerActive = true; // Activate the timer
-  //     _countdown = 120; // Reset countdown to 2 minutes
-  //   });
-
-  //   _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-  //     if (_countdown > 0) {
-  //       setState(() {
-  //         _countdown--; // Decrement the countdown
-  //       });
-  //     } else {
-  //       _timer?.cancel(); // Stop the timer when it reaches zero
-  //       setState(() {
-  //         _isTimerActive = false; // Timer is no longer active
-  //       });
-  //     }
-  //   });
-  // }
-
   Color beige = const Color(0xFFF7F2E7);
   Color darkBlue = const Color(0xFF4682B4);
   @override
@@ -167,16 +143,7 @@ class _GroupfeedState extends State<Groupfeed> {
                           style: TextStyle(fontSize: 16),
                         ),
                       ),
-
                       Expanded(child: buildCountdownButton(groupid))
-                      // ElevatedButton(
-                      //     onPressed: () {
-                      //       handleGlintNow(widget.phoneNumberAsUserId, groupid);
-                      //     },
-                      //     child: _isTimerActive
-                      //         ? Text(
-                      //             'Time left: ${_countdown ~/ 60}:${(_countdown % 60).toString().padLeft(2, '0')}')
-                      //         : Text('Glint Now'))
                     ],
                   ),
                 ),
@@ -464,64 +431,4 @@ class _GroupfeedState extends State<Groupfeed> {
       await Permission.camera.request();
     }
   }
-
-  // Future<void> handleGlintNow(String userPhoneNumber, String groupid) async {
-  //   DocumentReference groupRef =
-  //       FirebaseFirestore.instance.collection('groups').doc(groupid);
-  //   DocumentSnapshot groupSnapshot = await groupRef.get();
-
-  //   // Retrieve the current themeSetterIndex and members
-  //   int themeSetterIndex = groupSnapshot['themesetterindex'];
-  //   List<dynamic> members =
-  //       groupSnapshot['members']; // Use dynamic since it's a map
-
-  //   // Find the index of the current user based on phone number
-  //   int userIndex =
-  //       members.indexWhere((member) => member['phone'] == userPhoneNumber);
-
-  // Check if the user is allowed to press Glint Now
-  // if (userIndex == themeSetterIndex) {
-  //   _startTimer();
-  //   // Show success Snackbar
-  //   final snackBar = SnackBar(
-  //     /// need to set following properties for best effect of awesome_snackbar_content
-  //     elevation: 0,
-  //     behavior: SnackBarBehavior.floating,
-  //     backgroundColor: Colors.transparent,
-  //     content: AwesomeSnackbarContent(
-  //       title: '🌟 Look out!',
-  //       message:
-  //           " ${members[userIndex]['name']} just lit up the group with a Glint!",
-
-  //       /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-  //       contentType: ContentType.success,
-  //     ),
-  //   );
-
-  //   ScaffoldMessenger.of(context)
-  //     ..hideCurrentSnackBar()
-  //     ..showSnackBar(snackBar);
-
-  //   // Trigger the countdown and other logic here
-  // } else {
-  //   // Show failure Snackbar
-  //   const snackBar = SnackBar(
-  //     /// need to set following properties for best effect of awesome_snackbar_content
-  //     elevation: 0,
-  //     behavior: SnackBarBehavior.floating,
-  //     backgroundColor: Colors.transparent,
-  //     content: AwesomeSnackbarContent(
-  //       title: '⏳ Hold your horses!',
-  //       message: " The Glint Now button is off-limits for you!",
-
-  //       /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-  //       contentType: ContentType.failure,
-  //     ),
-  //   );
-
-  //   ScaffoldMessenger.of(context)
-  //     ..hideCurrentSnackBar()
-  //     ..showSnackBar(snackBar);
-  // }
-  //}
 }
