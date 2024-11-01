@@ -7,6 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:glint/pages/groupSettings.dart';
+import 'package:glint/pages/imageFullScreenView.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -178,13 +179,12 @@ class _GroupfeedState extends State<Groupfeed> {
                       return Center(child: CircularProgressIndicator());
                     }
 
-                    // Get the list of images
                     final images = snapshot.data!.docs;
 
                     return ListWheelScrollView.useDelegate(
                       itemExtent: 250,
                       diameterRatio: 2.0,
-                      physics: FixedExtentScrollPhysics(),
+                      physics: const FixedExtentScrollPhysics(),
                       childDelegate: ListWheelChildBuilderDelegate(
                         builder: (context, index) {
                           if (index < images.length) {
@@ -199,11 +199,23 @@ class _GroupfeedState extends State<Groupfeed> {
                                 child: Stack(children: [
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(17),
-                                    child: CachedNetworkImage(
-                                      imageUrl: imageUrl,
-                                      width: 400,
-                                      height: 400,
-                                      fit: BoxFit.cover,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  Imagefullscreenview(
+                                                      uploadedBy: usernameImage,
+                                                      imgUrl: imageUrl),
+                                            ));
+                                      },
+                                      child: CachedNetworkImage(
+                                        imageUrl: imageUrl,
+                                        width: 400,
+                                        height: 400,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                   ),
                                   Positioned(
@@ -238,7 +250,6 @@ class _GroupfeedState extends State<Groupfeed> {
                                         deleteImage(
                                             widget.code, imageId, imageUrl);
                                         const snackBar = SnackBar(
-                                          /// need to set following properties for best effect of awesome_snackbar_content
                                           elevation: 0,
                                           behavior: SnackBarBehavior.floating,
                                           backgroundColor: Colors.transparent,
@@ -246,8 +257,6 @@ class _GroupfeedState extends State<Groupfeed> {
                                             title: 'But Whyyyyy...',
                                             message:
                                                 'Do You Realise You Deleted a Memmory...',
-
-                                            /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
                                             contentType: ContentType.failure,
                                           ),
                                         );
