@@ -62,15 +62,18 @@ class _GroupCardState extends State<GroupCard> {
           padding: const EdgeInsets.symmetric(vertical: 16),
           child: Row(
             children: [
-              builProfilePic(
-                groupId: widget.groupid,
+              GestureDetector(
+                child: builProfilePic(
+                  groupId: widget.groupid,
+                ),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     widget.groupName,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 8),
                   Text(

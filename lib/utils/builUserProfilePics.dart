@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:glint/pages/imageFullScreenView.dart';
 
 class BuilUserProfilePics extends StatefulWidget {
   final String userid;
@@ -21,14 +22,24 @@ class _BuilUserProfilePicsState extends State<BuilUserProfilePics> {
 
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(
-      radius: 50, // Adjust size as needed
-      backgroundImage: profileImageUrl.isNotEmpty
-          ? CachedNetworkImageProvider(
-              profileImageUrl) // Display the image from Firestore URL
-          : AssetImage('assets/OIP.jpeg')
-              as ImageProvider, // Placeholder if no image
-      backgroundColor: Colors.grey[200],
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  Imagefullscreenview(imgUrl: profileImageUrl, uploadedBy: ''),
+            ));
+      },
+      child: CircleAvatar(
+        radius: 50, // Adjust size as needed
+        backgroundImage: profileImageUrl.isNotEmpty
+            ? CachedNetworkImageProvider(
+                profileImageUrl) // Display the image from Firestore URL
+            : AssetImage('assets/OIP.jpeg')
+                as ImageProvider, // Placeholder if no image
+        backgroundColor: Colors.grey[200],
+      ),
     );
   }
 
