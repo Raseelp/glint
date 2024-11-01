@@ -32,6 +32,19 @@ class Groupfeed extends StatefulWidget {
 }
 
 class _GroupfeedState extends State<Groupfeed> {
+  Timer? _timer;
+  int? _countdownEndTime;
+  int? _remainingTime;
+
+  @override
+  void initState() {
+    super.initState();
+    // Start the timer to fetch countdown end time periodically
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      _fetchCountdownEndTime();
+    });
+  }
+
   // int _countdown = 120; // 2 minutes in seconds
   // bool _isTimerActive = false;
   // Timer? _timer;
@@ -154,6 +167,8 @@ class _GroupfeedState extends State<Groupfeed> {
                           style: TextStyle(fontSize: 16),
                         ),
                       ),
+
+                      Expanded(child: buildCountdownButton(groupid))
                       // ElevatedButton(
                       //     onPressed: () {
                       //       handleGlintNow(widget.phoneNumberAsUserId, groupid);
@@ -284,6 +299,99 @@ class _GroupfeedState extends State<Groupfeed> {
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> _fetchCountdownEndTime() async {
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection('groups')
+        .doc(widget.code)
+        .get();
+    if (snapshot.exists) {
+      Map<String, dynamic>? data = snapshot.data() as Map<String, dynamic>?;
+      if (data != null && data.containsKey('countdownEndTime')) {
+        setState(() {
+          _countdownEndTime = snapshot.get('countdownEndTime');
+          // Calculate remaining time
+          _remainingTime =
+              _countdownEndTime! - DateTime.now().millisecondsSinceEpoch;
+        });
+      }
+    }
+  }
+
+  void startCountdown(String groupId) async {
+    final now = DateTime.now();
+    final endTimestamp = now.add(Duration(minutes: 2)).millisecondsSinceEpoch;
+
+    await FirebaseFirestore.instance.collection('groups').doc(groupId).update({
+      'countdownEndTime': endTimestamp,
+    });
+  }
+
+  Widget buildCountdownButton(String groupId) {
+    return StreamBuilder<DocumentSnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('groups')
+          .doc(groupId)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return CircularProgressIndicator();
+
+        final data = snapshot.data!;
+        final endTimestamp = data['countdownEndTime'] as int;
+        final remainingTime =
+            endTimestamp - DateTime.now().millisecondsSinceEpoch;
+        final countdownSeconds = (remainingTime / 1000).round();
+
+        if (countdownSeconds <= 0) {
+          return ElevatedButton(
+            onPressed: () => startCountdown(groupId), // Start the countdown
+            child: Text('Start Countdown'),
+          );
+        } else {
+          final minutes = countdownSeconds ~/ 60;
+          final seconds = countdownSeconds % 60;
+          return ElevatedButton(
+            onPressed: null, // Disable button while countdown is active
+            child: Text(
+                'Time left: $minutes:${seconds.toString().padLeft(2, '0')}'),
+          );
+        }
+      },
+    );
+  }
+
+  Widget buildCounterdownButton(String groupId) {
+    return StreamBuilder<DocumentSnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('groups')
+          .doc(groupId)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return CircularProgressIndicator();
+
+        final data = snapshot.data!;
+        final endTimestamp = data['countdownEndTime'] as int;
+        final remainingTime =
+            endTimestamp - DateTime.now().millisecondsSinceEpoch;
+        final countdownSeconds = (remainingTime / 1000).round();
+
+        if (countdownSeconds <= 0) {
+          return ElevatedButton(
+            onPressed: () => startCountdown(groupId), // Start the countdown
+            child: Text('Start Countdown'),
+          );
+        } else {
+          final minutes = countdownSeconds ~/ 60;
+          final seconds = countdownSeconds % 60;
+          return ElevatedButton(
+            onPressed: null, // Disable button while countdown is active
+            child: Text(
+                'Time left: $minutes:${seconds.toString().padLeft(2, '0')}'),
+          );
+        }
+      },
     );
   }
 

@@ -160,6 +160,7 @@ class _CreategroupState extends State<Creategroup> {
           'themesetterindex': 0,
           'createdAt': FieldValue.serverTimestamp(),
           'lastthemeupdatedat': null,
+          'countdownEndTime': 2,
           'members': [
             {
               'name': userName,
