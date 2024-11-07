@@ -34,7 +34,7 @@ class _PhonenumberState extends State<Phonenumber> {
       appBar: AppBar(
         backgroundColor: beige,
         automaticallyImplyLeading: false,
-        title: Center(
+        title: const Center(
             child: Text(
           'Glint.',
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
@@ -46,7 +46,7 @@ class _PhonenumberState extends State<Phonenumber> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               const Text('Whats Your Phonenumber'),
@@ -64,8 +64,8 @@ class _PhonenumberState extends State<Phonenumber> {
                           onTap: () {
                             showCountryPicker(
                               context: context,
-                              countryListTheme:
-                                  CountryListThemeData(bottomSheetHeight: 550),
+                              countryListTheme: const CountryListThemeData(
+                                  bottomSheetHeight: 550),
                               onSelect: (value) {
                                 setState(() {
                                   selectedCountry = value;
@@ -90,7 +90,7 @@ class _PhonenumberState extends State<Phonenumber> {
                       padding:
                           const EdgeInsets.only(left: 20, top: 50, bottom: 50),
                       child: TextField(
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Colors.black,
                             fontSize: 30,
                             fontWeight: FontWeight.bold),
@@ -125,7 +125,7 @@ class _PhonenumberState extends State<Phonenumber> {
                       elevation: 0,
                       backgroundColor: Colors.lightBlue[200],
                       foregroundColor: Colors.black),
-                  child: Text(
+                  child: const Text(
                     'Sent OTP',
                     style: TextStyle(fontSize: 16),
                   ))

@@ -40,7 +40,7 @@ class _MemebersDetailsState extends State<MemebersDetails> {
               userid: userid!,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
           Column(
@@ -48,11 +48,11 @@ class _MemebersDetailsState extends State<MemebersDetails> {
             children: [
               Text(
                 widget.name,
-                style: TextStyle(fontSize: 20),
+                style: const TextStyle(fontSize: 20),
               ),
               Text(
                 widget.phonenumber,
-                style: TextStyle(fontSize: 15),
+                style: const TextStyle(fontSize: 15),
               )
             ],
           ),
@@ -84,11 +84,12 @@ class _MemebersDetailsState extends State<MemebersDetails> {
         // Return the first document ID
         return querySnapshot.docs.first.id; // Document ID
       } else {
-        print("No user found with that phone number.");
         return null; // No document found
       }
     } catch (e) {
-      print("Error fetching user: $e");
+      SnackBar(
+        content: Text(e.toString()),
+      );
       return null; // Handle error
     }
   }

@@ -41,7 +41,7 @@ class _ImagefullscreenviewState extends State<Imagefullscreenview> {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: Text(
-                '${widget.uploadedBy}',
+                widget.uploadedBy,
                 style: const TextStyle(
                     color: Colors.black,
                     fontSize: 20,

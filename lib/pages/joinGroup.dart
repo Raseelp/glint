@@ -50,7 +50,7 @@ class _JoingroupState extends State<Joingroup> {
                 const SizedBox(
                   height: 100,
                 ),
-                Text(
+                const Text(
                   'Enter Your Invite Code',
                   style: TextStyle(fontSize: 17),
                 ),

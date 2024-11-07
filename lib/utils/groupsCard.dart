@@ -11,14 +11,14 @@ class GroupCard extends StatefulWidget {
   final String userid;
 
   const GroupCard({
-    Key? key,
+    super.key,
     required this.groupName,
     required this.todayTheme,
     required this.groupid,
     required this.phoneNumberAsUserId,
     required this.username,
     required this.userid,
-  }) : super(key: key);
+  });
 
   @override
   State<GroupCard> createState() => _GroupCardState();
@@ -52,7 +52,8 @@ class _GroupCardState extends State<GroupCard> {
                     Colors.black.withOpacity(0.3), // Shadow color with opacity
                 spreadRadius: 3, // Spread of the shadow
                 blurRadius: 5, // Blur intensity
-                offset: Offset(4, 4), // Horizontal and vertical shadow position
+                offset: const Offset(
+                    4, 4), // Horizontal and vertical shadow position
               ),
             ]),
         height: 100,
@@ -75,7 +76,7 @@ class _GroupCardState extends State<GroupCard> {
                     style: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text(
                     "Today's Theme: ${widget.todayTheme}",
                     style: TextStyle(fontSize: 16, color: Colors.grey[700]),

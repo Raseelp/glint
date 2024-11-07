@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -11,12 +10,12 @@ import 'package:glint/utils/sharedpreffs.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Creategroup extends StatefulWidget {
-  final phonenumberasuserid;
+  final String phonenumberasuserid;
   final String username;
   final String userid;
   const Creategroup(
       {super.key,
-      this.phonenumberasuserid,
+      required this.phonenumberasuserid,
       required this.username,
       required this.userid});
 
@@ -25,8 +24,8 @@ class Creategroup extends StatefulWidget {
 }
 
 class _CreategroupState extends State<Creategroup> {
-  TextEditingController _groupNameController = TextEditingController();
-  TextEditingController _themeController = TextEditingController();
+  final TextEditingController _groupNameController = TextEditingController();
+  final TextEditingController _themeController = TextEditingController();
   Color beige = const Color(0xFFF7F2E7);
   Color darkBlue = const Color(0xFF4682B4);
 
@@ -49,7 +48,7 @@ class _CreategroupState extends State<Creategroup> {
         title: Center(
             child: Padding(
           padding: EdgeInsets.only(right: 25.h),
-          child: Text(
+          child: const Text(
             'Glint.',
             style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
@@ -77,9 +76,9 @@ class _CreategroupState extends State<Creategroup> {
                     radius: 50,
                     backgroundImage: _imageFile != null
                         ? FileImage(_imageFile!)
-                        : AssetImage('assets/OIP.jpeg') as ImageProvider,
+                        : const AssetImage('assets/OIP.jpeg') as ImageProvider,
                     child: _imageFile == null
-                        ? Icon(Icons.camera_alt, size: 50)
+                        ? const Icon(Icons.camera_alt, size: 50)
                         : null,
                   ),
                 ),
@@ -147,7 +146,7 @@ class _CreategroupState extends State<Creategroup> {
 
   addUserToFirestore() async {
     if (_groupNameController.text.isEmpty || _themeController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text("Field cannot be empty! Please enter some text.")));
     } else {
       String groupname = _groupNameController.text;
@@ -190,7 +189,11 @@ class _CreategroupState extends State<Creategroup> {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(snackBar);
-        } catch (e) {}
+        } catch (e) {
+          SnackBar(
+            content: Text(e.toString()),
+          );
+        }
       } else {
         const snackBar = SnackBar(
           elevation: 0,
@@ -227,11 +230,9 @@ class _CreategroupState extends State<Creategroup> {
         String documentId = querySnapshot.docs.first.id;
         return documentId;
       } else {
-        print('No document found with the specified group name.');
         return null; // No document found
       }
     } catch (e) {
-      print('Error retrieving document ID: $e');
       return null;
     }
   }
@@ -250,9 +251,7 @@ class _CreategroupState extends State<Creategroup> {
       setState(() {
         _imageFile = File(pickedFile.path);
       });
-    } else {
-      print('No image selected.');
-    }
+    } else {}
   }
 
   //to show user the source of picking image
@@ -265,16 +264,16 @@ class _CreategroupState extends State<Creategroup> {
           child: Wrap(
             children: <Widget>[
               ListTile(
-                leading: Icon(Icons.photo_library),
-                title: Text('Choose from Gallery'),
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Choose from Gallery'),
                 onTap: () {
                   _pickImage(ImageSource.gallery);
                   Navigator.of(context).pop();
                 },
               ),
               ListTile(
-                leading: Icon(Icons.camera_alt),
-                title: Text('Take a Photo'),
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Take a Photo'),
                 onTap: () {
                   _pickImage(ImageSource.camera);
                   Navigator.of(context).pop();

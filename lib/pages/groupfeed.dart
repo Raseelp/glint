@@ -40,7 +40,7 @@ class _GroupfeedState extends State<Groupfeed> {
   void initState() {
     super.initState();
     // Start the timer to fetch countdown end time periodically
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _fetchCountdownEndTime();
     });
   }
@@ -295,7 +295,8 @@ class _GroupfeedState extends State<Groupfeed> {
 
   void startCountdown(String groupId) async {
     final now = DateTime.now();
-    final endTimestamp = now.add(Duration(minutes: 2)).millisecondsSinceEpoch;
+    final endTimestamp =
+        now.add(const Duration(minutes: 2)).millisecondsSinceEpoch;
 
     await FirebaseFirestore.instance.collection('groups').doc(groupId).update({
       'countdownEndTime': endTimestamp,
@@ -310,7 +311,7 @@ class _GroupfeedState extends State<Groupfeed> {
           .doc(groupId)
           .snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return CircularProgressIndicator();
+        if (!snapshot.hasData) return const CircularProgressIndicator();
 
         final data = snapshot.data!;
         final endTimestamp = data['countdownEndTime'] as int;
@@ -391,14 +392,12 @@ class _GroupfeedState extends State<Groupfeed> {
           'uploadedBy': widget.username,
           'timestamp': FieldValue.serverTimestamp(),
         });
-
-        print("Image uploaded and URL stored successfully: $downloadUrl");
       } catch (e) {
-        print("Failed to upload image: $e");
+        SnackBar(
+          content: Text(e.toString()),
+        );
       }
-    } else {
-      print("No image selected");
-    }
+    } else {}
   }
 
   Future<void> deleteImage(
@@ -415,9 +414,10 @@ class _GroupfeedState extends State<Groupfeed> {
           .collection('images')
           .doc(imageId)
           .delete();
-      print("Image reference deleted successfully from Firestore");
     } catch (e) {
-      print("Error deleting image: $e");
+      SnackBar(
+        content: Text(e.toString()),
+      );
     }
   }
 

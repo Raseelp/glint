@@ -69,7 +69,7 @@ class _HomepageState extends State<Homepage> {
             child: Container(
               decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.all(
+                  borderRadius: const BorderRadius.all(
                     Radius.circular(17),
                   ),
                   boxShadow: [
@@ -78,7 +78,7 @@ class _HomepageState extends State<Homepage> {
                           .withOpacity(0.3), // Shadow color with opacity
                       spreadRadius: 3, // Spread of the shadow
                       blurRadius: 5, // Blur intensity
-                      offset: Offset(
+                      offset: const Offset(
                           6, 7), // Horizontal and vertical shadow position
                     ),
                   ]),
@@ -90,8 +90,8 @@ class _HomepageState extends State<Homepage> {
                   Text(
                     'Hello,${widget.username}',
                     textAlign: TextAlign.center,
-                    style:
-                        TextStyle(fontSize: 30, fontWeight: FontWeight.normal),
+                    style: const TextStyle(
+                        fontSize: 30, fontWeight: FontWeight.normal),
                   ),
                   const Text(
                     'Dont\'t forget to share your Daily moment\'s',
@@ -179,9 +179,9 @@ class _HomepageState extends State<Homepage> {
               ),
             ],
           ),
-          widget.userGroups.length == 0
-              ? Expanded(
-                  child: Container(
+          widget.userGroups.isEmpty
+              ? const Expanded(
+                  child: SizedBox(
                     height: double.infinity,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,

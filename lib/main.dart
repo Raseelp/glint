@@ -60,7 +60,7 @@ class _GlintState extends State<Glint> {
       child: MaterialApp(
         home: isLoggedIn
             ? SplashScreen(phonenumberToCheck: userPhone!)
-            : Onbordeing(),
+            : const Onbordeing(),
       ),
     );
   }

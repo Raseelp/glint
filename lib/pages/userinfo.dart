@@ -40,7 +40,7 @@ class _UserinfoScreenState extends State<UserinfoScreen> {
       appBar: AppBar(
         backgroundColor: beige,
         automaticallyImplyLeading: false,
-        title: Center(
+        title: const Center(
             child: Text(
           'Glint.',
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
@@ -49,7 +49,7 @@ class _UserinfoScreenState extends State<UserinfoScreen> {
       backgroundColor: beige,
       body: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Container(
+        child: SizedBox(
           width: double.infinity,
           child: SingleChildScrollView(
             child: Column(
@@ -73,9 +73,9 @@ class _UserinfoScreenState extends State<UserinfoScreen> {
                     radius: 50,
                     backgroundImage: _imageFile != null
                         ? FileImage(_imageFile!)
-                        : AssetImage('assets/OIP.jpeg') as ImageProvider,
+                        : const AssetImage('assets/OIP.jpeg') as ImageProvider,
                     child: _imageFile == null
-                        ? Icon(Icons.camera_alt, size: 50)
+                        ? const Icon(Icons.camera_alt, size: 50)
                         : null,
                   ),
                 ),
@@ -85,12 +85,12 @@ class _UserinfoScreenState extends State<UserinfoScreen> {
                 const Text('What\'s your friends call you'),
                 TextField(
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.black,
                       fontSize: 30,
                       fontWeight: FontWeight.bold),
                   controller: namecontroller,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       hintText: 'First Name',
                       hintStyle: TextStyle(
                           color: Colors.grey,
@@ -124,7 +124,8 @@ class _UserinfoScreenState extends State<UserinfoScreen> {
                 ),
                 Text(
                   birthDateInString.length > 11 ? '' : birthDateInString,
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 30, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
                   height: 100.h,
@@ -154,7 +155,7 @@ class _UserinfoScreenState extends State<UserinfoScreen> {
                                 )),
                       );
                     },
-                    child: Text(
+                    child: const Text(
                       'Continue',
                       style: TextStyle(fontSize: 16),
                     ))
@@ -180,7 +181,9 @@ class _UserinfoScreenState extends State<UserinfoScreen> {
         await UserPreferences.setUserDetails(
             name, widget.verifiedPhonenumber, '');
       } catch (e) {
-        print(e);
+        SnackBar(
+          content: Text(e.toString()),
+        );
       }
     }
     String? documentId =
@@ -202,11 +205,12 @@ class _UserinfoScreenState extends State<UserinfoScreen> {
         String documentId = querySnapshot.docs.first.id;
         return documentId;
       } else {
-        print('No document found with the specified group name.');
         return null; // No document found
       }
     } catch (e) {
-      print('Error retrieving document ID: $e');
+      SnackBar(
+        content: Text(e.toString()),
+      );
       return null;
     }
   }
@@ -224,7 +228,9 @@ class _UserinfoScreenState extends State<UserinfoScreen> {
         _imageFile = File(pickedFile.path);
       });
     } else {
-      print('No image selected.');
+      const SnackBar(
+        content: Text('No image selected'),
+      );
     }
   }
 
@@ -238,16 +244,16 @@ class _UserinfoScreenState extends State<UserinfoScreen> {
           child: Wrap(
             children: <Widget>[
               ListTile(
-                leading: Icon(Icons.photo_library),
-                title: Text('Choose from Gallery'),
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Choose from Gallery'),
                 onTap: () {
                   _pickImage(ImageSource.gallery);
                   Navigator.of(context).pop();
                 },
               ),
               ListTile(
-                leading: Icon(Icons.camera_alt),
-                title: Text('Take a Photo'),
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Take a Photo'),
                 onTap: () {
                   _pickImage(ImageSource.camera);
                   Navigator.of(context).pop();
@@ -279,10 +285,10 @@ class _UserinfoScreenState extends State<UserinfoScreen> {
       await FirebaseFirestore.instance.collection('users').doc(userid).update({
         'userprofilePictureUrl': userprofilePictureUrl,
       });
-
-      print("Profile picture uploaded and URL saved successfully.");
     } catch (e) {
-      print("Error uploading profile picture: $e");
+      SnackBar(
+        content: Text(e.toString()),
+      );
     }
   }
 }

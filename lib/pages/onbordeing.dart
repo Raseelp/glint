@@ -26,7 +26,7 @@ class _OnbordeingState extends State<Onbordeing> {
                 foregroundColor: Colors.white),
             onPressed: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Phonenumber()));
+                  MaterialPageRoute(builder: (context) => const Phonenumber()));
             },
             child: const Text(
               'Let\'s get started',

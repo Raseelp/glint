@@ -30,7 +30,7 @@ class _OtpScreenState extends State<OtpScreen> {
       appBar: AppBar(
         backgroundColor: beige,
         automaticallyImplyLeading: false,
-        title: Center(
+        title: const Center(
             child: Text(
           'Glint.',
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
@@ -70,7 +70,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('The Verification code sent to '),
+                          const Text('The Verification code sent to '),
                           Text(widget.phonenumber)
                         ],
                       ),
@@ -134,7 +134,7 @@ class _OtpScreenState extends State<OtpScreen> {
   final defaultPinTheme = PinTheme(
     width: 60,
     height: 60,
-    textStyle: TextStyle(
+    textStyle: const TextStyle(
       fontSize: 20,
       color: Colors.black,
       fontWeight: FontWeight.bold,

@@ -131,7 +131,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                         decoration: BoxDecoration(
                             color: Colors.grey,
                             borderRadius: BorderRadius.circular(100)),
-                        child: Icon(Icons.edit)))
+                        child: const Icon(Icons.edit)))
               ]),
             ),
             TextField(
@@ -210,7 +210,8 @@ class _GroupSettingsState extends State<GroupSettings> {
               child: isEditable
                   ? TextField(
                       textAlign: TextAlign.center,
-                      decoration: InputDecoration(border: InputBorder.none),
+                      decoration:
+                          const InputDecoration(border: InputBorder.none),
                       controller: _themecontroller,
                       onSubmitted: (value) {
                         todaysTheme = value;
@@ -244,11 +245,11 @@ class _GroupSettingsState extends State<GroupSettings> {
                   future: getMemberDetails(widget.inviteCode),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator();
+                      return const CircularProgressIndicator();
                     } else if (snapshot.hasError) {
                       return Text("Error: ${snapshot.error}");
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return Text("No members found.");
+                      return const Text("No members found.");
                     } else {
                       List<Map<String, dynamic>> members = snapshot.data!;
 
@@ -282,7 +283,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                             SplashScreen(phonenumberToCheck: widget.userphone),
                       ));
                 },
-                child: Text('Exit Group'))
+                child: const Text('Exit Group'))
           ],
         ),
       ),
@@ -305,7 +306,6 @@ class _GroupSettingsState extends State<GroupSettings> {
         return 0; // Return 0 if no members field is found
       }
     } catch (e) {
-      print("Error getting member count: $e");
       return 0; // Return 0 or handle error appropriately
     }
   }
@@ -333,7 +333,6 @@ class _GroupSettingsState extends State<GroupSettings> {
         return [];
       }
     } catch (e) {
-      print("Error getting member details: $e");
       return [];
     }
   }
@@ -353,7 +352,9 @@ class _GroupSettingsState extends State<GroupSettings> {
         _imageFile = File(pickedFile.path);
       });
     } else {
-      print('No image selected.');
+      const SnackBar(
+        content: Text('No Image Selected'),
+      );
     }
   }
 
@@ -367,16 +368,16 @@ class _GroupSettingsState extends State<GroupSettings> {
           child: Wrap(
             children: <Widget>[
               ListTile(
-                leading: Icon(Icons.photo_library),
-                title: Text('Choose from Gallery'),
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Choose from Gallery'),
                 onTap: () {
                   _pickImage(ImageSource.gallery);
                   Navigator.of(context).pop();
                 },
               ),
               ListTile(
-                leading: Icon(Icons.camera_alt),
-                title: Text('Take a Photo'),
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Take a Photo'),
                 onTap: () {
                   _pickImage(ImageSource.camera);
                   Navigator.of(context).pop();
@@ -411,15 +412,16 @@ class _GroupSettingsState extends State<GroupSettings> {
           .update({
         'profilePictureUrl': profilePictureUrl,
       });
-      print("Profile picture uploaded and URL saved successfully.");
     } catch (e) {
-      print("Error uploading profile picture: $e");
+      SnackBar(
+        content: Text(e.toString()),
+      );
     }
   }
 
   Future<void> changeGroupName(String groupid, String newgroupname) async {
     if (newgroupname.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text("Field cannot be empty! Please enter some text.")));
     } else {
       await FirebaseFirestore.instance
@@ -428,15 +430,13 @@ class _GroupSettingsState extends State<GroupSettings> {
           .update({
         'Groupname': newgroupname,
       });
-
-      print('GroupName Updated Succcessfully');
     }
   }
 
   Future<void> changeThemeManuavlly(
       String groupid, String newThemeByUser) async {
     if (newThemeByUser.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text("Field cannot be empty! Please enter some text.")));
     } else {
       await FirebaseFirestore.instance
@@ -447,7 +447,6 @@ class _GroupSettingsState extends State<GroupSettings> {
         'lastthemeupdatedat': FieldValue.serverTimestamp()
       });
       isEditable = false;
-      print('theme Updated Succcessfully');
     }
   }
 
@@ -471,10 +470,10 @@ class _GroupSettingsState extends State<GroupSettings> {
 
       // Update Firestore with the modified members array
       await groupRef.update({'members': updatedMembers});
-
-      print("Successfully exited the group.");
     } catch (e) {
-      print("Error exiting group: $e");
+      SnackBar(
+        content: Text(e.toString()),
+      );
     }
   }
 

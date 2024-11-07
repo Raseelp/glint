@@ -36,7 +36,7 @@ class _BuilUserProfilePicsState extends State<BuilUserProfilePics> {
         backgroundImage: profileImageUrl.isNotEmpty
             ? CachedNetworkImageProvider(
                 profileImageUrl) // Display the image from Firestore URL
-            : AssetImage('assets/OIP.jpeg')
+            : const AssetImage('assets/OIP.jpeg')
                 as ImageProvider, // Placeholder if no image
         backgroundColor: Colors.grey[200],
       ),
@@ -58,7 +58,9 @@ class _BuilUserProfilePicsState extends State<BuilUserProfilePics> {
         });
       }
     } catch (e) {
-      print("Error fetching profile image URL: $e");
+      SnackBar(
+        content: Text(e.toString()),
+      );
     }
   }
 }

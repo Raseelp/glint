@@ -45,7 +45,7 @@ class _ScreenSettingsState extends State<ScreenSettings> {
         )),
       ),
       backgroundColor: beige,
-      body: Container(
+      body: SizedBox(
         width: double.infinity,
         child: SingleChildScrollView(
           child: Column(
@@ -73,7 +73,7 @@ class _ScreenSettingsState extends State<ScreenSettings> {
                           decoration: BoxDecoration(
                               color: Colors.grey,
                               borderRadius: BorderRadius.circular(100)),
-                          child: Icon(Icons.edit)))
+                          child: const Icon(Icons.edit)))
                 ]),
               ),
               SizedBox(
@@ -97,14 +97,14 @@ class _ScreenSettingsState extends State<ScreenSettings> {
                               SplashScreen(phonenumberToCheck: widget.phone),
                         ));
                   },
-                  child: Text('Apply')),
+                  child: const Text('Apply')),
               Text(
                 'Name:${widget.name}',
-                style: TextStyle(fontSize: 20),
+                style: const TextStyle(fontSize: 20),
               ),
               Text(
                 'Phone:${widget.phone}',
-                style: TextStyle(fontSize: 20),
+                style: const TextStyle(fontSize: 20),
               ),
               SizedBox(
                 height: 300.h,
@@ -123,10 +123,10 @@ class _ScreenSettingsState extends State<ScreenSettings> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Onbordeing(),
+                          builder: (context) => const Onbordeing(),
                         ));
                   },
-                  child: Text('LogOut'))
+                  child: const Text('LogOut'))
             ],
           ),
         ),
@@ -155,7 +155,9 @@ class _ScreenSettingsState extends State<ScreenSettings> {
         _imageFile = File(pickedFile.path);
       });
     } else {
-      print('No image selected.');
+      const SnackBar(
+        content: Text('No images selected'),
+      );
     }
   }
 
@@ -169,16 +171,16 @@ class _ScreenSettingsState extends State<ScreenSettings> {
           child: Wrap(
             children: <Widget>[
               ListTile(
-                leading: Icon(Icons.photo_library),
-                title: Text('Choose from Gallery'),
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Choose from Gallery'),
                 onTap: () {
                   _pickImage(ImageSource.gallery);
                   Navigator.of(context).pop();
                 },
               ),
               ListTile(
-                leading: Icon(Icons.camera_alt),
-                title: Text('Take a Photo'),
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Take a Photo'),
                 onTap: () {
                   _pickImage(ImageSource.camera);
                   Navigator.of(context).pop();
@@ -210,10 +212,10 @@ class _ScreenSettingsState extends State<ScreenSettings> {
       await FirebaseFirestore.instance.collection('users').doc(userid).update({
         'userprofilePictureUrl': userprofilePictureUrl,
       });
-
-      print("Profile picture uploaded and URL saved successfully.");
     } catch (e) {
-      print("Error uploading profile picture: $e");
+      SnackBar(
+        content: Text(e.toString()),
+      );
     }
   }
 
@@ -221,7 +223,5 @@ class _ScreenSettingsState extends State<ScreenSettings> {
     await FirebaseFirestore.instance.collection('groups').doc(groupid).update({
       'Groupname': newgroupname,
     });
-
-    print('GroupName Updated Succcessfully');
   }
 }

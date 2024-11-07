@@ -35,7 +35,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<bool> checkUserExists(String phoneNumber) async {
     try {
-      print("Checking for phone number in field: $phoneNumber");
       QuerySnapshot snapshot = await FirebaseFirestore.instance
           .collection('users')
           .where('Verified PhoneNumber', isEqualTo: phoneNumber)
@@ -51,10 +50,8 @@ class _SplashScreenState extends State<SplashScreen> {
             userName, widget.phonenumberToCheck, userid);
       }
 
-      print("Documents found: ${snapshot.docs.isNotEmpty}");
       return snapshot.docs.isNotEmpty;
     } catch (e) {
-      print("Error checking user existence: $e");
       return false;
     }
   }
@@ -70,7 +67,6 @@ class _SplashScreenState extends State<SplashScreen> {
       List<Map<String, dynamic>> userGroups =
           await fetchUserGroups(widget.phonenumberToCheck);
 
-      print("User groups: $userGroups");
       // User exists, proceed to home screen
       Navigator.pushReplacement(
           context,
@@ -118,7 +114,9 @@ class _SplashScreenState extends State<SplashScreen> {
         }
       }
     } catch (e) {
-      print("Error fetching user groups: $e");
+      SnackBar(
+        content: Text(e.toString()),
+      );
     }
 
     return userGroups;
@@ -141,7 +139,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
     // Iterate through the groups
     for (DocumentSnapshot doc in querySnapshot.docs) {
-      print("Deleted group: with zero members.");
       // Get the members list
       List<dynamic> members = doc['members'];
 
