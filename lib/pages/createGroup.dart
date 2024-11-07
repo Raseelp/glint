@@ -87,19 +87,19 @@ class _CreategroupState extends State<Creategroup> {
                   height: 10.h,
                 ),
                 TextField(
-                  style: TextStyle(fontSize: 30, color: Colors.black),
+                  style: const TextStyle(fontSize: 30, color: Colors.black),
                   textAlign: TextAlign.center,
                   controller: _groupNameController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       border: InputBorder.none,
                       hintText: 'GroupName',
                       hintStyle: TextStyle(fontSize: 30, color: Colors.grey)),
                 ),
                 TextField(
-                  style: TextStyle(fontSize: 30, color: Colors.black),
+                  style: const TextStyle(fontSize: 30, color: Colors.black),
                   textAlign: TextAlign.center,
                   controller: _themeController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Enter Todays Theme',
                       hintStyle: TextStyle(fontSize: 30, color: Colors.grey)),
@@ -160,6 +160,7 @@ class _CreategroupState extends State<Creategroup> {
           'themesetterindex': 0,
           'createdAt': FieldValue.serverTimestamp(),
           'lastthemeupdatedat': null,
+          'lastglintsharedat': null,
           'countdownEndTime': 2,
           'members': [
             {

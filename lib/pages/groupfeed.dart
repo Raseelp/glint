@@ -45,6 +45,12 @@ class _GroupfeedState extends State<Groupfeed> {
     });
   }
 
+  @override
+  void dispose() {
+    _timer?.cancel(); // Cancel the timer when the widget is disposed
+    super.dispose();
+  }
+
   Color beige = const Color(0xFFF7F2E7);
   Color darkBlue = const Color(0xFF4682B4);
   @override
@@ -212,7 +218,7 @@ class _GroupfeedState extends State<Groupfeed> {
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
                                             usernameImage,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontSize: 15,
                                             ),
                                           ),
@@ -293,6 +299,7 @@ class _GroupfeedState extends State<Groupfeed> {
 
     await FirebaseFirestore.instance.collection('groups').doc(groupId).update({
       'countdownEndTime': endTimestamp,
+      'lastglintsharedat': FieldValue.serverTimestamp()
     });
   }
 
@@ -313,47 +320,39 @@ class _GroupfeedState extends State<Groupfeed> {
 
         if (countdownSeconds <= 0) {
           return ElevatedButton(
-            onPressed: () => startCountdown(groupId), // Start the countdown
-            child: Text('Start Countdown'),
+            onPressed: () async {
+              bool iscorrectUser =
+                  await isCorrectUser(widget.phoneNumberAsUserId, widget.code);
+              bool has24hoursPassed = await has24HoursPassed(widget.code);
+
+              if (iscorrectUser) {
+                if (has24hoursPassed) {
+                  startCountdown(groupId);
+                } else {
+                  const snackBar = SnackBar(
+                    elevation: 0,
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.transparent,
+                    content: AwesomeSnackbarContent(
+                      title: 'Todays Glint Used',
+                      message: "Try again after 24 hours...",
+                      contentType: ContentType.failure,
+                    ),
+                  );
+
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(snackBar);
+                }
+              }
+            },
+            child: const Text('Start Countdown'),
           );
         } else {
           final minutes = countdownSeconds ~/ 60;
           final seconds = countdownSeconds % 60;
           return ElevatedButton(
-            onPressed: null, // Disable button while countdown is active
-            child: Text(
-                'Time left: $minutes:${seconds.toString().padLeft(2, '0')}'),
-          );
-        }
-      },
-    );
-  }
-
-  Widget buildCounterdownButton(String groupId) {
-    return StreamBuilder<DocumentSnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('groups')
-          .doc(groupId)
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return CircularProgressIndicator();
-
-        final data = snapshot.data!;
-        final endTimestamp = data['countdownEndTime'] as int;
-        final remainingTime =
-            endTimestamp - DateTime.now().millisecondsSinceEpoch;
-        final countdownSeconds = (remainingTime / 1000).round();
-
-        if (countdownSeconds <= 0) {
-          return ElevatedButton(
-            onPressed: () => startCountdown(groupId), // Start the countdown
-            child: Text('Start Countdown'),
-          );
-        } else {
-          final minutes = countdownSeconds ~/ 60;
-          final seconds = countdownSeconds % 60;
-          return ElevatedButton(
-            onPressed: null, // Disable button while countdown is active
+            onPressed: null,
             child: Text(
                 'Time left: $minutes:${seconds.toString().padLeft(2, '0')}'),
           );
@@ -366,7 +365,7 @@ class _GroupfeedState extends State<Groupfeed> {
 
   Future<void> capturePhoto(String groupId) async {
     await requestCameraPermission();
-    print("Button pressed, attempting to capture photo...");
+
     final XFile? image = await _picker.pickImage(source: ImageSource.camera);
 
     if (image != null) {
@@ -389,7 +388,7 @@ class _GroupfeedState extends State<Groupfeed> {
             .collection('images')
             .add({
           'url': downloadUrl,
-          'uploadedBy': widget.username, // replace with actual user ID
+          'uploadedBy': widget.username,
           'timestamp': FieldValue.serverTimestamp(),
         });
 
@@ -404,20 +403,17 @@ class _GroupfeedState extends State<Groupfeed> {
 
   Future<void> deleteImage(
       String groupId, String imageId, String imageUrl) async {
-    // Create a reference to the image in Firebase Storage
     Reference storageRef = FirebaseStorage.instance.refFromURL(imageUrl);
 
     try {
-      // Delete the image from Firebase Storage
       await storageRef.delete();
       print("Image deleted successfully from Storage");
 
-      // Delete the image reference from Firestore
       await FirebaseFirestore.instance
           .collection('groups')
           .doc(groupId)
           .collection('images')
-          .doc(imageId) // Use the document ID for deletion
+          .doc(imageId)
           .delete();
       print("Image reference deleted successfully from Firestore");
     } catch (e) {
@@ -430,5 +426,69 @@ class _GroupfeedState extends State<Groupfeed> {
     if (!status.isGranted) {
       await Permission.camera.request();
     }
+  }
+
+  Future<bool> isCorrectUser(String userPhoneNumber, String groupid) async {
+    DocumentReference groupRef =
+        FirebaseFirestore.instance.collection('groups').doc(groupid);
+    DocumentSnapshot groupSnapshot = await groupRef.get();
+
+    // Retrieve the current themeSetterIndex and members
+    int themeSetterIndex = groupSnapshot['themesetterindex'];
+    List<dynamic> members =
+        groupSnapshot['members']; // Use dynamic since it's a map
+
+    // Find the index of the current user based on phone number
+    int userIndex =
+        members.indexWhere((member) => member['phone'] == userPhoneNumber);
+
+    // Check if the user is allowed to press Glint Now
+    if (userIndex == themeSetterIndex) {
+      return true;
+    } else {
+      // Show failure Snackbar
+      const snackBar = SnackBar(
+        elevation: 0,
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.transparent,
+        content: AwesomeSnackbarContent(
+          title: 'Oops',
+          message: " Today's Not Your Day...Maybe Tomarrow??",
+          messageTextStyle: TextStyle(fontWeight: FontWeight.bold),
+          contentType: ContentType.failure,
+        ),
+      );
+
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(snackBar);
+
+      return false;
+    }
+  }
+
+  Future<bool> has24HoursPassed(String groupId) async {
+    // Reference to the specific group's document
+    DocumentReference groupRef =
+        FirebaseFirestore.instance.collection('groups').doc(groupId);
+
+    // Fetch the group's document to get the 'lastthemeupdatedat' field
+    DocumentSnapshot groupSnapshot = await groupRef.get();
+
+    if (groupSnapshot.exists && groupSnapshot['lastglintsharedat'] != null) {
+      Timestamp lastGlintShared = groupSnapshot['lastglintsharedat'];
+      DateTime lastGlintUpdated = lastGlintShared.toDate();
+      DateTime currentTime = DateTime.now();
+
+      // Calculate the difference in hours
+      int hoursSinceLastUpdate =
+          currentTime.difference(lastGlintUpdated).inHours;
+
+      // Check if 24 hours have passed
+      return hoursSinceLastUpdate >= 24;
+    }
+
+    // If 'lastthemeupdatedat' is null (for first-time setup), allow the theme change
+    return true;
   }
 }
