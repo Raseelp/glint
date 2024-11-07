@@ -146,66 +146,71 @@ class _CreategroupState extends State<Creategroup> {
   }
 
   addUserToFirestore() async {
-    String groupname = _groupNameController.text;
-    String theme = _themeController.text;
-    Map<String, String?> userDetails = await UserPreferences.getUserDetails();
-    String userName = userDetails['name'] ?? 'Unknown User';
-    String userPhone = userDetails['phone'] ?? 'Unknown Phone';
+    if (_groupNameController.text.isEmpty || _themeController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Field cannot be empty! Please enter some text.")));
+    } else {
+      String groupname = _groupNameController.text;
+      String theme = _themeController.text;
+      Map<String, String?> userDetails = await UserPreferences.getUserDetails();
+      String userName = userDetails['name'] ?? 'Unknown User';
+      String userPhone = userDetails['phone'] ?? 'Unknown Phone';
 
-    if (groupname.isNotEmpty) {
-      try {
-        await FirebaseFirestore.instance.collection('groups').add({
-          'Groupname': groupname,
-          'todaystheme': theme,
-          'themesetterindex': 0,
-          'createdAt': FieldValue.serverTimestamp(),
-          'lastthemeupdatedat': null,
-          'lastglintsharedat': null,
-          'countdownEndTime': 2,
-          'members': [
-            {
-              'name': userName,
-              'phone': userPhone,
-            },
-          ],
-        });
+      if (groupname.isNotEmpty) {
+        try {
+          await FirebaseFirestore.instance.collection('groups').add({
+            'Groupname': groupname,
+            'todaystheme': theme,
+            'themesetterindex': 0,
+            'createdAt': FieldValue.serverTimestamp(),
+            'lastthemeupdatedat': null,
+            'lastglintsharedat': null,
+            'countdownEndTime': 2,
+            'members': [
+              {
+                'name': userName,
+                'phone': userPhone,
+              },
+            ],
+          });
+          const snackBar = SnackBar(
+            /// need to set following properties for best effect of awesome_snackbar_content
+            elevation: 0,
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.transparent,
+            content: AwesomeSnackbarContent(
+              title: 'Yaaay!',
+              message: 'Group created successfully!',
+
+              /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+              contentType: ContentType.success,
+            ),
+          );
+
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(snackBar);
+        } catch (e) {}
+      } else {
         const snackBar = SnackBar(
-          /// need to set following properties for best effect of awesome_snackbar_content
           elevation: 0,
           behavior: SnackBarBehavior.floating,
           backgroundColor: Colors.transparent,
           content: AwesomeSnackbarContent(
-            title: 'Yaaay!',
-            message: 'Group created successfully!',
-
-            /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-            contentType: ContentType.success,
+            title: 'Oops',
+            message: "Please Enter the complete Details",
+            contentType: ContentType.failure,
           ),
         );
 
         ScaffoldMessenger.of(context)
           ..hideCurrentSnackBar()
           ..showSnackBar(snackBar);
-      } catch (e) {}
-    } else {
-      const snackBar = SnackBar(
-        elevation: 0,
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.transparent,
-        content: AwesomeSnackbarContent(
-          title: 'Oops',
-          message: "Please Enter the complete Details",
-          contentType: ContentType.failure,
-        ),
-      );
+      }
 
-      ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(snackBar);
+      String? documentId = await getDocumentIdByGroupName(groupname);
+      return documentId;
     }
-
-    String? documentId = await getDocumentIdByGroupName(groupname);
-    return documentId;
   }
 
   Future<String?> getDocumentIdByGroupName(String groupName) async {

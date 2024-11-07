@@ -418,21 +418,37 @@ class _GroupSettingsState extends State<GroupSettings> {
   }
 
   Future<void> changeGroupName(String groupid, String newgroupname) async {
-    await FirebaseFirestore.instance.collection('groups').doc(groupid).update({
-      'Groupname': newgroupname,
-    });
+    if (newgroupname.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Field cannot be empty! Please enter some text.")));
+    } else {
+      await FirebaseFirestore.instance
+          .collection('groups')
+          .doc(groupid)
+          .update({
+        'Groupname': newgroupname,
+      });
 
-    print('GroupName Updated Succcessfully');
+      print('GroupName Updated Succcessfully');
+    }
   }
 
   Future<void> changeThemeManuavlly(
       String groupid, String newThemeByUser) async {
-    await FirebaseFirestore.instance.collection('groups').doc(groupid).update({
-      'todaystheme': newThemeByUser,
-      'lastthemeupdatedat': FieldValue.serverTimestamp()
-    });
-    isEditable = false;
-    print('theme Updated Succcessfully');
+    if (newThemeByUser.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Field cannot be empty! Please enter some text.")));
+    } else {
+      await FirebaseFirestore.instance
+          .collection('groups')
+          .doc(groupid)
+          .update({
+        'todaystheme': newThemeByUser,
+        'lastthemeupdatedat': FieldValue.serverTimestamp()
+      });
+      isEditable = false;
+      print('theme Updated Succcessfully');
+    }
   }
 
   //for exiting a group
