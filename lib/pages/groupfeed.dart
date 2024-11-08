@@ -300,7 +300,14 @@ class _GroupfeedState extends State<Groupfeed> {
 
     await FirebaseFirestore.instance.collection('groups').doc(groupId).update({
       'countdownEndTime': endTimestamp,
-      'lastglintsharedat': FieldValue.serverTimestamp()
+      'lastglintsharedat': FieldValue.serverTimestamp(),
+      'isglintactive': true,
+    });
+  }
+
+  void makeGlintFalse(String groupid) async {
+    await FirebaseFirestore.instance.collection('groups').doc(groupid).update({
+      'isglintactive': false,
     });
   }
 
@@ -320,6 +327,7 @@ class _GroupfeedState extends State<Groupfeed> {
         final countdownSeconds = (remainingTime / 1000).round();
 
         if (countdownSeconds <= 0) {
+          makeGlintFalse(groupId);
           return ElevatedButton(
             onPressed: () async {
               bool iscorrectUser =
