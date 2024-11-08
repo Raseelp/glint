@@ -109,6 +109,7 @@ class _GroupfeedState extends State<Groupfeed> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => GroupSettings(
+                                        username: widget.username,
                                         userphone: widget.phoneNumberAsUserId,
                                         userid: widget.userid,
                                         groupname: widget.groupname,

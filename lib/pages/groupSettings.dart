@@ -19,6 +19,7 @@ class GroupSettings extends StatefulWidget {
   final String todaysTheme;
   final String userid;
   final String userphone;
+  final String username;
 
   const GroupSettings({
     super.key,
@@ -27,6 +28,7 @@ class GroupSettings extends StatefulWidget {
     required this.todaysTheme,
     required this.userid,
     required this.userphone,
+    required this.username,
   });
 
   @override
@@ -87,6 +89,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => GroupSettings(
+                          username: widget.username,
                           userphone: widget.userphone,
                           groupname: groupnamecontroller.text,
                           inviteCode: widget.inviteCode,
@@ -226,6 +229,30 @@ class _GroupSettingsState extends State<GroupSettings> {
                           fontSize: 20, fontWeight: FontWeight.normal),
                     ),
             ),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(17)),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 50.w, vertical: 12.h),
+                    elevation: 0,
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GlintLeaderBoard(
+                          usename: widget.username,
+                          groupId: widget.inviteCode,
+                          groupname: widget.groupname,
+                          todaystheme: todaysTheme,
+                          phoneNumber: widget.userphone,
+                          userid: widget.userid,
+                        ),
+                      ));
+                },
+                child: const Text('See Glint LeaderBoard')),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
@@ -237,15 +264,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                         fontSize: 15, fontWeight: FontWeight.bold),
                   ),
                   IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  GlintLeaderBoard(groupId: widget.inviteCode),
-                            ));
-                      },
-                      icon: const Icon(Icons.search_outlined))
+                      onPressed: () {}, icon: const Icon(Icons.search_outlined))
                 ],
               ),
             ),

@@ -1,10 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:glint/pages/groupSettings.dart';
+import 'package:glint/pages/groupfeed.dart';
 
 class GlintLeaderBoard extends StatefulWidget {
   final String groupId;
-  const GlintLeaderBoard({super.key, required this.groupId});
+  final String groupname;
+  final String phoneNumber;
+  final String todaystheme;
+  final String userid;
+  final String usename;
+
+  const GlintLeaderBoard({
+    super.key,
+    required this.groupId,
+    required this.groupname,
+    required this.phoneNumber,
+    required this.userid,
+    required this.todaystheme,
+    required this.usename,
+  });
 
   @override
   State<GlintLeaderBoard> createState() => _GlintLeaderBoardState();
@@ -33,7 +50,6 @@ class _GlintLeaderBoardState extends State<GlintLeaderBoard> {
 
           for (int i = 0; i < members.length; i++) {
             var member = members[i] as Map<String, dynamic>;
-            String name = member['name'];
             int points = member['points'];
 
             // Add data for each member
@@ -51,36 +67,104 @@ class _GlintLeaderBoardState extends State<GlintLeaderBoard> {
                 showingTooltipIndicators: [0],
               ),
             );
+
+            String TopScorrer = getTopScorer(members);
           }
           return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: BarChart(
-              BarChartData(
-                maxY: members
-                        .map((m) => m['points'])
-                        .reduce((a, b) => a > b ? a : b) +
-                    5.0,
-                barGroups: barData,
-                titlesData: FlTitlesData(
-                  leftTitles: AxisTitles(
-                    sideTitles: SideTitles(showTitles: true),
-                  ),
-                  bottomTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      getTitlesWidget: (value, meta) {
-                        String memberName = members[value.toInt()]['name'];
-                        return Text(memberName, style: TextStyle(fontSize: 12));
-                      },
+            padding: const EdgeInsets.all(10.0),
+            child: Column(children: [
+              SizedBox(
+                height: 350.h,
+                width: 350.w,
+                child: BarChart(
+                  BarChartData(
+                    maxY: members
+                            .map((m) => m['points'])
+                            .reduce((a, b) => a > b ? a : b) +
+                        7.0,
+                    barGroups: barData,
+                    titlesData: FlTitlesData(
+                      topTitles: const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false)),
+                      leftTitles: const AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                      rightTitles: const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false)),
+                      bottomTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          getTitlesWidget: (value, meta) {
+                            String memberName = members[value.toInt()]['name'];
+                            return Text(memberName,
+                                style: const TextStyle(fontSize: 15));
+                          },
+                        ),
+                      ),
                     ),
+                    gridData: const FlGridData(show: false),
                   ),
                 ),
-                gridData: FlGridData(show: true),
               ),
-            ),
+              const SizedBox(
+                height: 50,
+              ),
+              isCurrentUserTopScorer(members, widget.usename)
+                  ? const Text(
+                      'You Are Winning',
+                      style: TextStyle(fontSize: 30),
+                    )
+                  : Text('${getTopScorer(members)} Is Winning',
+                      style: const TextStyle(fontSize: 30)),
+              const SizedBox(
+                height: 50,
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(17)),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 50.w, vertical: 12.h),
+                    elevation: 0,
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Groupfeed(
+                            groupname: widget.groupname,
+                            theme: widget.todaystheme,
+                            code: widget.groupId,
+                            phoneNumberAsUserId: widget.phoneNumber,
+                            username: widget.usename,
+                            userid: widget.userid)),
+                  );
+                },
+                child: const Text(
+                  'Share More Glints',
+                  style: TextStyle(fontSize: 20),
+                ),
+              )
+            ]),
           );
         },
       ),
     );
+  }
+
+  bool isCurrentUserTopScorer(List<dynamic> members, String currentUserId) {
+    var topScorer = getTopScorer(members);
+
+    // Check if the top scorer's ID matches the current user's ID
+    return topScorer.isNotEmpty && topScorer == widget.usename;
+  }
+
+  String getTopScorer(List<dynamic> members) {
+    var topMember = members.reduce((curr, next) {
+      return curr['points'] > next['points'] ? curr : next;
+    });
+
+    return topMember['name'];
   }
 }
