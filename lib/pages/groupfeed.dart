@@ -398,6 +398,22 @@ class _GroupfeedState extends State<Groupfeed> {
         if (snapshot.exists) {
           bool glintStatus = snapshot.get('isglintactive');
           if (glintStatus == true || glintStatus == false) {
+            List<dynamic> members = snapshot.get('members');
+            for (var i = 0; i < members.length; i++) {
+              Map<String, dynamic> member = members[i];
+
+              if (member['phone'] == widget.phoneNumberAsUserId) {
+                // or use 'name' if unique
+                // Increment the points for the specific member
+                int currentPoints = member['points'] ?? 0;
+                members[i]['points'] = currentPoints + 1;
+                break;
+              }
+            }
+
+            await groupRef.update({'members': members});
+            print("User's points have been incremented.");
+
             print('got the glintsatus$glintStatus');
           }
           await FirebaseFirestore.instance
