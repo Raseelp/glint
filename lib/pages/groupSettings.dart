@@ -490,8 +490,11 @@ class _GroupSettingsState extends State<GroupSettings> {
                 title: const Text("Random"),
                 onTap: () {
                   setState(() {
-                    // displayedText = "Random Text"; // Set random text here
+                    const SnackBar(
+                      content: Text('This Feature is not available Yet'),
+                    );
                   });
+
                   Navigator.of(context).pop();
                 },
               ),

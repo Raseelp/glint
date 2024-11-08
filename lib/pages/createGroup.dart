@@ -166,10 +166,7 @@ class _CreategroupState extends State<Creategroup> {
             'lastglintsharedat': null,
             'countdownEndTime': 2,
             'members': [
-              {
-                'name': userName,
-                'phone': userPhone,
-              },
+              {'name': userName, 'phone': userPhone, 'points': 0},
             ],
           });
           const snackBar = SnackBar(
