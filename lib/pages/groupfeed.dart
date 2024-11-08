@@ -57,6 +57,7 @@ class _GroupfeedState extends State<Groupfeed> {
   Widget build(BuildContext context) {
     ScreenUtil.init(context);
     String groupid = widget.code;
+    bool isGlintActive;
     return Scaffold(
       appBar: AppBar(
         title: Padding(
@@ -391,15 +392,24 @@ class _GroupfeedState extends State<Groupfeed> {
         await storageRef.putFile(File(image.path));
         String downloadUrl = await storageRef.getDownloadURL();
 
-        await FirebaseFirestore.instance
-            .collection('groups')
-            .doc(groupId)
-            .collection('images')
-            .add({
-          'url': downloadUrl,
-          'uploadedBy': widget.username,
-          'timestamp': FieldValue.serverTimestamp(),
-        });
+        final groupRef =
+            FirebaseFirestore.instance.collection('groups').doc(groupId);
+        DocumentSnapshot snapshot = await groupRef.get();
+        if (snapshot.exists) {
+          bool glintStatus = snapshot.get('isglintactive');
+          if (glintStatus == true || glintStatus == false) {
+            print('got the glintsatus$glintStatus');
+          }
+          await FirebaseFirestore.instance
+              .collection('groups')
+              .doc(groupId)
+              .collection('images')
+              .add({
+            'url': downloadUrl,
+            'uploadedBy': widget.username,
+            'timestamp': FieldValue.serverTimestamp(),
+          });
+        }
       } catch (e) {
         SnackBar(
           content: Text(e.toString()),
