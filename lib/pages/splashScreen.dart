@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:glint/pages/bottomeNavBar.dart';
 import 'package:glint/pages/homepage.dart';
 import 'package:glint/pages/userinfo.dart';
 import 'package:glint/utils/sharedpreffs.dart';
@@ -71,13 +72,11 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => Homepage(
-              phoneNumberToUseAsUserId: widget.phonenumberToCheck,
-              userGroups: userGroups,
-              username: username,
-              userid: userid,
-            ),
-          ));
+              builder: (context) => Bottomenavbar(
+                  username: username,
+                  userid: userid,
+                  userphone: widget.phonenumberToCheck,
+                  usergroups: userGroups)));
     } else {
       // User doesn't exist, proceed to user info screen
       Navigator.pushReplacement(
