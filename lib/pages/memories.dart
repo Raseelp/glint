@@ -26,15 +26,21 @@ class _MemoriesPageState extends State<MemoriesPage> {
     setState(() {});
   }
 
+  Color beige = const Color(0xFFF7F2E7);
+  Color darkBlue = const Color(0xFF4682B4);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Padding(
-          padding: const EdgeInsets.only(right: 50),
-          child: const Center(child: Text('Memories')),
-        ),
+        backgroundColor: beige,
+        title: Center(
+            child: const Text(
+          'Memories',
+          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+        )),
       ),
+      backgroundColor: beige,
       body: Column(
         children: [
           Row(

@@ -36,12 +36,9 @@ class _ScreenSettingsState extends State<ScreenSettings> {
       appBar: AppBar(
         backgroundColor: beige,
         title: Center(
-            child: Padding(
-          padding: EdgeInsets.only(right: 50.h),
-          child: const Text(
-            'Profile',
-            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-          ),
+            child: const Text(
+          'Profile',
+          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
         )),
       ),
       backgroundColor: beige,

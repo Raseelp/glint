@@ -21,7 +21,23 @@ class Bottomenavbar extends StatefulWidget {
 }
 
 class _BottomenavbarState extends State<Bottomenavbar> {
+  Color beige = const Color(0xFFF7F2E7);
+  Color darkBlue = const Color(0xFF4682B4);
   int _selectedIndex = 0;
+  PageController _pageController = PageController();
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    _pageController.jumpToPage(index); // Jump to corresponding page
+  }
+
+  void _onPageChanged(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> _screens = [
@@ -38,28 +54,48 @@ class _BottomenavbarState extends State<Bottomenavbar> {
           userid: widget.userid), // Third tab: Profile/Settings
     ];
     return Scaffold(
-      body: _screens[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.group),
-            label: 'Group',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.photo_album),
-            label: 'Memories',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Profile/Settings',
-          ),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: _onPageChanged, // Handle page swipe
+        children: [
+          Homepage(
+            phoneNumberToUseAsUserId: widget.userphone,
+            userGroups: widget.usergroups,
+            userid: widget.userid,
+            username: widget.username,
+          ), // First tab: Group
+          MemoriesPage(
+              userPhoneNumber: widget.userphone), // Second tab: Memories
+          ScreenSettings(
+              name: widget.username,
+              phone: widget.userphone,
+              userid: widget.userid), // Third tab: Profile/Settings
         ],
+      ),
+      bottomNavigationBar: SizedBox(
+        height: 80,
+        child: BottomNavigationBar(
+          backgroundColor: beige,
+          type: BottomNavigationBarType.fixed,
+          currentIndex: _selectedIndex,
+          selectedItemColor: darkBlue,
+          elevation: 0,
+          onTap: _onItemTapped,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.group),
+              label: 'Group',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.photo_album),
+              label: 'Memories',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Profile/Settings',
+            ),
+          ],
+        ),
       ),
     );
   }
