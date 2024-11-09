@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MemoriesPage extends StatefulWidget {
   final String userPhoneNumber;
@@ -28,27 +30,53 @@ class _MemoriesPageState extends State<MemoriesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Memories'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.group),
-            onPressed: () {
-              setState(() {
-                sortByDate = false;
-              });
-            },
+        title: Padding(
+          padding: const EdgeInsets.only(right: 50),
+          child: const Center(child: Text('Memories')),
+        ),
+      ),
+      body: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(17)),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 50.w, vertical: 12.h),
+                      elevation: 0,
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white),
+                  onPressed: () {
+                    setState(() {
+                      sortByDate = false;
+                    });
+                  },
+                  child: const Text('By Group')),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(17)),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 50.w, vertical: 12.h),
+                      elevation: 0,
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white),
+                  onPressed: () {
+                    setState(() {
+                      sortByDate = true;
+                    });
+                  },
+                  child: const Text('By Date '))
+            ],
           ),
-          IconButton(
-            icon: const Icon(Icons.date_range),
-            onPressed: () {
-              setState(() {
-                sortByDate = true;
-              });
-            },
-          ),
+          Expanded(
+              child:
+                  sortByDate ? buildDateSortedView() : buildGroupSortedView()),
         ],
       ),
-      body: sortByDate ? buildDateSortedView() : buildGroupSortedView(),
     );
   }
 
@@ -101,12 +129,18 @@ class _MemoriesPageState extends State<MemoriesPage> {
                     itemCount: images.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 4.0,
-                      mainAxisSpacing: 4.0,
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 2.0,
+                      mainAxisSpacing: 8.0,
                     ),
                     itemBuilder: (context, index) {
-                      return Image.network(images[index]['url']);
+                      return CachedNetworkImage(
+                        imageUrl: images[index]['url'],
+                        placeholder: (context, url) =>
+                            const CircularProgressIndicator(), // Placeholder while loading
+                        errorWidget: (context, url, error) => const Icon(
+                            Icons.error), // Error icon in case of failure
+                      );
                     },
                   ),
                 ],
@@ -164,7 +198,7 @@ class _MemoriesPageState extends State<MemoriesPage> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               category, // Show the category name (e.g., Today, Yesterday)
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
         );
@@ -176,12 +210,17 @@ class _MemoriesPageState extends State<MemoriesPage> {
             physics: const NeverScrollableScrollPhysics(),
             itemCount: images.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3, // 3 images per row
+              crossAxisCount: 2,
               crossAxisSpacing: 4.0,
               mainAxisSpacing: 4.0,
             ),
             itemBuilder: (context, index) {
-              return Image.network(images[index]['url']);
+              return CachedNetworkImage(
+                imageUrl: images[index]['url'],
+                placeholder: (context, url) =>
+                    const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              );
             },
           ),
         );
