@@ -265,15 +265,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                         fontSize: 15, fontWeight: FontWeight.bold),
                   ),
                   IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MemoriesPage(
-                                  userPhoneNumber: widget.userphone),
-                            ));
-                      },
-                      icon: const Icon(Icons.search_outlined))
+                      onPressed: () {}, icon: const Icon(Icons.search_outlined))
                 ],
               ),
             ),
