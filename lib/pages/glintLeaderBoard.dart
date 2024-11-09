@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:glint/pages/groupSettings.dart';
 import 'package:glint/pages/groupfeed.dart';
 
 class GlintLeaderBoard extends StatefulWidget {
@@ -67,8 +66,6 @@ class _GlintLeaderBoardState extends State<GlintLeaderBoard> {
                 showingTooltipIndicators: [0],
               ),
             );
-
-            String TopScorrer = getTopScorer(members);
           }
           return Padding(
             padding: const EdgeInsets.all(10.0),

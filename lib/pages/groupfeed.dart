@@ -57,7 +57,7 @@ class _GroupfeedState extends State<Groupfeed> {
   Widget build(BuildContext context) {
     ScreenUtil.init(context);
     String groupid = widget.code;
-    bool isGlintActive;
+
     return Scaffold(
       appBar: AppBar(
         title: Padding(

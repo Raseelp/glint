@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:glint/pages/glintLeaderBoard.dart';
+import 'package:glint/pages/memories.dart';
 
 import 'package:glint/pages/splashScreen.dart';
 import 'package:glint/utils/buildProfiePic.dart';
@@ -264,7 +265,15 @@ class _GroupSettingsState extends State<GroupSettings> {
                         fontSize: 15, fontWeight: FontWeight.bold),
                   ),
                   IconButton(
-                      onPressed: () {}, icon: const Icon(Icons.search_outlined))
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MemoriesPage(
+                                  userPhoneNumber: widget.userphone),
+                            ));
+                      },
+                      icon: const Icon(Icons.search_outlined))
                 ],
               ),
             ),
