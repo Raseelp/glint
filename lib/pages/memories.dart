@@ -59,31 +59,59 @@ class _MemoriesPageState extends State<MemoriesPage> {
         String groupId = entry.key;
 
         List<Map<String, dynamic>> images = entry.value;
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Group: $groupId',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: images.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 4.0,
-                mainAxisSpacing: 4.0,
-              ),
-              itemBuilder: (context, index) {
-                return Image.network(images[index]['url']);
-              },
-            ),
-          ],
-        );
+
+        return FutureBuilder<DocumentSnapshot>(
+            future: FirebaseFirestore.instance
+                .collection('groups')
+                .doc(groupId) // Reference the group document by its ID
+                .get(), // Fetch the document
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                    child:
+                        CircularProgressIndicator()); // Show loading indicator
+              }
+
+              if (snapshot.hasError) {
+                return Center(
+                    child: Text('Error: ${snapshot.error}')); // Handle error
+              }
+
+              if (!snapshot.hasData || !snapshot.data!.exists) {
+                return Center(child: Text('Group not found'));
+              }
+
+              // Extract the group name from the document data
+              String groupName = snapshot.data!['Groupname'] ?? 'No Name';
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Group: $groupName',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: images.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 4.0,
+                      mainAxisSpacing: 4.0,
+                    ),
+                    itemBuilder: (context, index) {
+                      return Image.network(images[index]['url']);
+                    },
+                  ),
+                ],
+              );
+            });
       }).toList(),
     );
   }
