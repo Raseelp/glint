@@ -22,17 +22,16 @@ class _MemoriesPageState extends State<MemoriesPage> {
   void loadImages() async {
     groupImages = await fetchImagesByGroup();
     setState(() {});
-    print(groupImages);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Memories'),
+        title: const Text('Memories'),
         actions: [
           IconButton(
-            icon: Icon(Icons.group),
+            icon: const Icon(Icons.group),
             onPressed: () {
               setState(() {
                 sortByDate = false;
@@ -40,7 +39,7 @@ class _MemoriesPageState extends State<MemoriesPage> {
             },
           ),
           IconButton(
-            icon: Icon(Icons.date_range),
+            icon: const Icon(Icons.date_range),
             onPressed: () {
               setState(() {
                 sortByDate = true;
@@ -67,7 +66,7 @@ class _MemoriesPageState extends State<MemoriesPage> {
                 .get(), // Fetch the document
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
+                return const Center(
                     child:
                         CircularProgressIndicator()); // Show loading indicator
               }
@@ -78,7 +77,8 @@ class _MemoriesPageState extends State<MemoriesPage> {
               }
 
               if (!snapshot.hasData || !snapshot.data!.exists) {
-                return Center(child: Text('Group not found'));
+                return const Center(
+                    child: Text('Share Your Glints To Make Memories...'));
               }
 
               // Extract the group name from the document data
@@ -91,8 +91,8 @@ class _MemoriesPageState extends State<MemoriesPage> {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       'Group: $groupName',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
                   GridView.builder(
@@ -125,7 +125,7 @@ class _MemoriesPageState extends State<MemoriesPage> {
 
     return GridView.builder(
       itemCount: allImages.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
         crossAxisSpacing: 4.0,
         mainAxisSpacing: 4.0,
@@ -153,7 +153,6 @@ class _MemoriesPageState extends State<MemoriesPage> {
         }
       }
     }
-    print(matchingGroups.length);
 
     // For each group, fetch the images collection
     for (var groupDoc in matchingGroups) {
