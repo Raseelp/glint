@@ -120,19 +120,76 @@ class _MemoriesPageState extends State<MemoriesPage> {
     // Flatten the list and sort by timestamp
     List<Map<String, dynamic>> allImages = [];
     groupImages.forEach((_, images) => allImages.addAll(images));
+
+    // Sort images by timestamp
     allImages.sort((a, b) =>
         (a['timestamp'] as Timestamp).compareTo(b['timestamp'] as Timestamp));
 
-    return GridView.builder(
-      itemCount: allImages.length,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        crossAxisSpacing: 4.0,
-        mainAxisSpacing: 4.0,
-      ),
-      itemBuilder: (context, index) {
-        return Image.network(allImages[index]['url']);
-      },
+    // Group images by categories: Today, Yesterday, Last Week, Last Month
+    Map<String, List<Map<String, dynamic>>> categorizedImages = {
+      'Today': [],
+      'Yesterday': [],
+      'Last Week': [],
+      'Last Month': [],
+      'Earlier': [],
+    };
+
+    DateTime now = DateTime.now();
+
+    // Categorize images
+    for (var image in allImages) {
+      DateTime imageDate = (image['timestamp'] as Timestamp).toDate();
+      Duration difference = now.difference(imageDate);
+
+      if (difference.inDays < 1) {
+        categorizedImages['Today']?.add(image);
+      } else if (difference.inDays == 1) {
+        categorizedImages['Yesterday']?.add(image);
+      } else if (difference.inDays <= 7) {
+        categorizedImages['Last Week']?.add(image);
+      } else if (difference.inDays <= 30) {
+        categorizedImages['Last Month']?.add(image);
+      } else {
+        categorizedImages['Earlier']?.add(image);
+      }
+    }
+
+    // Create a list to display the images grouped by categories
+    List<Widget> imageWidgets = [];
+    categorizedImages.forEach((category, images) {
+      if (images.isNotEmpty) {
+        // Add a category header
+        imageWidgets.add(
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              category, // Show the category name (e.g., Today, Yesterday)
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
+        );
+
+        // Display images under this category
+        imageWidgets.add(
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: images.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3, // 3 images per row
+              crossAxisSpacing: 4.0,
+              mainAxisSpacing: 4.0,
+            ),
+            itemBuilder: (context, index) {
+              return Image.network(images[index]['url']);
+            },
+          ),
+        );
+      }
+    });
+
+    return ListView(
+      children: imageWidgets,
     );
   }
 
