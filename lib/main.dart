@@ -11,7 +11,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  runApp(Glint());
+  runApp(const Glint());
 }
 
 class Glint extends StatefulWidget {

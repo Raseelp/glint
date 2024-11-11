@@ -35,8 +35,8 @@ class _ScreenSettingsState extends State<ScreenSettings> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: beige,
-        title: Center(
-            child: const Text(
+        title: const Center(
+            child: Text(
           'Profile',
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
         )),

@@ -24,7 +24,7 @@ class _BottomenavbarState extends State<Bottomenavbar> {
   Color beige = const Color(0xFFF7F2E7);
   Color darkBlue = const Color(0xFF4682B4);
   int _selectedIndex = 0;
-  PageController _pageController = PageController();
+  final PageController _pageController = PageController();
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -40,7 +40,7 @@ class _BottomenavbarState extends State<Bottomenavbar> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> _screens = [
+    final List<Widget> screens = [
       Homepage(
         phoneNumberToUseAsUserId: widget.userphone,
         userGroups: widget.usergroups,

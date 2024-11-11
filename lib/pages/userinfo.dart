@@ -150,7 +150,7 @@ class _UserinfoScreenState extends State<UserinfoScreen> {
                                   phoneNumberToUseAsUserId:
                                       widget.verifiedPhonenumber,
                                   username: namecontroller.text,
-                                  userGroups: [],
+                                  userGroups: const [],
                                   userid: userid,
                                 )),
                       );

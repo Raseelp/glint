@@ -4,7 +4,7 @@ import 'package:glint/pages/otpScreen.dart';
 import 'package:glint/utils/util.dart';
 
 class AuthProvider extends ChangeNotifier {
-  bool _isSignedin = false;
+  final bool _isSignedin = false;
   bool get isSignedin => _isSignedin;
 
   bool _isLoading = false;
@@ -57,10 +57,8 @@ class AuthProvider extends ChangeNotifier {
 
       User? user = (await _firebaseAuth.signInWithCredential(creds)).user!;
 
-      if (user != null) {
-        _uid = user.uid;
-        onSuccess();
-      }
+      _uid = user.uid;
+      onSuccess();
       _isLoading = false;
       notifyListeners();
     } on FirebaseAuthException catch (e) {

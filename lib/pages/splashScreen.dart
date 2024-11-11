@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:glint/pages/bottomeNavBar.dart';
-import 'package:glint/pages/homepage.dart';
 import 'package:glint/pages/userinfo.dart';
 import 'package:glint/utils/sharedpreffs.dart';
 

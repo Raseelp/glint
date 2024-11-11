@@ -183,83 +183,77 @@ class _GroupfeedState extends State<Groupfeed> {
                             final imageId = imageDoc.id;
                             final usernameImage = imageDoc['uploadedBy'];
 
-                            return Padding(
-                              padding: const EdgeInsets.all(15),
-                              child: Expanded(
-                                child: Stack(children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(17),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  Imagefullscreenview(
-                                                      uploadedBy: usernameImage,
-                                                      imgUrl: imageUrl),
-                                            ));
-                                      },
-                                      child: CachedNetworkImage(
-                                        imageUrl: imageUrl,
-                                        width: 400,
-                                        height: 400,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
+                            return Stack(children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(17),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              Imagefullscreenview(
+                                                  uploadedBy: usernameImage,
+                                                  imgUrl: imageUrl),
+                                        ));
+                                  },
+                                  child: CachedNetworkImage(
+                                    imageUrl: imageUrl,
+                                    width: 400,
+                                    height: 400,
+                                    fit: BoxFit.cover,
                                   ),
-                                  Positioned(
-                                      top: 10,
-                                      left: 10,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(17)),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            usernameImage,
-                                            style: const TextStyle(
-                                              fontSize: 15,
-                                            ),
-                                          ),
-                                        ),
-                                      )),
-                                  Positioned(
-                                    top: 5,
-                                    right: 10,
-                                    child: IconButton(
-                                      icon: const Icon(
-                                        Icons.delete,
-                                        size: 30,
-                                        color: Colors.white,
-                                      ),
-                                      onPressed: () {
-                                        // Call the delete method with imageId or imageUrl
-                                        deleteImage(
-                                            widget.code, imageId, imageUrl);
-                                        const snackBar = SnackBar(
-                                          elevation: 0,
-                                          behavior: SnackBarBehavior.floating,
-                                          backgroundColor: Colors.transparent,
-                                          content: AwesomeSnackbarContent(
-                                            title: 'But Whyyyyy...',
-                                            message:
-                                                'Do You Realise You Deleted a Memmory...',
-                                            contentType: ContentType.failure,
-                                          ),
-                                        );
-
-                                        ScaffoldMessenger.of(context)
-                                          ..hideCurrentSnackBar()
-                                          ..showSnackBar(snackBar);
-                                      },
-                                    ),
-                                  )
-                                ]),
+                                ),
                               ),
-                            );
+                              Positioned(
+                                  top: 10,
+                                  left: 10,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(17)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        usernameImage,
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ),
+                                  )),
+                              Positioned(
+                                top: 5,
+                                right: 10,
+                                child: IconButton(
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    size: 30,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    // Call the delete method with imageId or imageUrl
+                                    deleteImage(widget.code, imageId, imageUrl);
+                                    const snackBar = SnackBar(
+                                      elevation: 0,
+                                      behavior: SnackBarBehavior.floating,
+                                      backgroundColor: Colors.transparent,
+                                      content: AwesomeSnackbarContent(
+                                        title: 'But Whyyyyy...',
+                                        message:
+                                            'Do You Realise You Deleted a Memmory...',
+                                        contentType: ContentType.failure,
+                                      ),
+                                    );
+
+                                    ScaffoldMessenger.of(context)
+                                      ..hideCurrentSnackBar()
+                                      ..showSnackBar(snackBar);
+                                  },
+                                ),
+                              )
+                            ]);
                           } else {
                             return null;
                           }

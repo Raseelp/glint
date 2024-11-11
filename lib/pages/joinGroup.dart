@@ -117,10 +117,7 @@ class _JoingroupState extends State<Joingroup> {
       } else {
         await groups.doc(groupId).update({
           'members': FieldValue.arrayUnion([
-            {
-              'name': userName,
-              'phone': userPhone,
-            },
+            {'name': userName, 'phone': userPhone, 'points': 0},
           ]),
         });
 

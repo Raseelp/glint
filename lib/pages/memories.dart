@@ -34,8 +34,8 @@ class _MemoriesPageState extends State<MemoriesPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: beige,
-        title: Center(
-            child: const Text(
+        title: const Center(
+            child: Text(
           'Memories',
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
         )),
