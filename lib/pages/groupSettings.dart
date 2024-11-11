@@ -273,7 +273,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                   future: getMemberDetails(widget.inviteCode),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
+                      return Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
                       return Text("Error: ${snapshot.error}");
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -285,9 +285,10 @@ class _GroupSettingsState extends State<GroupSettings> {
                         itemCount: members.length,
                         itemBuilder: (context, index) {
                           final member = members[index];
+                          final name = member['name'] ?? 'No Name';
+                          final phone = member['phone'] ?? 'No Phone';
                           return MemebersDetails(
-                              name: member['name'],
-                              phonenumber: member['phone']);
+                              name: name, phonenumber: phone);
                         },
                       );
                     }

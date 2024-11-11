@@ -36,9 +36,11 @@ class _MemebersDetailsState extends State<MemebersDetails> {
           SizedBox(
             width: 50.h,
             height: 50.h,
-            child: BuilUserProfilePics(
-              userid: userid!,
-            ),
+            child: userid != null
+                ? BuilUserProfilePics(
+                    userid: userid!,
+                  )
+                : const CircularProgressIndicator(),
           ),
           const SizedBox(
             width: 10,
@@ -84,7 +86,7 @@ class _MemebersDetailsState extends State<MemebersDetails> {
         // Return the first document ID
         return querySnapshot.docs.first.id; // Document ID
       } else {
-        return null; // No document found
+        return 'Loading...'; // No document found
       }
     } catch (e) {
       SnackBar(
