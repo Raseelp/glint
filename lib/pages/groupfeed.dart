@@ -105,7 +105,7 @@ class _GroupfeedState extends State<Groupfeed> {
                           ),
                           IconButton(
                               onPressed: () {
-                                Navigator.push(
+                                Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => GroupSettings(

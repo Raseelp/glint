@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:glint/pages/bottomeNavBar.dart';
 import 'package:glint/pages/userinfo.dart';
@@ -142,6 +143,29 @@ class _SplashScreenState extends State<SplashScreen> {
 
       // Check if the members length is zero
       if (members.isEmpty) {
+        CollectionReference imagesCollection =
+            doc.reference.collection('images');
+        QuerySnapshot imageQuerySnapshot = await imagesCollection.get();
+        for (DocumentSnapshot imageDoc in imageQuerySnapshot.docs) {
+          try {
+            // Get the image URL from the 'url' field
+            String imageUrl = imageDoc['url'];
+
+            // Get a reference to the image in Firebase Storage using the image URL
+            Reference imageRef = FirebaseStorage.instance.refFromURL(imageUrl);
+
+            // Delete the image from Firebase Storage
+            await imageRef.delete();
+
+            // Delete the image document from Firestore
+            await imageDoc.reference.delete();
+          } catch (e) {
+            SnackBar(
+              content: Text(e.toString()),
+            );
+          }
+        }
+
         // Delete the group
         await groupsCollection.doc(doc.id).delete();
       }

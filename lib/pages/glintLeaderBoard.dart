@@ -126,7 +126,7 @@ class _GlintLeaderBoardState extends State<GlintLeaderBoard> {
                     backgroundColor: Colors.blue,
                     foregroundColor: Colors.white),
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                         builder: (context) => Groupfeed(

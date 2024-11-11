@@ -118,38 +118,53 @@ class _MemoriesPageState extends State<MemoriesPage> {
               // Extract the group name from the document data
               String groupName = snapshot.data!['Groupname'] ?? 'No Name';
 
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Group: $groupName',
-                      style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: images.length,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 2.0,
-                      mainAxisSpacing: 8.0,
-                    ),
-                    itemBuilder: (context, index) {
-                      return CachedNetworkImage(
-                        imageUrl: images[index]['url'],
-                        placeholder: (context, url) =>
-                            const CircularProgressIndicator(), // Placeholder while loading
-                        errorWidget: (context, url, error) => const Icon(
-                            Icons.error), // Error icon in case of failure
-                      );
-                    },
-                  ),
-                ],
+              return FutureBuilder<bool>(
+                future: doesImageSubcollectionExist(groupId),
+                builder: (context, subcollectionSnapshot) {
+                  if (subcollectionSnapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (subcollectionSnapshot.hasError) {
+                    return Center(
+                        child: Text('Error: ${subcollectionSnapshot.error}'));
+                  }
+                  bool doesExist = subcollectionSnapshot.data ?? false;
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          doesExist ? 'Group: $groupName' : '',
+                          style: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: images.length,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 2.0,
+                          mainAxisSpacing: 8.0,
+                        ),
+                        itemBuilder: (context, index) {
+                          return CachedNetworkImage(
+                            imageUrl: images[index]['url'],
+                            placeholder: (context, url) =>
+                                const CircularProgressIndicator(), // Placeholder while loading
+                            errorWidget: (context, url, error) => const Icon(
+                                Icons.error), // Error icon in case of failure
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                },
               );
             });
       }).toList(),
@@ -279,5 +294,24 @@ class _MemoriesPageState extends State<MemoriesPage> {
     }
 
     return groupImages;
+  }
+
+  Future<bool> doesImageSubcollectionExist(String groupId) async {
+    try {
+      // Reference to the 'images' subcollection for the specific group
+      CollectionReference imagesCollection = FirebaseFirestore.instance
+          .collection('groups')
+          .doc(groupId)
+          .collection('images');
+
+      // Attempt to fetch the first document from the subcollection
+      QuerySnapshot snapshot = await imagesCollection.limit(1).get();
+
+      // If there is at least one document, the subcollection exists
+      return snapshot.docs.isNotEmpty;
+    } catch (e) {
+      print('Error checking images subcollection: $e');
+      return false; // Return false if any error occurs
+    }
   }
 }
