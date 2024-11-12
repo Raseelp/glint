@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:glint/pages/groupSettings.dart';
 import 'package:glint/pages/imageFullScreenView.dart';
+import 'package:glint/utils/reactionTray.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -187,6 +188,24 @@ class _GroupfeedState extends State<Groupfeed> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(17),
                                 child: GestureDetector(
+                                  onLongPress: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      isDismissible: true,
+                                      enableDrag: true,
+                                      elevation: 5,
+                                      builder: (context) => SizedBox(
+                                        height: 200,
+                                        child: ReactionTray(
+                                          onReactionSelected: (reaction) {
+                                            updateReaction(groupid, imageId,
+                                                usernameImage, reaction);
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                      ),
+                                    );
+                                  },
                                   onTap: () {
                                     Navigator.push(
                                         context,
@@ -516,5 +535,19 @@ class _GroupfeedState extends State<Groupfeed> {
 
     // If 'lastthemeupdatedat' is null (for first-time setup), allow the theme change
     return true;
+  }
+
+  Future<void> updateReaction(String groupId, String imageId, String username,
+      String reactionType) async {
+    final imageRef = FirebaseFirestore.instance
+        .collection('groups')
+        .doc(groupId)
+        .collection('images')
+        .doc(imageId);
+
+    await imageRef.update({
+      'reactions.$username':
+          reactionType, // Updates or adds the user’s reaction
+    });
   }
 }

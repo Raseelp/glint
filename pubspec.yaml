@@ -52,6 +52,7 @@ dependencies:
   font_awesome_flutter: ^10.7.0
   awesome_snackbar_content: ^0.1.4
   fl_chart: ^0.69.0
+  like_button: ^2.0.5
 
 dev_dependencies:
   flutter_test:
