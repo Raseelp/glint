@@ -78,14 +78,20 @@ class _ScreenSettingsState extends State<ScreenSettings> {
                   Positioned(
                     bottom: 5,
                     right: 5,
-                    child: Container(
-                      width: 25.h,
-                      height: 25.h,
-                      decoration: BoxDecoration(
-                        color: AppColors.mediumLightGray,
-                        borderRadius: BorderRadius.circular(100),
+                    child: GestureDetector(
+                      onTap: () {
+                        _showPickerOptions();
+                      },
+                      child: Container(
+                        width: 25.h,
+                        height: 25.h,
+                        decoration: BoxDecoration(
+                          color: AppColors.mediumLightGray,
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        child:
+                            const Icon(Icons.edit, color: AppColors.whiteText),
                       ),
-                      child: const Icon(Icons.edit, color: AppColors.whiteText),
                     ),
                   )
                 ]),
