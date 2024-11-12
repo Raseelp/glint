@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glint/pages/groupfeed.dart';
 import 'package:glint/utils/buildProfiePic.dart';
+import 'package:glint/utils/colorPallet.dart';
 
 class GroupCard extends StatefulWidget {
   final String groupName;
@@ -44,18 +45,19 @@ class _GroupCardState extends State<GroupCard> {
       },
       child: Container(
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(17),
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color:
-                    Colors.black.withOpacity(0.3), // Shadow color with opacity
-                spreadRadius: 3, // Spread of the shadow
-                blurRadius: 5, // Blur intensity
-                offset: const Offset(
-                    4, 4), // Horizontal and vertical shadow position
-              ),
-            ]),
+          borderRadius: BorderRadius.circular(17),
+          color: AppColors.lightGray,
+          // boxShadow: [
+          //   BoxShadow(
+          //     color:
+          //         Colors.black.withOpacity(0.3), // Shadow color with opacity
+          //     spreadRadius: 3, // Spread of the shadow
+          //     blurRadius: 5, // Blur intensity
+          //     offset: const Offset(
+          //         4, 4), // Horizontal and vertical shadow position
+          //   ),
+          // ]
+        ),
         height: 100,
         width: double.infinity,
         margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
@@ -74,12 +76,15 @@ class _GroupCardState extends State<GroupCard> {
                   Text(
                     widget.groupName,
                     style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.whiteText),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     "Today's Theme: ${widget.todayTheme}",
-                    style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                    style: const TextStyle(
+                        fontSize: 16, color: AppColors.lightGrayText),
                   ),
                 ],
               ),

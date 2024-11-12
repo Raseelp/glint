@@ -50,51 +50,46 @@ class _ScreenSettingsState extends State<ScreenSettings> {
               SizedBox(
                 height: 20.h,
               ),
-              GestureDetector(
-                onTap: () {
-                  _showPickerOptions();
-                },
-                child: Stack(children: [
-                  SizedBox(
-                      height: 100.h,
-                      width: 100.h,
-                      child: BuilUserProfilePics(
-                        userid: widget.userid,
-                      )),
-                  Positioned(
-                      bottom: 5,
-                      right: 5,
-                      child: Container(
-                          width: 25.h,
-                          height: 25.h,
-                          decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(100)),
-                          child: const Icon(Icons.edit)))
-                ]),
-              ),
+              Stack(children: [
+                SizedBox(
+                    height: 100.h,
+                    width: 100.h,
+                    child: BuilUserProfilePics(
+                      userid: widget.userid,
+                    )),
+                Positioned(
+                    bottom: 5,
+                    right: 5,
+                    child: Container(
+                        width: 25.h,
+                        height: 25.h,
+                        decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(100)),
+                        child: const Icon(Icons.edit)))
+              ]),
               SizedBox(
                 height: 20.h,
               ),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(17)),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 30.w, vertical: 5.h),
-                      elevation: 0,
-                      backgroundColor: Colors.lightBlue[200],
-                      foregroundColor: Colors.black),
-                  onPressed: () {
-                    uploadProfilePicture(_imageFile!, widget.userid);
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              SplashScreen(phonenumberToCheck: widget.phone),
-                        ));
-                  },
-                  child: const Text('Apply')),
+              // ElevatedButton(
+              //     style: ElevatedButton.styleFrom(
+              //         shape: RoundedRectangleBorder(
+              //             borderRadius: BorderRadius.circular(17)),
+              //         padding:
+              //             EdgeInsets.symmetric(horizontal: 30.w, vertical: 5.h),
+              //         elevation: 0,
+              //         backgroundColor: Colors.lightBlue[200],
+              //         foregroundColor: Colors.black),
+              //     onPressed: () {
+              //       uploadProfilePicture(_imageFile!, widget.userid);
+              //       Navigator.pushReplacement(
+              //           context,
+              //           MaterialPageRoute(
+              //             builder: (context) =>
+              //                 SplashScreen(phonenumberToCheck: widget.phone),
+              //           ));
+              //     },
+              //     child: const Text('Apply')),
               Text(
                 'Name:${widget.name}',
                 style: const TextStyle(fontSize: 20),
@@ -104,7 +99,7 @@ class _ScreenSettingsState extends State<ScreenSettings> {
                 style: const TextStyle(fontSize: 20),
               ),
               SizedBox(
-                height: 300.h,
+                height: 200.h,
               ),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(

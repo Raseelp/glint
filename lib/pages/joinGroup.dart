@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:glint/pages/splashScreen.dart';
+import 'package:glint/utils/colorPallet.dart';
 import 'package:glint/utils/sharedpreffs.dart';
 
 class Joingroup extends StatefulWidget {
@@ -16,25 +17,34 @@ class Joingroup extends StatefulWidget {
 
 class _JoingroupState extends State<Joingroup> {
   final TextEditingController _groupIdController = TextEditingController();
-  Color beige = const Color(0xFFF7F2E7);
-  Color darkBlue = const Color(0xFF4682B4);
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: beige,
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+              color: AppColors.whiteText,
+            )),
+        backgroundColor: AppColors.secondaryBackground,
         title: Center(
             child: Padding(
           padding: EdgeInsets.only(right: 25.h),
           child: const Text(
-            'Glint.',
-            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            'Join Group.',
+            style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                color: AppColors.whiteText),
           ),
         )),
       ),
-      backgroundColor: beige,
+      backgroundColor: AppColors.secondaryBackground,
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: SizedBox(
@@ -43,24 +53,29 @@ class _JoingroupState extends State<Joingroup> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text(
-                  'Join Group',
-                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-                ),
                 const SizedBox(
                   height: 100,
                 ),
-                const Text(
-                  'Enter Your Invite Code',
-                  style: TextStyle(fontSize: 17),
+                const Text('Connect with family\'s and friends moments...',
+                    style: TextStyle(
+                      color: AppColors.lightGrayText,
+                    )),
+                const SizedBox(
+                  height: 10,
                 ),
-                TextField(
-                  textAlign: TextAlign.center,
-                  controller: _groupIdController,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Paste the code here',
-                    hintStyle: TextStyle(fontSize: 30, color: Colors.grey),
+                Container(
+                  decoration: BoxDecoration(
+                      color: AppColors.lightGray,
+                      borderRadius: BorderRadius.circular(17)),
+                  child: TextField(
+                    style: const TextStyle(color: AppColors.whiteText),
+                    textAlign: TextAlign.center,
+                    controller: _groupIdController,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Paste the code here',
+                      hintStyle: TextStyle(fontSize: 15, color: Colors.grey),
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -73,7 +88,7 @@ class _JoingroupState extends State<Joingroup> {
                       padding: EdgeInsets.symmetric(
                           horizontal: 150.w, vertical: 12.h),
                       elevation: 0,
-                      backgroundColor: darkBlue,
+                      backgroundColor: AppColors.blurple,
                       foregroundColor: Colors.white),
                   onPressed: () {
                     joinGroup();

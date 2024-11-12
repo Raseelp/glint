@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:glint/utils/builUserProfilePics.dart';
+import 'package:glint/utils/colorPallet.dart';
 
 class MemebersDetails extends StatefulWidget {
   final String name;
@@ -30,35 +31,45 @@ class _MemebersDetailsState extends State<MemebersDetails> {
     ScreenUtil.init(context);
 
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 50.h,
-            height: 50.h,
-            child: userid != null
-                ? BuilUserProfilePics(
-                    userid: userid!,
-                  )
-                : const CircularProgressIndicator(),
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+      padding: const EdgeInsets.all(5.0),
+      child: Container(
+        decoration: BoxDecoration(
+            color: AppColors.lightGray,
+            borderRadius: BorderRadius.circular(17)),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
             children: [
-              Text(
-                widget.name,
-                style: const TextStyle(fontSize: 20),
+              SizedBox(
+                width: 50.h,
+                height: 50.h,
+                child: userid != null
+                    ? BuilUserProfilePics(
+                        userid: userid!,
+                      )
+                    : const CircularProgressIndicator(),
               ),
-              Text(
-                widget.phonenumber,
-                style: const TextStyle(fontSize: 15),
-              )
+              const SizedBox(
+                width: 10,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.name,
+                    style: const TextStyle(
+                        fontSize: 20, color: AppColors.whiteText),
+                  ),
+                  Text(
+                    widget.phonenumber,
+                    style: const TextStyle(
+                        fontSize: 15, color: AppColors.lightGrayText),
+                  )
+                ],
+              ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }

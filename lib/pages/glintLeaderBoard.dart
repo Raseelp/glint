@@ -3,6 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:glint/pages/groupfeed.dart';
+import 'package:glint/utils/colorPallet.dart';
 
 class GlintLeaderBoard extends StatefulWidget {
   final String groupId;
@@ -31,8 +32,21 @@ class _GlintLeaderBoardState extends State<GlintLeaderBoard> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('LeaderBoard'),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            )),
+        title: const Text(
+          'LeaderBoard',
+          style: TextStyle(color: AppColors.whiteText),
+        ),
+        backgroundColor: AppColors.secondaryBackground,
       ),
+      backgroundColor: AppColors.secondaryBackground,
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
             .collection('groups')
@@ -58,9 +72,12 @@ class _GlintLeaderBoardState extends State<GlintLeaderBoard> {
                 barRods: [
                   BarChartRodData(
                     toY: points.toDouble(),
-                    color: Colors.blueAccent,
+                    color: AppColors.whiteText,
                     width: 20,
                     borderRadius: BorderRadius.circular(4),
+                    rodStackItems: [
+                      BarChartRodStackItem(0, 5, AppColors.blurple)
+                    ],
                   ),
                 ],
                 showingTooltipIndicators: [0],
@@ -75,6 +92,12 @@ class _GlintLeaderBoardState extends State<GlintLeaderBoard> {
                 width: 350.w,
                 child: BarChart(
                   BarChartData(
+                    borderData: FlBorderData(show: false),
+                    barTouchData: BarTouchData(
+                      touchTooltipData: BarTouchTooltipData(
+                          tooltipPadding: const EdgeInsets.all(5),
+                          tooltipRoundedRadius: 100),
+                    ),
                     maxY: members
                             .map((m) => m['points'])
                             .reduce((a, b) => a > b ? a : b) +
@@ -84,7 +107,9 @@ class _GlintLeaderBoardState extends State<GlintLeaderBoard> {
                       topTitles: const AxisTitles(
                           sideTitles: SideTitles(showTitles: false)),
                       leftTitles: const AxisTitles(
-                        sideTitles: SideTitles(showTitles: false),
+                        sideTitles: SideTitles(
+                          showTitles: false,
+                        ),
                       ),
                       rightTitles: const AxisTitles(
                           sideTitles: SideTitles(showTitles: false)),
@@ -93,8 +118,11 @@ class _GlintLeaderBoardState extends State<GlintLeaderBoard> {
                           showTitles: true,
                           getTitlesWidget: (value, meta) {
                             String memberName = members[value.toInt()]['name'];
-                            return Text(memberName,
-                                style: const TextStyle(fontSize: 15));
+                            return Text(
+                              memberName,
+                              style: const TextStyle(
+                                  fontSize: 15, color: AppColors.whiteText),
+                            );
                           },
                         ),
                       ),
@@ -109,7 +137,8 @@ class _GlintLeaderBoardState extends State<GlintLeaderBoard> {
               isCurrentUserTopScorer(members, widget.usename)
                   ? const Text(
                       'You Are Winning',
-                      style: TextStyle(fontSize: 30),
+                      style:
+                          TextStyle(fontSize: 30, color: AppColors.whiteText),
                     )
                   : Text('${getTopScorer(members)} Is Winning',
                       style: const TextStyle(fontSize: 30)),
@@ -123,7 +152,7 @@ class _GlintLeaderBoardState extends State<GlintLeaderBoard> {
                     padding:
                         EdgeInsets.symmetric(horizontal: 50.w, vertical: 12.h),
                     elevation: 0,
-                    backgroundColor: Colors.blue,
+                    backgroundColor: AppColors.blurple,
                     foregroundColor: Colors.white),
                 onPressed: () {
                   Navigator.pushReplacement(

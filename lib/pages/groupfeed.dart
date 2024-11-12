@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:glint/pages/groupSettings.dart';
 import 'package:glint/pages/imageFullScreenView.dart';
+import 'package:glint/utils/colorPallet.dart';
 import 'package:glint/utils/reactionTray.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -52,25 +53,32 @@ class _GroupfeedState extends State<Groupfeed> {
     super.dispose();
   }
 
-  Color beige = const Color(0xFFF7F2E7);
-  Color darkBlue = const Color(0xFF4682B4);
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context);
     String groupid = widget.code;
+    String groupname = widget.groupname;
 
     return Scaffold(
       appBar: AppBar(
-        title: Padding(
-          padding: EdgeInsets.only(left: 80.h),
-          child: const Text(
-            'Glint.',
-            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-          ),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+              color: AppColors.whiteText,
+            )),
+        title: Text(
+          groupname,
+          style: const TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+              color: AppColors.whiteText),
         ),
-        backgroundColor: beige,
+        backgroundColor: AppColors.secondaryBackground,
       ),
-      backgroundColor: beige,
+      backgroundColor: AppColors.secondaryBackground,
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: SafeArea(
@@ -78,16 +86,17 @@ class _GroupfeedState extends State<Groupfeed> {
             children: [
               Container(
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(17),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
-                        spreadRadius: 3,
-                        blurRadius: 5,
-                        offset: const Offset(6, 7),
-                      ),
-                    ]),
+                  color: AppColors.lightGray,
+                  borderRadius: BorderRadius.circular(17),
+                  // boxShadow: [
+                  //   BoxShadow(
+                  //     color: Colors.black.withOpacity(0.3),
+                  //     spreadRadius: 3,
+                  //     blurRadius: 5,
+                  //     offset: const Offset(6, 7),
+                  //   ),
+                  // ]
+                ),
                 width: double.infinity,
                 height: 180.h,
                 child: Padding(
@@ -99,10 +108,12 @@ class _GroupfeedState extends State<Groupfeed> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            widget.groupname,
-                            style: const TextStyle(
-                                fontSize: 25, fontWeight: FontWeight.bold),
+                          const Text(
+                            'Todays Theme:',
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.normal,
+                                color: AppColors.lightGrayText),
                           ),
                           IconButton(
                               onPressed: () {
@@ -122,6 +133,7 @@ class _GroupfeedState extends State<Groupfeed> {
                               icon: const Icon(
                                 Icons.more_vert,
                                 size: 30,
+                                color: Colors.white,
                               ))
                         ],
                       ),
@@ -129,30 +141,32 @@ class _GroupfeedState extends State<Groupfeed> {
                         textAlign: TextAlign.center,
                         widget.theme,
                         style: const TextStyle(
-                          fontSize: 30,
-                        ),
+                            fontSize: 30, color: AppColors.whiteText),
                       ),
                       SizedBox(
                         height: 10.h,
                       ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(17)),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 100.w, vertical: 12.h),
-                            elevation: 0,
-                            backgroundColor: darkBlue,
-                            foregroundColor: Colors.white),
-                        onPressed: () {
-                          capturePhoto(widget.code);
-                        },
-                        child: const Text(
-                          'Add a Photo',
-                          style: TextStyle(fontSize: 16),
+                      Expanded(child: buildCountdownButton(groupid)),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(17)),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 100.w, vertical: 12.h),
+                              elevation: 0,
+                              backgroundColor: AppColors.blurple,
+                              foregroundColor: Colors.white),
+                          onPressed: () {
+                            capturePhoto(widget.code);
+                          },
+                          child: const Text(
+                            'Add a Photo',
+                            style: TextStyle(fontSize: 16),
+                          ),
                         ),
                       ),
-                      Expanded(child: buildCountdownButton(groupid))
                     ],
                   ),
                 ),
@@ -199,7 +213,7 @@ class _GroupfeedState extends State<Groupfeed> {
                                         child: ReactionTray(
                                           onReactionSelected: (reaction) {
                                             updateReaction(groupid, imageId,
-                                                usernameImage, reaction);
+                                                widget.username, reaction);
                                             Navigator.pop(context);
                                           },
                                         ),
@@ -229,7 +243,8 @@ class _GroupfeedState extends State<Groupfeed> {
                                   left: 10,
                                   child: Container(
                                     decoration: BoxDecoration(
-                                        color: Colors.white,
+                                        color: AppColors.lightGray
+                                            .withOpacity(0.5),
                                         borderRadius:
                                             BorderRadius.circular(17)),
                                     child: Padding(
@@ -237,8 +252,8 @@ class _GroupfeedState extends State<Groupfeed> {
                                       child: Text(
                                         usernameImage,
                                         style: const TextStyle(
-                                          fontSize: 15,
-                                        ),
+                                            fontSize: 15,
+                                            color: AppColors.whiteText),
                                       ),
                                     ),
                                   )),
@@ -249,7 +264,7 @@ class _GroupfeedState extends State<Groupfeed> {
                                   icon: const Icon(
                                     Icons.delete,
                                     size: 30,
-                                    color: Colors.white,
+                                    color: AppColors.lightGray,
                                   ),
                                   onPressed: () {
                                     // Call the delete method with imageId or imageUrl
@@ -348,45 +363,43 @@ class _GroupfeedState extends State<Groupfeed> {
 
         if (countdownSeconds <= 0) {
           makeGlintFalse(groupId);
-          return Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(17)),
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 0.h),
-                  elevation: 0,
-                  backgroundColor: const Color.fromARGB(255, 194, 7, 7),
-                  foregroundColor: Colors.white),
-              onPressed: () async {
-                bool iscorrectUser = await isCorrectUser(
-                    widget.phoneNumberAsUserId, widget.code);
-                bool has24hoursPassed = await has24HoursPassed(widget.code);
+          return ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(17)),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 20.w,
+                ),
+                elevation: 0,
+                backgroundColor: const Color.fromARGB(255, 194, 7, 7),
+                foregroundColor: Colors.white),
+            onPressed: () async {
+              bool iscorrectUser =
+                  await isCorrectUser(widget.phoneNumberAsUserId, widget.code);
+              bool has24hoursPassed = await has24HoursPassed(widget.code);
 
-                if (iscorrectUser) {
-                  if (has24hoursPassed) {
-                    startCountdown(groupId);
-                  } else {
-                    const snackBar = SnackBar(
-                      elevation: 0,
-                      behavior: SnackBarBehavior.floating,
-                      backgroundColor: Colors.transparent,
-                      content: AwesomeSnackbarContent(
-                        title: 'Todays Glint Used',
-                        message: "Try again after 24 hours...",
-                        contentType: ContentType.failure,
-                      ),
-                    );
+              if (iscorrectUser) {
+                if (has24hoursPassed) {
+                  startCountdown(groupId);
+                } else {
+                  const snackBar = SnackBar(
+                    elevation: 0,
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.transparent,
+                    content: AwesomeSnackbarContent(
+                      title: 'Todays Glint Used',
+                      message: "Try again after 24 hours...",
+                      contentType: ContentType.failure,
+                    ),
+                  );
 
-                    ScaffoldMessenger.of(context)
-                      ..hideCurrentSnackBar()
-                      ..showSnackBar(snackBar);
-                  }
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(snackBar);
                 }
-              },
-              child: const Text('Start Countdown'),
-            ),
+              }
+            },
+            child: const Text('Start Countdown'),
           );
         } else {
           final minutes = countdownSeconds ~/ 60;
@@ -401,7 +414,10 @@ class _GroupfeedState extends State<Groupfeed> {
                 foregroundColor: Colors.white),
             onPressed: null,
             child: Text(
-                'Time left: $minutes:${seconds.toString().padLeft(2, '0')}'),
+                'Time left: $minutes:${seconds.toString().padLeft(2, '0')}',
+                style: const TextStyle(
+                  color: AppColors.whiteText,
+                )),
           );
         }
       },
@@ -567,10 +583,13 @@ class _GroupfeedState extends State<Groupfeed> {
         .doc(groupId)
         .collection('images')
         .doc(imageId);
+    final snapshot = await imageRef.get();
+    Map<String, dynamic> reactions =
+        (snapshot.data()?['reactions'] ?? {}) as Map<String, dynamic>;
+    reactions[username] = reactionType;
 
     await imageRef.update({
-      'reactions.$username':
-          reactionType, // Updates or adds the user’s reaction
+      'reactions': reactions,
     });
   }
 }

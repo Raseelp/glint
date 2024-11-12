@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:glint/utils/colorPallet.dart';
 
 class MemoriesPage extends StatefulWidget {
   final String userPhoneNumber;
@@ -26,21 +27,21 @@ class _MemoriesPageState extends State<MemoriesPage> {
     setState(() {});
   }
 
-  Color beige = const Color(0xFFF7F2E7);
-  Color darkBlue = const Color(0xFF4682B4);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: beige,
+        backgroundColor: AppColors.secondaryBackground,
         title: const Center(
             child: Text(
           'Memories',
-          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+              color: AppColors.whiteText),
         )),
       ),
-      backgroundColor: beige,
+      backgroundColor: AppColors.secondaryBackground,
       body: Column(
         children: [
           Row(
@@ -53,7 +54,7 @@ class _MemoriesPageState extends State<MemoriesPage> {
                       padding: EdgeInsets.symmetric(
                           horizontal: 50.w, vertical: 12.h),
                       elevation: 0,
-                      backgroundColor: Colors.blue,
+                      backgroundColor: AppColors.blurple,
                       foregroundColor: Colors.white),
                   onPressed: () {
                     setState(() {
@@ -68,7 +69,7 @@ class _MemoriesPageState extends State<MemoriesPage> {
                       padding: EdgeInsets.symmetric(
                           horizontal: 50.w, vertical: 12.h),
                       elevation: 0,
-                      backgroundColor: Colors.blue,
+                      backgroundColor: AppColors.blurple,
                       foregroundColor: Colors.white),
                   onPressed: () {
                     setState(() {
@@ -112,7 +113,10 @@ class _MemoriesPageState extends State<MemoriesPage> {
 
               if (!snapshot.hasData || !snapshot.data!.exists) {
                 return const Center(
-                    child: Text('Share Your Glints To Make Memories...'));
+                    child: Text(
+                  'Share Your Glints To Make Memories...',
+                  style: TextStyle(color: Colors.white),
+                ));
               }
 
               // Extract the group name from the document data
@@ -139,7 +143,9 @@ class _MemoriesPageState extends State<MemoriesPage> {
                         child: Text(
                           doesExist ? 'Group: $groupName' : '',
                           style: const TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.whiteText),
                         ),
                       ),
                       GridView.builder(
@@ -218,8 +224,11 @@ class _MemoriesPageState extends State<MemoriesPage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              category, // Show the category name (e.g., Today, Yesterday)
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              category,
+              style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.whiteText),
             ),
           ),
         );

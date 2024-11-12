@@ -10,6 +10,7 @@ import 'package:glint/pages/glintLeaderBoard.dart';
 
 import 'package:glint/pages/splashScreen.dart';
 import 'package:glint/utils/buildProfiePic.dart';
+import 'package:glint/utils/colorPallet.dart';
 import 'package:glint/utils/membersDetails.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -36,8 +37,6 @@ class GroupSettings extends StatefulWidget {
 }
 
 class _GroupSettingsState extends State<GroupSettings> {
-  Color beige = const Color(0xFFF7F2E7);
-  Color darkBlue = const Color(0xFF4682B4);
   int memberCount = 0;
   bool isEditable = false;
   final TextEditingController _themecontroller = TextEditingController();
@@ -65,15 +64,17 @@ class _GroupSettingsState extends State<GroupSettings> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-            onPressed: () {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        SplashScreen(phonenumberToCheck: widget.userphone),
-                  ));
-            },
-            icon: const Icon(Icons.arrow_back)),
+          onPressed: () {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      SplashScreen(phonenumberToCheck: widget.userphone),
+                ));
+          },
+          icon: const Icon(Icons.arrow_back),
+          color: AppColors.whiteText,
+        ),
         actions: [
           IconButton(
               onPressed: () {
@@ -100,18 +101,22 @@ class _GroupSettingsState extends State<GroupSettings> {
               icon: const Icon(
                 Icons.check,
                 size: 25,
+                color: AppColors.whiteText,
               ))
         ],
         title: Padding(
           padding: EdgeInsets.only(left: 80.h),
           child: const Text(
             'Glint.',
-            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                color: AppColors.whiteText),
           ),
         ),
-        backgroundColor: beige,
+        backgroundColor: AppColors.secondaryBackground,
       ),
-      backgroundColor: beige,
+      backgroundColor: AppColors.secondaryBackground,
       body: SizedBox(
         height: double.infinity,
         width: double.infinity,
@@ -127,41 +132,52 @@ class _GroupSettingsState extends State<GroupSettings> {
                     width: 100.h,
                     child: builProfilePic(groupId: widget.inviteCode)),
                 Positioned(
-                    bottom: 5,
-                    right: 5,
-                    child: Container(
-                        width: 25.h,
-                        height: 25.h,
-                        decoration: BoxDecoration(
-                            color: Colors.grey,
-                            borderRadius: BorderRadius.circular(100)),
-                        child: const Icon(Icons.edit)))
+                  bottom: 5,
+                  right: 5,
+                  child: Container(
+                    width: 25.h,
+                    height: 25.h,
+                    decoration: BoxDecoration(
+                        color: AppColors.mediumLightGray,
+                        borderRadius: BorderRadius.circular(100)),
+                    child: const Icon(
+                      Icons.edit,
+                      color: Colors.white,
+                    ),
+                  ),
+                )
               ]),
             ),
             TextField(
               textAlign: TextAlign.center,
               controller: groupnamecontroller,
-              style:
-                  const TextStyle(fontSize: 40, fontWeight: FontWeight.normal),
+              style: const TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.normal,
+                  color: AppColors.whiteText),
               decoration: const InputDecoration(border: InputBorder.none),
+            ),
+            const Text(
+              'Invite Code:',
+              style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w200,
+                  color: AppColors.lightGrayText),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  'Invite Code:',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
-                ),
                 Text(
                   widget.inviteCode,
                   style: const TextStyle(
-                      fontSize: 15, fontWeight: FontWeight.w200),
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white),
                 ),
                 IconButton(
                     onPressed: () {
                       Clipboard.setData(ClipboardData(text: widget.inviteCode));
                       const snackBar = SnackBar(
-                        /// need to set following properties for best effect of awesome_snackbar_content
                         elevation: 0,
                         behavior: SnackBarBehavior.floating,
                         backgroundColor: Colors.transparent,
@@ -181,8 +197,16 @@ class _GroupSettingsState extends State<GroupSettings> {
                     icon: const Icon(
                       Icons.copy,
                       size: 20,
+                      color: AppColors.whiteText,
                     ))
               ],
+            ),
+            const Text(
+              'Invite Code:',
+              style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w200,
+                  color: AppColors.lightGrayText),
             ),
             GestureDetector(
               onTap: () async {
@@ -226,7 +250,9 @@ class _GroupSettingsState extends State<GroupSettings> {
                   : Text(
                       todaysTheme,
                       style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.normal),
+                          fontSize: 20,
+                          fontWeight: FontWeight.normal,
+                          color: AppColors.whiteText),
                     ),
             ),
             ElevatedButton(
@@ -236,7 +262,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                     padding:
                         EdgeInsets.symmetric(horizontal: 50.w, vertical: 12.h),
                     elevation: 0,
-                    backgroundColor: Colors.blue,
+                    backgroundColor: AppColors.blurple,
                     foregroundColor: Colors.white),
                 onPressed: () {
                   Navigator.push(
@@ -261,10 +287,16 @@ class _GroupSettingsState extends State<GroupSettings> {
                   Text(
                     '${memberCount.toString()} Members',
                     style: const TextStyle(
-                        fontSize: 15, fontWeight: FontWeight.bold),
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                   ),
                   IconButton(
-                      onPressed: () {}, icon: const Icon(Icons.search_outlined))
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.search_outlined,
+                        color: Colors.white,
+                      ))
                 ],
               ),
             ),
@@ -391,22 +423,43 @@ class _GroupSettingsState extends State<GroupSettings> {
 
   void _showPickerOptions() {
     showModalBottomSheet(
+      backgroundColor: AppColors.secondaryBackground,
       context: context,
       builder: (BuildContext context) {
         return SafeArea(
           child: Wrap(
             children: <Widget>[
-              ListTile(
-                leading: const Icon(Icons.photo_library),
-                title: const Text('Choose from Gallery'),
-                onTap: () {
-                  _pickImage(ImageSource.gallery);
-                  Navigator.of(context).pop();
-                },
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: AppColors.lightGray,
+                      borderRadius: BorderRadius.circular(17)),
+                  child: ListTile(
+                    leading: const Icon(
+                      Icons.photo_library,
+                      color: AppColors.whiteText,
+                    ),
+                    title: const Text(
+                      'Choose from Gallery',
+                      style: TextStyle(color: AppColors.whiteText),
+                    ),
+                    onTap: () {
+                      _pickImage(ImageSource.gallery);
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ),
               ),
               ListTile(
-                leading: const Icon(Icons.camera_alt),
-                title: const Text('Take a Photo'),
+                leading: const Icon(
+                  Icons.camera_alt,
+                  color: AppColors.whiteText,
+                ),
+                title: const Text(
+                  'Take a Photo',
+                  style: TextStyle(color: AppColors.whiteText),
+                ),
                 onTap: () {
                   _pickImage(ImageSource.camera);
                   Navigator.of(context).pop();

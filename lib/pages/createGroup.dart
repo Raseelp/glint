@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:glint/pages/groupfeed.dart';
 import 'package:glint/pages/splashScreen.dart';
+import 'package:glint/utils/colorPallet.dart';
 import 'package:glint/utils/sharedpreffs.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -26,8 +27,6 @@ class Creategroup extends StatefulWidget {
 class _CreategroupState extends State<Creategroup> {
   final TextEditingController _groupNameController = TextEditingController();
   final TextEditingController _themeController = TextEditingController();
-  Color beige = const Color(0xFFF7F2E7);
-  Color darkBlue = const Color(0xFF4682B4);
 
   @override
   Widget build(BuildContext context) {
@@ -43,18 +42,24 @@ class _CreategroupState extends State<Creategroup> {
                         phonenumberToCheck: widget.phonenumberasuserid),
                   ));
             },
-            icon: const Icon(Icons.arrow_back)),
-        backgroundColor: beige,
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            )),
+        backgroundColor: AppColors.secondaryBackground,
         title: Center(
             child: Padding(
-          padding: EdgeInsets.only(right: 25.h),
+          padding: EdgeInsets.only(right: 45.h),
           child: const Text(
-            'Glint.',
-            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            'Create Group',
+            style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                color: AppColors.whiteText),
           ),
         )),
       ),
-      backgroundColor: beige,
+      backgroundColor: AppColors.secondaryBackground,
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: SizedBox(
@@ -63,10 +68,6 @@ class _CreategroupState extends State<Creategroup> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text(
-                  'Create Group',
-                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-                ),
                 SizedBox(
                   height: 10.h,
                 ),
@@ -86,22 +87,24 @@ class _CreategroupState extends State<Creategroup> {
                   height: 10.h,
                 ),
                 TextField(
-                  style: const TextStyle(fontSize: 30, color: Colors.black),
+                  style: const TextStyle(fontSize: 30, color: Colors.white),
                   textAlign: TextAlign.center,
                   controller: _groupNameController,
                   decoration: const InputDecoration(
                       border: InputBorder.none,
                       hintText: 'GroupName',
-                      hintStyle: TextStyle(fontSize: 30, color: Colors.grey)),
+                      hintStyle: TextStyle(
+                          fontSize: 30, color: AppColors.lightGrayText)),
                 ),
                 TextField(
-                  style: const TextStyle(fontSize: 30, color: Colors.black),
+                  style: const TextStyle(fontSize: 30, color: Colors.white),
                   textAlign: TextAlign.center,
                   controller: _themeController,
                   decoration: const InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Enter Todays Theme',
-                      hintStyle: TextStyle(fontSize: 30, color: Colors.grey)),
+                      hintStyle: TextStyle(
+                          fontSize: 30, color: AppColors.lightGrayText)),
                 ),
                 SizedBox(
                   height: 200.h,
@@ -113,7 +116,7 @@ class _CreategroupState extends State<Creategroup> {
                         padding: EdgeInsets.symmetric(
                             horizontal: 120.w, vertical: 12.h),
                         elevation: 0,
-                        backgroundColor: darkBlue,
+                        backgroundColor: AppColors.blurple,
                         foregroundColor: Colors.white),
                     onPressed: () async {
                       String codeToShare = await addUserToFirestore();

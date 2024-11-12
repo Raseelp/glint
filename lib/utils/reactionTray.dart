@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:glint/utils/colorPallet.dart';
 import 'package:like_button/like_button.dart';
 
 class ReactionTray extends StatelessWidget {
@@ -55,8 +56,8 @@ class ReactionTray extends StatelessWidget {
 }
 
 class ReactionsDisplay extends StatefulWidget {
-  final String groupId;
-  final String imageId;
+  final String groupId; // Group ID (e.g., BVqfV9nb201nSecbqgsE)
+  final String imageId; // Image ID (e.g., ja9gEkRa2GtFiqzhsaWD)
 
   ReactionsDisplay({required this.groupId, required this.imageId});
 
@@ -96,8 +97,6 @@ class _ReactionsDisplayState extends State<ReactionsDisplay> {
 
         var imageData = snapshot.data!.data() as Map<String, dynamic>;
         Map<String, dynamic> reactions = imageData['reactions'] ?? {};
-
-        // Only rebuild if reactions have changed
         if (_cachedReactions != reactions) {
           _cachedReactions = Map.from(reactions);
           _isLoading = false;
@@ -112,26 +111,34 @@ class _ReactionsDisplayState extends State<ReactionsDisplay> {
           onTap: () {
             _showReactionDetails(context);
           },
-          child: Container(
-            decoration: BoxDecoration(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(100),
-                color: Colors.grey.withOpacity(0.5)),
-            padding: const EdgeInsets.all(8),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ...displayedReactions.take(5).map((reactionType) {
-                  return Text(
-                    getReactionEmoji(reactionType),
-                    style: const TextStyle(fontSize: 20),
-                  );
-                }).toList(),
-                if (extraReactionsCount.isNotEmpty)
-                  Text(
-                    extraReactionsCount,
-                    style: const TextStyle(color: Colors.white, fontSize: 14),
-                  ),
-              ],
+                color: AppColors.lightGray.withOpacity(0.5),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ...displayedReactions.take(5).map((reactionType) {
+                      return Text(
+                        getReactionEmoji(reactionType),
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 20),
+                      );
+                    }).toList(),
+                    if (extraReactionsCount.isNotEmpty)
+                      Text(
+                        extraReactionsCount,
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 14),
+                      ),
+                  ],
+                ),
+              ),
             ),
           ),
         );
@@ -148,7 +155,6 @@ class _ReactionsDisplayState extends State<ReactionsDisplay> {
         return '👍';
       case 'heart':
         return '❤️';
-
       default:
         return '';
     }
