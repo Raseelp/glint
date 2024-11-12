@@ -40,7 +40,7 @@ class _GroupfeedState extends State<Groupfeed> {
   @override
   void initState() {
     super.initState();
-    // Start the timer to fetch countdown end time periodically
+
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _fetchCountdownEndTime();
     });
@@ -48,7 +48,7 @@ class _GroupfeedState extends State<Groupfeed> {
 
   @override
   void dispose() {
-    _timer?.cancel(); // Cancel the timer when the widget is disposed
+    _timer?.cancel();
     super.dispose();
   }
 
@@ -348,39 +348,57 @@ class _GroupfeedState extends State<Groupfeed> {
 
         if (countdownSeconds <= 0) {
           makeGlintFalse(groupId);
-          return ElevatedButton(
-            onPressed: () async {
-              bool iscorrectUser =
-                  await isCorrectUser(widget.phoneNumberAsUserId, widget.code);
-              bool has24hoursPassed = await has24HoursPassed(widget.code);
+          return Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(17)),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 0.h),
+                  elevation: 0,
+                  backgroundColor: const Color.fromARGB(255, 194, 7, 7),
+                  foregroundColor: Colors.white),
+              onPressed: () async {
+                bool iscorrectUser = await isCorrectUser(
+                    widget.phoneNumberAsUserId, widget.code);
+                bool has24hoursPassed = await has24HoursPassed(widget.code);
 
-              if (iscorrectUser) {
-                if (has24hoursPassed) {
-                  startCountdown(groupId);
-                } else {
-                  const snackBar = SnackBar(
-                    elevation: 0,
-                    behavior: SnackBarBehavior.floating,
-                    backgroundColor: Colors.transparent,
-                    content: AwesomeSnackbarContent(
-                      title: 'Todays Glint Used',
-                      message: "Try again after 24 hours...",
-                      contentType: ContentType.failure,
-                    ),
-                  );
+                if (iscorrectUser) {
+                  if (has24hoursPassed) {
+                    startCountdown(groupId);
+                  } else {
+                    const snackBar = SnackBar(
+                      elevation: 0,
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: Colors.transparent,
+                      content: AwesomeSnackbarContent(
+                        title: 'Todays Glint Used',
+                        message: "Try again after 24 hours...",
+                        contentType: ContentType.failure,
+                      ),
+                    );
 
-                  ScaffoldMessenger.of(context)
-                    ..hideCurrentSnackBar()
-                    ..showSnackBar(snackBar);
+                    ScaffoldMessenger.of(context)
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(snackBar);
+                  }
                 }
-              }
-            },
-            child: const Text('Start Countdown'),
+              },
+              child: const Text('Start Countdown'),
+            ),
           );
         } else {
           final minutes = countdownSeconds ~/ 60;
           final seconds = countdownSeconds % 60;
           return ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(17)),
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 0.h),
+                elevation: 0,
+                backgroundColor: const Color.fromARGB(255, 194, 7, 7),
+                foregroundColor: Colors.white),
             onPressed: null,
             child: Text(
                 'Time left: $minutes:${seconds.toString().padLeft(2, '0')}'),
