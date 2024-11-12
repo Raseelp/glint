@@ -108,26 +108,31 @@ class _ReactionsDisplayState extends State<ReactionsDisplay> {
             ? "+${displayedReactions.length - 5} more"
             : '';
 
-        return Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(100),
-              color: Colors.grey.withOpacity(0.5)),
-          padding: const EdgeInsets.all(8),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ...displayedReactions.take(5).map((reactionType) {
-                return Text(
-                  getReactionEmoji(reactionType),
-                  style: TextStyle(fontSize: 20),
-                );
-              }).toList(),
-              if (extraReactionsCount.isNotEmpty)
-                Text(
-                  extraReactionsCount,
-                  style: TextStyle(color: Colors.white, fontSize: 14),
-                ),
-            ],
+        return GestureDetector(
+          onTap: () {
+            _showReactionDetails(context);
+          },
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                color: Colors.grey.withOpacity(0.5)),
+            padding: const EdgeInsets.all(8),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ...displayedReactions.take(5).map((reactionType) {
+                  return Text(
+                    getReactionEmoji(reactionType),
+                    style: const TextStyle(fontSize: 20),
+                  );
+                }).toList(),
+                if (extraReactionsCount.isNotEmpty)
+                  Text(
+                    extraReactionsCount,
+                    style: const TextStyle(color: Colors.white, fontSize: 14),
+                  ),
+              ],
+            ),
           ),
         );
       },
@@ -147,5 +152,69 @@ class _ReactionsDisplayState extends State<ReactionsDisplay> {
       default:
         return '';
     }
+  }
+
+  void _showReactionDetails(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return StreamBuilder<DocumentSnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('groups')
+              .doc(widget.groupId)
+              .collection('images')
+              .doc(widget.imageId)
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (!snapshot.hasData || snapshot.data == null) {
+              return const Center(child: Text("No reactions available"));
+            }
+
+            var imageData = snapshot.data!.data() as Map<String, dynamic>;
+            Map<String, dynamic> reactions = imageData['reactions'] ?? {};
+
+            return SizedBox(
+              height: 350,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Reactions",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    reactions.isEmpty
+                        ? const Center(child: Text("No reactions yet"))
+                        : Expanded(
+                            child: ListView.builder(
+                              itemCount: reactions.length,
+                              itemBuilder: (context, index) {
+                                var user = reactions.keys.elementAt(index);
+                                var reaction = reactions[user];
+                                return ListTile(
+                                  leading:
+                                      Text(getReactionEmoji(reaction ?? '')),
+                                  title: Text(user),
+                                );
+                              },
+                            ),
+                          ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 }
