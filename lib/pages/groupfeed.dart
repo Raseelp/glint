@@ -271,7 +271,12 @@ class _GroupfeedState extends State<Groupfeed> {
                                       ..showSnackBar(snackBar);
                                   },
                                 ),
-                              )
+                              ),
+                              Positioned(
+                                  bottom: 0,
+                                  right: 10,
+                                  child: ReactionsDisplay(
+                                      groupId: groupid, imageId: imageId))
                             ]);
                           } else {
                             return null;
