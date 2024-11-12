@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:glint/provider/auth_provider.dart';
+import 'package:glint/utils/colorPallet.dart';
 import 'package:provider/provider.dart';
 
 class Phonenumber extends StatefulWidget {
@@ -14,7 +15,6 @@ class Phonenumber extends StatefulWidget {
 
 class _PhonenumberState extends State<Phonenumber> {
   final TextEditingController phonecontroller = TextEditingController();
-  Color beige = const Color(0xFFF7F2E7);
 
   Country selectedCountry = Country(
       phoneCode: "91",
@@ -32,31 +32,38 @@ class _PhonenumberState extends State<Phonenumber> {
     ScreenUtil.init(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: beige,
+        backgroundColor: AppColors.darkBackground,
         automaticallyImplyLeading: false,
         title: const Center(
             child: Text(
           'Glint.',
-          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+              color: AppColors.whiteText),
         )),
       ),
-      backgroundColor: beige,
+      backgroundColor: AppColors.darkBackground,
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: SingleChildScrollView(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(
                 height: 40,
               ),
-              const Text('Whats Your Phonenumber'),
+              const Text(
+                'Whats Your Phonenumber',
+                style: TextStyle(color: AppColors.lightGrayText),
+              ),
               Row(
                 children: [
                   Expanded(
                     flex: 1,
                     child: Container(
                       decoration: BoxDecoration(
-                          border: Border.all(),
+                          border: Border.all(color: AppColors.whiteText),
                           borderRadius: BorderRadius.circular(17)),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -77,7 +84,7 @@ class _PhonenumberState extends State<Phonenumber> {
                             "${selectedCountry.flagEmoji} +${selectedCountry.phoneCode}",
                             style: const TextStyle(
                                 fontSize: 18,
-                                color: Colors.black,
+                                color: AppColors.lightGrayText,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -91,14 +98,14 @@ class _PhonenumberState extends State<Phonenumber> {
                           const EdgeInsets.only(left: 20, top: 50, bottom: 50),
                       child: TextField(
                         style: const TextStyle(
-                            color: Colors.black,
+                            color: AppColors.lightGrayText,
                             fontSize: 30,
                             fontWeight: FontWeight.bold),
                         controller: phonecontroller,
                         decoration: const InputDecoration(
                           hintText: '78363 63263',
                           hintStyle: TextStyle(
-                              color: Colors.grey,
+                              color: AppColors.mediumLightGray,
                               fontSize: 30,
                               fontWeight: FontWeight.bold),
                           border: InputBorder.none,
@@ -109,7 +116,10 @@ class _PhonenumberState extends State<Phonenumber> {
                 ],
               ),
               const Text(
-                  'By continuing you are agreed to our Privacy Policy and Terms and Conditions'),
+                'By continuing you are agreed to our Privacy Policy and Terms and Conditions',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: AppColors.lightGrayText),
+              ),
               SizedBox(
                 height: 330.h,
               ),
@@ -123,8 +133,8 @@ class _PhonenumberState extends State<Phonenumber> {
                       padding: EdgeInsets.symmetric(
                           horizontal: 135.w, vertical: 12.h),
                       elevation: 0,
-                      backgroundColor: Colors.lightBlue[200],
-                      foregroundColor: Colors.black),
+                      backgroundColor: AppColors.blurple,
+                      foregroundColor: Colors.white),
                   child: const Text(
                     'Sent OTP',
                     style: TextStyle(fontSize: 16),

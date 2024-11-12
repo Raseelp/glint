@@ -3,6 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:glint/utils/bottomeNavBar.dart';
 import 'package:glint/pages/userinfo.dart';
+import 'package:glint/utils/colorPallet.dart';
 import 'package:glint/utils/sharedpreffs.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -23,13 +24,15 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Color beige = const Color(0xFFF7F2E7);
-    return Scaffold(
-      backgroundColor: beige,
-      body: const Center(
+    return const Scaffold(
+      backgroundColor: AppColors.darkBackground,
+      body: Center(
           child: Text(
         'Glint.',
-        style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+        style: TextStyle(
+            fontSize: 50,
+            fontWeight: FontWeight.bold,
+            color: AppColors.whiteText),
       )),
     );
   }

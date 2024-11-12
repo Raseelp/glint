@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:glint/pages/phonenumber.dart';
+import 'package:glint/utils/colorPallet.dart';
 
 class Onbordeing extends StatefulWidget {
   const Onbordeing({super.key});
@@ -14,6 +15,7 @@ class _OnbordeingState extends State<Onbordeing> {
   Widget build(BuildContext context) {
     ScreenUtil.init(context);
     return Scaffold(
+      backgroundColor: AppColors.darkBackground,
       body: Center(
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -22,7 +24,7 @@ class _OnbordeingState extends State<Onbordeing> {
                 padding:
                     EdgeInsets.symmetric(horizontal: 100.w, vertical: 12.h),
                 elevation: 0,
-                backgroundColor: Colors.lightBlue[500],
+                backgroundColor: AppColors.blurple,
                 foregroundColor: Colors.white),
             onPressed: () {
               Navigator.push(context,

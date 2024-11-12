@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:glint/pages/splashScreen.dart';
 
 import 'package:glint/provider/auth_provider.dart';
+import 'package:glint/utils/colorPallet.dart';
 import 'package:glint/utils/sharedpreffs.dart';
 import 'package:glint/utils/util.dart';
 import 'package:pinput/pinput.dart';
@@ -19,7 +20,6 @@ class OtpScreen extends StatefulWidget {
 }
 
 class _OtpScreenState extends State<OtpScreen> {
-  Color beige = const Color(0xFFF7F2E7);
   String? otpCode;
   @override
   Widget build(BuildContext context) {
@@ -28,15 +28,18 @@ class _OtpScreenState extends State<OtpScreen> {
         Provider.of<AuthProvider>(context, listen: true).isLoading;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: beige,
+        backgroundColor: AppColors.darkBackground,
         automaticallyImplyLeading: false,
         title: const Center(
             child: Text(
           'Glint.',
-          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+              color: AppColors.whiteText),
         )),
       ),
-      backgroundColor: beige,
+      backgroundColor: AppColors.darkBackground,
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: SizedBox(
@@ -51,7 +54,10 @@ class _OtpScreenState extends State<OtpScreen> {
                       const SizedBox(
                         height: 50,
                       ),
-                      const Text('Verify Your PhoneNumber'),
+                      const Text(
+                        'Verify Your PhoneNumber',
+                        style: TextStyle(color: AppColors.lightGrayText),
+                      ),
                       const SizedBox(
                         height: 40,
                       ),
@@ -70,16 +76,22 @@ class _OtpScreenState extends State<OtpScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text('The Verification code sent to '),
-                          Text(widget.phonenumber)
+                          const Text(
+                            'The Verification code sent to  ',
+                            style: TextStyle(color: AppColors.lightGrayText),
+                          ),
+                          Text(widget.phonenumber,
+                              style: const TextStyle(
+                                color: AppColors.whiteText,
+                              ))
                         ],
                       ),
                       const SizedBox(
                         height: 20,
                       ),
-                      Text(
+                      const Text(
                         'Resend Code',
-                        style: TextStyle(color: Colors.blue[600]),
+                        style: TextStyle(color: AppColors.blurple),
                       ),
                       SizedBox(
                         height: 330.h,
@@ -91,7 +103,7 @@ class _OtpScreenState extends State<OtpScreen> {
                               padding: EdgeInsets.symmetric(
                                   horizontal: 135.w, vertical: 12.h),
                               elevation: 0,
-                              backgroundColor: Colors.lightBlue[200],
+                              backgroundColor: AppColors.blurple,
                               foregroundColor: Colors.black),
                           onPressed: () {
                             if (otpCode != null) {
@@ -136,12 +148,12 @@ class _OtpScreenState extends State<OtpScreen> {
     height: 60,
     textStyle: const TextStyle(
       fontSize: 20,
-      color: Colors.black,
+      color: Colors.white,
       fontWeight: FontWeight.bold,
     ),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(8),
-      border: Border.all(color: Colors.lightBlue),
+      border: Border.all(color: AppColors.blurple),
     ),
   );
 }
