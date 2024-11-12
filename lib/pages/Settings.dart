@@ -5,9 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:glint/pages/onbordeing.dart';
+
 import 'package:glint/pages/splashScreen.dart';
 import 'package:glint/utils/builUserProfilePics.dart';
+import 'package:glint/utils/colorPallet.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -27,99 +28,126 @@ class ScreenSettings extends StatefulWidget {
 }
 
 class _ScreenSettingsState extends State<ScreenSettings> {
-  Color beige = const Color(0xFFF7F2E7);
-  Color darkBlue = const Color(0xFF4682B4);
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: beige,
+        backgroundColor: AppColors.secondaryBackground,
         title: const Center(
             child: Text(
           'Profile',
-          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+              color: AppColors.whiteText),
         )),
       ),
-      backgroundColor: beige,
-      body: SizedBox(
-        width: double.infinity,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 20.h,
-              ),
-              Stack(children: [
+      backgroundColor: AppColors.secondaryBackground,
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SizedBox(
+          width: double.infinity,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
                 SizedBox(
-                    height: 100.h,
-                    width: 100.h,
-                    child: BuilUserProfilePics(
-                      userid: widget.userid,
-                    )),
-                Positioned(
+                  height: 20.h,
+                ),
+                Stack(children: [
+                  SizedBox(
+                      height: 100.h,
+                      width: 100.h,
+                      child: BuilUserProfilePics(
+                        userid: widget.userid,
+                      )),
+                  Positioned(
                     bottom: 5,
                     right: 5,
                     child: Container(
-                        width: 25.h,
-                        height: 25.h,
-                        decoration: BoxDecoration(
-                            color: Colors.grey,
-                            borderRadius: BorderRadius.circular(100)),
-                        child: const Icon(Icons.edit)))
-              ]),
-              SizedBox(
-                height: 20.h,
-              ),
-              // ElevatedButton(
-              //     style: ElevatedButton.styleFrom(
-              //         shape: RoundedRectangleBorder(
-              //             borderRadius: BorderRadius.circular(17)),
-              //         padding:
-              //             EdgeInsets.symmetric(horizontal: 30.w, vertical: 5.h),
-              //         elevation: 0,
-              //         backgroundColor: Colors.lightBlue[200],
-              //         foregroundColor: Colors.black),
-              //     onPressed: () {
-              //       uploadProfilePicture(_imageFile!, widget.userid);
-              //       Navigator.pushReplacement(
-              //           context,
-              //           MaterialPageRoute(
-              //             builder: (context) =>
-              //                 SplashScreen(phonenumberToCheck: widget.phone),
-              //           ));
-              //     },
-              //     child: const Text('Apply')),
-              Text(
-                'Name:${widget.name}',
-                style: const TextStyle(fontSize: 20),
-              ),
-              Text(
-                'Phone:${widget.phone}',
-                style: const TextStyle(fontSize: 20),
-              ),
-              SizedBox(
-                height: 200.h,
-              ),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(17)),
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 150.w, vertical: 12.h),
-                      elevation: 0,
-                      backgroundColor: darkBlue,
-                      foregroundColor: Colors.white),
-                  onPressed: () {
-                    logout();
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const Onbordeing(),
-                        ));
-                  },
-                  child: const Text('LogOut'))
-            ],
+                      width: 25.h,
+                      height: 25.h,
+                      decoration: BoxDecoration(
+                        color: AppColors.mediumLightGray,
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: const Icon(Icons.edit, color: AppColors.whiteText),
+                    ),
+                  )
+                ]),
+                SizedBox(
+                  height: 20.h,
+                ),
+
+                Container(
+                  width: 400,
+                  height: 100,
+                  decoration: BoxDecoration(
+                      color: AppColors.lightGray,
+                      borderRadius: BorderRadius.circular(17)),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 20),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Name:${widget.name}',
+                          style: const TextStyle(
+                              fontSize: 20, color: AppColors.whiteText),
+                        ),
+                        Text(
+                          'Phone:${widget.phone}',
+                          style: const TextStyle(
+                              fontSize: 20, color: AppColors.whiteText),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                SizedBox(
+                  height: 250.h,
+                ),
+
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(17)),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 150.w, vertical: 12.h),
+                        elevation: 0,
+                        backgroundColor: AppColors.blurple,
+                        foregroundColor: Colors.white),
+                    onPressed: () {
+                      uploadProfilePicture(_imageFile!, widget.userid);
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                SplashScreen(phonenumberToCheck: widget.phone),
+                          ));
+                    },
+                    child: const Text('Apply')),
+                // ElevatedButton(
+                //     style: ElevatedButton.styleFrom(
+                //         shape: RoundedRectangleBorder(
+                //             borderRadius: BorderRadius.circular(17)),
+                //         padding: EdgeInsets.symmetric(
+                //             horizontal: 150.w, vertical: 12.h),
+                //         elevation: 0,
+                //         backgroundColor: AppColors.blurple,
+                //         foregroundColor: Colors.white),
+                //     onPressed: () {
+                //       logout();
+                //       Navigator.push(
+                //           context,
+                //           MaterialPageRoute(
+                //             builder: (context) => const Onbordeing(),
+                //           ));
+                //     },
+                //     child: const Text('LogOut'))
+              ],
+            ),
           ),
         ),
       ),
