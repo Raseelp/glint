@@ -54,24 +54,40 @@ class ReactionTray extends StatelessWidget {
   }
 }
 
-class ReactionsDisplay extends StatelessWidget {
+class ReactionsDisplay extends StatefulWidget {
   final String groupId;
   final String imageId;
 
   ReactionsDisplay({required this.groupId, required this.imageId});
 
   @override
+  State<ReactionsDisplay> createState() => _ReactionsDisplayState();
+}
+
+class _ReactionsDisplayState extends State<ReactionsDisplay> {
+  late Map<String, String> _cachedReactions;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _cachedReactions = {};
+  }
+
+  @override
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
       stream: FirebaseFirestore.instance
           .collection('groups')
-          .doc(groupId)
+          .doc(widget.groupId)
           .collection('images')
-          .doc(imageId)
+          .doc(widget.imageId)
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
+          if (_isLoading) {
+            return const CircularProgressIndicator(); // Show loading only the first time
+          }
         }
 
         if (!snapshot.hasData || snapshot.data == null) {
@@ -81,10 +97,13 @@ class ReactionsDisplay extends StatelessWidget {
         var imageData = snapshot.data!.data() as Map<String, dynamic>;
         Map<String, dynamic> reactions = imageData['reactions'] ?? {};
 
-        // Get the list of reactions
-        List<dynamic> displayedReactions = reactions.values.toList();
+        // Only rebuild if reactions have changed
+        if (_cachedReactions != reactions) {
+          _cachedReactions = Map.from(reactions);
+          _isLoading = false;
+        }
 
-        // If there are more than 5 reactions, display a "+x" count
+        List<String> displayedReactions = _cachedReactions.values.toList();
         String extraReactionsCount = displayedReactions.length > 5
             ? "+${displayedReactions.length - 5} more"
             : '';
@@ -93,7 +112,7 @@ class ReactionsDisplay extends StatelessWidget {
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(100),
               color: Colors.grey.withOpacity(0.5)),
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
