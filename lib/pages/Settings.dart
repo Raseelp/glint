@@ -30,18 +30,32 @@ class ScreenSettings extends StatefulWidget {
 class _ScreenSettingsState extends State<ScreenSettings> {
   @override
   Widget build(BuildContext context) {
+    TextEditingController nameController =
+        TextEditingController(text: widget.name);
+
     ScreenUtil.init(context);
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.settings,
+                color: AppColors.whiteText,
+              ))
+        ],
         backgroundColor: AppColors.secondaryBackground,
-        title: const Center(
-            child: Text(
-          'Profile',
-          style: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
-              color: AppColors.whiteText),
-        )),
+        title: const Padding(
+          padding: EdgeInsets.only(left: 50),
+          child: Center(
+              child: Text(
+            'Profile',
+            style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                color: AppColors.whiteText),
+          )),
+        ),
       ),
       backgroundColor: AppColors.secondaryBackground,
       body: Padding(
@@ -81,7 +95,7 @@ class _ScreenSettingsState extends State<ScreenSettings> {
 
                 Container(
                   width: 400,
-                  height: 100,
+                  height: 150,
                   decoration: BoxDecoration(
                       color: AppColors.lightGray,
                       borderRadius: BorderRadius.circular(17)),
@@ -90,23 +104,32 @@ class _ScreenSettingsState extends State<ScreenSettings> {
                         horizontal: 20, vertical: 20),
                     child: Column(
                       children: [
-                        Text(
-                          'Name:${widget.name}',
-                          style: const TextStyle(
-                              fontSize: 20, color: AppColors.whiteText),
+                        Expanded(
+                          child: TextField(
+                            style: const TextStyle(
+                                color: AppColors.lightGrayText, fontSize: 30),
+                            controller: nameController,
+                            textAlign: TextAlign.center,
+                            decoration: InputDecoration(
+                                hintText: widget.name,
+                                hintStyle: const TextStyle(
+                                    color: AppColors.lightGrayText,
+                                    fontSize: 30),
+                                border: InputBorder.none),
+                          ),
                         ),
                         Text(
-                          'Phone:${widget.phone}',
+                          widget.phone,
                           style: const TextStyle(
-                              fontSize: 20, color: AppColors.whiteText),
-                        ),
+                              color: AppColors.lightGrayText, fontSize: 25),
+                        )
                       ],
                     ),
                   ),
                 ),
 
                 SizedBox(
-                  height: 250.h,
+                  height: 220.h,
                 ),
 
                 ElevatedButton(
@@ -119,7 +142,13 @@ class _ScreenSettingsState extends State<ScreenSettings> {
                         backgroundColor: AppColors.blurple,
                         foregroundColor: Colors.white),
                     onPressed: () {
-                      uploadProfilePicture(_imageFile!, widget.userid);
+                      if (_imageFile != null) {
+                        uploadProfilePicture(_imageFile!, widget.userid);
+                      } else {
+                        print('nullll');
+                      }
+
+                      changeUserName(widget.userid, nameController.text);
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
@@ -239,9 +268,9 @@ class _ScreenSettingsState extends State<ScreenSettings> {
     }
   }
 
-  Future<void> changeGroupName(String groupid, String newgroupname) async {
-    await FirebaseFirestore.instance.collection('groups').doc(groupid).update({
-      'Groupname': newgroupname,
+  Future<void> changeUserName(String userid, String newusername) async {
+    await FirebaseFirestore.instance.collection('users').doc(userid).update({
+      'name': newusername,
     });
   }
 }
