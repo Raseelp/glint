@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:glint/pages/SettingsPages/appSettings.dart';
 
 import 'package:glint/pages/splashScreen.dart';
 import 'package:glint/utils/builUserProfilePics.dart';
@@ -40,7 +41,13 @@ class _ScreenSettingsState extends State<ScreenSettings> {
       appBar: AppBar(
         actions: [
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Appsettings(),
+                    ));
+              },
               icon: const Icon(
                 Icons.settings,
                 color: AppColors.whiteText,
