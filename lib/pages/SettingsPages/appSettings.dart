@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:glint/pages/onbordeing.dart';
 import 'package:glint/utils/colorPallet.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Appsettings extends StatefulWidget {
   const Appsettings({super.key});
@@ -288,7 +291,14 @@ class _AppsettingsState extends State<Appsettings> {
                   backgroundColor: AppColors.notificationRed,
                   elevation: 0,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  logout();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const Onbordeing(),
+                      ));
+                },
                 child: const SizedBox(
                   width: double.infinity,
                   height: 40,
@@ -327,5 +337,11 @@ class _AppsettingsState extends State<Appsettings> {
         );
       },
     );
+  }
+
+  Future<void> logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', false);
+    FirebaseAuth.instance.signOut();
   }
 }

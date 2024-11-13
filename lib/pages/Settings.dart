@@ -107,7 +107,6 @@ class _ScreenSettingsState extends State<ScreenSettings> {
                 SizedBox(
                   height: 20.h,
                 ),
-
                 Container(
                   width: 400,
                   height: 150,
@@ -142,11 +141,9 @@ class _ScreenSettingsState extends State<ScreenSettings> {
                     ),
                   ),
                 ),
-
                 SizedBox(
                   height: 220.h,
                 ),
-
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -173,24 +170,6 @@ class _ScreenSettingsState extends State<ScreenSettings> {
                           ));
                     },
                     child: const Text('Apply')),
-                // ElevatedButton(
-                //     style: ElevatedButton.styleFrom(
-                //         shape: RoundedRectangleBorder(
-                //             borderRadius: BorderRadius.circular(17)),
-                //         padding: EdgeInsets.symmetric(
-                //             horizontal: 150.w, vertical: 12.h),
-                //         elevation: 0,
-                //         backgroundColor: AppColors.blurple,
-                //         foregroundColor: Colors.white),
-                //     onPressed: () {
-                //       logout();
-                //       Navigator.push(
-                //           context,
-                //           MaterialPageRoute(
-                //             builder: (context) => const Onbordeing(),
-                //           ));
-                //     },
-                //     child: const Text('LogOut'))
               ],
             ),
           ),
