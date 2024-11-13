@@ -93,7 +93,7 @@ class _AppsettingsState extends State<Appsettings> {
                     ),
                     ListTile(
                       title: const Text(
-                        'Send feedback',
+                        'About Us',
                         style: TextStyle(
                             color: AppColors.whiteText,
                             fontWeight: FontWeight.bold),
@@ -163,7 +163,7 @@ class _AppsettingsState extends State<Appsettings> {
                         color: AppColors.notificationRed,
                       ),
                       onTap: () {
-                        // Handle delete account
+                        showDeleteDiologe();
                       },
                     ),
                     const Divider(
@@ -181,7 +181,7 @@ class _AppsettingsState extends State<Appsettings> {
                         color: AppColors.notificationRed,
                       ),
                       onTap: () {
-                        // Handle sign out
+                        showLogoutDiologe();
                       },
                     ),
                   ],
@@ -191,6 +191,141 @@ class _AppsettingsState extends State<Appsettings> {
           ],
         ),
       ),
+    );
+  }
+
+  void showDeleteDiologe() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: AppColors.darkBackground,
+          title: const Text(
+            "Delete Account",
+            style: TextStyle(color: AppColors.whiteText),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Your Account Will Be Permanently Removed,You Wont Be Able To Use This Account Again,Do You Want To Continue?',
+                style: TextStyle(
+                  color: AppColors.darkGrayText,
+                ),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(17)),
+                  backgroundColor: AppColors.notificationRed,
+                  elevation: 0,
+                ),
+                onPressed: () {},
+                child: const SizedBox(
+                  width: double.infinity,
+                  height: 40,
+                  child: Center(
+                    child: Text(
+                      'Yes,Delete',
+                      style: TextStyle(color: AppColors.whiteText),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(17)),
+                      backgroundColor: AppColors.lightGray,
+                      elevation: 0),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const SizedBox(
+                    width: double.infinity,
+                    height: 40,
+                    child: Center(
+                      child: Text(
+                        'No,I Changed Mind',
+                        style: TextStyle(color: AppColors.whiteText),
+                      ),
+                    ),
+                  ))
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void showLogoutDiologe() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: AppColors.darkBackground,
+          title: const Text(
+            "Logout",
+            style: TextStyle(color: AppColors.whiteText),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Are You Sure You Want To Loguot',
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                  color: AppColors.darkGrayText,
+                ),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(17)),
+                  backgroundColor: AppColors.notificationRed,
+                  elevation: 0,
+                ),
+                onPressed: () {},
+                child: const SizedBox(
+                  width: double.infinity,
+                  height: 40,
+                  child: Center(
+                    child: Text(
+                      'Logout',
+                      style: TextStyle(color: AppColors.whiteText),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(17)),
+                      backgroundColor: AppColors.lightGray,
+                      elevation: 0),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const SizedBox(
+                    width: double.infinity,
+                    height: 40,
+                    child: Center(
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(color: AppColors.whiteText),
+                      ),
+                    ),
+                  ))
+            ],
+          ),
+        );
+      },
     );
   }
 }
