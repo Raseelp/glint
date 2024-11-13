@@ -16,12 +16,14 @@ class ScreenSettings extends StatefulWidget {
   final String name;
   final String phone;
   final String userid;
+  final List<Map<String, dynamic>> usergroups;
 
   const ScreenSettings(
       {super.key,
       required this.name,
       required this.phone,
-      required this.userid});
+      required this.userid,
+      required this.usergroups});
 
   @override
   State<ScreenSettings> createState() => _ScreenSettingsState();
@@ -154,7 +156,8 @@ class _ScreenSettingsState extends State<ScreenSettings> {
                         print('nullll');
                       }
 
-                      changeUserName(widget.userid, nameController.text);
+                      changeUserName(widget.userid, widget.phone,
+                          nameController.text, widget.usergroups);
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
@@ -274,9 +277,37 @@ class _ScreenSettingsState extends State<ScreenSettings> {
     }
   }
 
-  Future<void> changeUserName(String userid, String newusername) async {
+  Future<void> changeUserName(String userid, String userPhone,
+      String newusername, List<Map<String, dynamic>> usergroups) async {
     await FirebaseFirestore.instance.collection('users').doc(userid).update({
       'name': newusername,
     });
+
+    for (var group in usergroups) {
+      String groupId = group['id'];
+
+      DocumentReference groupRef =
+          FirebaseFirestore.instance.collection('groups').doc(groupId);
+
+      try {
+        // Step 1: Get the current members array
+        DocumentSnapshot groupSnapshot = await groupRef.get();
+        List<dynamic> members = groupSnapshot.get('members');
+
+        // Step 2: Modify the member's name in the array if the phone number matches
+        for (var member in members) {
+          if (member['phone'] == userPhone) {
+            member['name'] = newusername;
+            break;
+          }
+        }
+
+        // Step 3: Update the modified members array back to Firestore
+        await groupRef.update({'members': members});
+        print("Updated username in group: $groupId");
+      } catch (e) {
+        print("Error updating username in group $groupId: $e");
+      }
+    }
   }
 }

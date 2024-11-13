@@ -47,9 +47,11 @@ class _BottomenavbarState extends State<Bottomenavbar> {
       ), // First tab: Group
       MemoriesPage(userPhoneNumber: widget.userphone), // Second tab: Memories
       ScreenSettings(
-          name: widget.username,
-          phone: widget.userphone,
-          userid: widget.userid), // Third tab: Profile/Settings
+        name: widget.username,
+        phone: widget.userphone,
+        userid: widget.userid,
+        usergroups: widget.usergroups,
+      ), // Third tab: Profile/Settings
     ];
     return Scaffold(
       body: PageView(
@@ -65,9 +67,11 @@ class _BottomenavbarState extends State<Bottomenavbar> {
           MemoriesPage(
               userPhoneNumber: widget.userphone), // Second tab: Memories
           ScreenSettings(
-              name: widget.username,
-              phone: widget.userphone,
-              userid: widget.userid), // Third tab: Profile/Settings
+            name: widget.username,
+            phone: widget.userphone,
+            userid: widget.userid,
+            usergroups: widget.usergroups,
+          ), // Third tab: Profile/Settings
         ],
       ),
       bottomNavigationBar: SizedBox(
