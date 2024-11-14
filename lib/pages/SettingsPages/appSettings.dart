@@ -362,11 +362,12 @@ class _AppsettingsState extends State<Appsettings> {
   Future<void> deleteAccount(String userId, String userPhone,
       List<Map<String, dynamic>> userGroups, Function logout) async {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    User? user = auth.currentUser;
 
     try {
       // Step 1: Delete user document from "users" collection
       await firestore.collection('users').doc(userId).delete();
-      print("User document deleted");
 
       for (var group in userGroups) {
         String groupId = group['id'];
@@ -379,11 +380,12 @@ class _AppsettingsState extends State<Appsettings> {
         members.removeWhere((member) => member['phone'] == userPhone);
 
         await groupRef.update({'members': members});
-        print("User removed from group: $groupId");
+      }
+      if (user != null) {
+        await user.delete();
       }
 
       logout();
-      print("User logged out");
 
       Navigator.pushAndRemoveUntil(
         context,
@@ -393,10 +395,138 @@ class _AppsettingsState extends State<Appsettings> {
         (Route<dynamic> route) => false, // This removes all previous routes
       );
     } catch (e) {
-      print("Error deleting account: $e");
-
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error deleting account: $e")),
+      );
+
+      if (e.toString().contains('requires-recent-login')) {
+        await showPhoneReauthenticationDialog(
+            context, userId, userPhone, userGroups, logout);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Error deleting account: $e")),
+        );
+      }
+    }
+  }
+
+// Re-authentication with phone number
+  Future<void> showPhoneReauthenticationDialog(
+      BuildContext context,
+      String userId,
+      String userPhone,
+      List<Map<String, dynamic>> userGroups,
+      Function logout) async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    TextEditingController otpController = TextEditingController();
+    late String verificationId;
+
+    // Step 1: Send the verification code to the user's phone
+    await auth.verifyPhoneNumber(
+      phoneNumber: userPhone,
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        // This will be called automatically in some cases, such as on Android when auto-retrieval is available
+        await reauthenticateAndDelete(
+            credential, context, userId, userPhone, userGroups, logout);
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Phone verification failed: ${e.message}")),
+        );
+      },
+      codeSent: (String verId, int? resendToken) {
+        verificationId = verId;
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              backgroundColor: AppColors.darkBackground,
+              title: const Text("Re-authenticate to Delete Account",
+                  style: TextStyle(
+                    color: AppColors.whiteText,
+                  )),
+              content: TextField(
+                controller: otpController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(labelText: "Enter OTP"),
+              ),
+              actions: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(17)),
+                    backgroundColor: AppColors.notificationRed,
+                    elevation: 0,
+                  ),
+                  onPressed: () async {
+                    Navigator.of(context).pop(); // Close the dialog
+                    final credential = PhoneAuthProvider.credential(
+                      verificationId: verificationId,
+                      smsCode: otpController.text,
+                    );
+                    await reauthenticateAndDelete(credential, context, userId,
+                        userPhone, userGroups, logout);
+                  },
+                  child: const SizedBox(
+                    width: double.infinity,
+                    height: 40,
+                    child: Center(
+                      child: Text(
+                        "Re-authenticate",
+                        style: TextStyle(color: AppColors.whiteText),
+                      ),
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(17)),
+                    backgroundColor: AppColors.blurple,
+                    elevation: 0,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const SizedBox(
+                    width: double.infinity,
+                    height: 40,
+                    child: Center(
+                      child: Text(
+                        "Cancel",
+                        style: TextStyle(color: AppColors.whiteText),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+      codeAutoRetrievalTimeout: (String verId) {
+        verificationId = verId;
+      },
+    );
+  }
+
+// Function to reauthenticate and delete account
+  Future<void> reauthenticateAndDelete(
+      PhoneAuthCredential credential,
+      BuildContext context,
+      String userId,
+      String userPhone,
+      List<Map<String, dynamic>> userGroups,
+      Function logout) async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    try {
+      await auth.currentUser?.reauthenticateWithCredential(credential);
+
+      // Retry account deletion after successful re-authentication
+      await deleteAccount(userId, userPhone, userGroups, logout);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Re-authentication failed: $e")),
       );
     }
   }
