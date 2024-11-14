@@ -5,6 +5,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:glint/pages/homepage.dart';
+import 'package:glint/pages/splashScreen.dart';
+import 'package:glint/utils/colorPallet.dart';
 
 import 'package:glint/utils/sharedpreffs.dart';
 import 'package:image_picker/image_picker.dart';
@@ -31,22 +33,23 @@ class _UserinfoScreenState extends State<UserinfoScreen> {
     namecontroller.dispose();
   }
 
-  Color beige = const Color(0xFFF7F2E7);
-
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: beige,
+        backgroundColor: AppColors.secondaryBackground,
         automaticallyImplyLeading: false,
         title: const Center(
             child: Text(
           'Glint.',
-          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+              color: AppColors.whiteText),
         )),
       ),
-      backgroundColor: beige,
+      backgroundColor: AppColors.secondaryBackground,
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: SizedBox(
@@ -58,12 +61,18 @@ class _UserinfoScreenState extends State<UserinfoScreen> {
               children: [
                 const Text(
                   'Tell us about you',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.whiteText),
                 ),
                 SizedBox(
                   height: 50.h,
                 ),
-                const Text('What you Look Like'),
+                const Text(
+                  'What you Look Like',
+                  style: TextStyle(color: AppColors.lightGrayText),
+                ),
                 SizedBox(
                   height: 20.h,
                 ),
@@ -82,18 +91,21 @@ class _UserinfoScreenState extends State<UserinfoScreen> {
                 SizedBox(
                   height: 50.h,
                 ),
-                const Text('What\'s your friends call you'),
+                const Text(
+                  'What\'s your friends call you',
+                  style: TextStyle(color: AppColors.lightGrayText),
+                ),
                 TextField(
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                      color: Colors.black,
+                      color: AppColors.whiteText,
                       fontSize: 30,
                       fontWeight: FontWeight.bold),
                   controller: namecontroller,
                   decoration: const InputDecoration(
                       hintText: 'First Name',
                       hintStyle: TextStyle(
-                          color: Colors.grey,
+                          color: AppColors.whiteText,
                           fontSize: 30,
                           fontWeight: FontWeight.bold),
                       border: InputBorder.none),
@@ -101,9 +113,15 @@ class _UserinfoScreenState extends State<UserinfoScreen> {
                 const SizedBox(
                   height: 50,
                 ),
-                const Text('Enter your Birthday'),
+                const Text(
+                  'Enter your Birthday',
+                  style: TextStyle(color: AppColors.lightGrayText),
+                ),
                 GestureDetector(
-                    child: const Icon(Icons.calendar_today),
+                    child: const Icon(
+                      Icons.calendar_today,
+                      color: AppColors.whiteText,
+                    ),
                     onTap: () async {
                       final datePick = await showDatePicker(
                           context: context,
@@ -125,7 +143,9 @@ class _UserinfoScreenState extends State<UserinfoScreen> {
                 Text(
                   birthDateInString.length > 11 ? '' : birthDateInString,
                   style: const TextStyle(
-                      fontSize: 30, fontWeight: FontWeight.bold),
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.whiteText),
                 ),
                 SizedBox(
                   height: 100.h,
@@ -137,22 +157,19 @@ class _UserinfoScreenState extends State<UserinfoScreen> {
                         padding: EdgeInsets.symmetric(
                             horizontal: 135.w, vertical: 12.h),
                         elevation: 0,
-                        backgroundColor: Colors.lightBlue[200],
-                        foregroundColor: Colors.black),
+                        backgroundColor: AppColors.blurple,
+                        foregroundColor: AppColors.whiteText),
                     onPressed: () async {
                       String userid = await addUserToFirestore();
 
                       uploadProfilePicture(_imageFile!, userid);
-                      Navigator.push(
+                      Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => Homepage(
-                                  phoneNumberToUseAsUserId:
-                                      widget.verifiedPhonenumber,
-                                  username: namecontroller.text,
-                                  userGroups: const [],
-                                  userid: userid,
-                                )),
+                            builder: (context) => SplashScreen(
+                                phonenumberToCheck:
+                                    widget.verifiedPhonenumber)),
+                        (Route<dynamic> route) => false,
                       );
                     },
                     child: const Text(

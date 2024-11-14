@@ -462,7 +462,7 @@ class _AppsettingsState extends State<Appsettings> {
                     Navigator.of(context).pop(); // Close the dialog
                     final credential = PhoneAuthProvider.credential(
                       verificationId: verificationId,
-                      smsCode: otpController.text,
+                      smsCode: otpController.text.trim(),
                     );
                     await reauthenticateAndDelete(credential, context, userId,
                         userPhone, userGroups, logout);
