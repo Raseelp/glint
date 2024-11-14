@@ -1,11 +1,21 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:glint/main.dart';
 import 'package:glint/pages/onbordeing.dart';
 import 'package:glint/utils/colorPallet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Appsettings extends StatefulWidget {
-  const Appsettings({super.key});
+  final String userId;
+  final String userphone;
+  final List<Map<String, dynamic>> userGroups;
+
+  const Appsettings(
+      {super.key,
+      required this.userId,
+      required this.userphone,
+      required this.userGroups});
 
   @override
   State<Appsettings> createState() => _AppsettingsState();
@@ -223,7 +233,11 @@ class _AppsettingsState extends State<Appsettings> {
                   backgroundColor: AppColors.notificationRed,
                   elevation: 0,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  deleteAccount(widget.userId, widget.userphone,
+                      widget.userGroups, logout);
+                  Navigator.pop(context);
+                },
                 child: const SizedBox(
                   width: double.infinity,
                   height: 40,
@@ -343,5 +357,47 @@ class _AppsettingsState extends State<Appsettings> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isLoggedIn', false);
     FirebaseAuth.instance.signOut();
+  }
+
+  Future<void> deleteAccount(String userId, String userPhone,
+      List<Map<String, dynamic>> userGroups, Function logout) async {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    try {
+      // Step 1: Delete user document from "users" collection
+      await firestore.collection('users').doc(userId).delete();
+      print("User document deleted");
+
+      for (var group in userGroups) {
+        String groupId = group['id'];
+        DocumentReference groupRef =
+            firestore.collection('groups').doc(groupId);
+
+        DocumentSnapshot groupSnapshot = await groupRef.get();
+        List<dynamic> members = groupSnapshot.get('members');
+
+        members.removeWhere((member) => member['phone'] == userPhone);
+
+        await groupRef.update({'members': members});
+        print("User removed from group: $groupId");
+      }
+
+      logout();
+      print("User logged out");
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                Glint()), // Replace MainScreen with the widget for main.dart
+        (Route<dynamic> route) => false, // This removes all previous routes
+      );
+    } catch (e) {
+      print("Error deleting account: $e");
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error deleting account: $e")),
+      );
+    }
   }
 }

@@ -45,7 +45,11 @@ class _ScreenSettingsState extends State<ScreenSettings> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Appsettings(),
+                      builder: (context) => Appsettings(
+                        userphone: widget.phone,
+                        userId: widget.userid,
+                        userGroups: widget.usergroups,
+                      ),
                     ));
               },
               icon: const Icon(
