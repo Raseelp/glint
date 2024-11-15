@@ -6,7 +6,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:glint/pages/SettingsPages/appSettings.dart';
-
 import 'package:glint/pages/splashScreen.dart';
 import 'package:glint/utils/builUserProfilePics.dart';
 import 'package:glint/utils/colorPallet.dart';
