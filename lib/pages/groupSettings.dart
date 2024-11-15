@@ -335,8 +335,8 @@ class _GroupSettingsState extends State<GroupSettings> {
                     elevation: 0,
                     backgroundColor: const Color.fromARGB(255, 194, 7, 7),
                     foregroundColor: Colors.white),
-                onPressed: () async {
-                  showAboutDialog(context: context);
+                onPressed: () {
+                  showLogoutDiologe();
                   // await exitGroup();
                 },
                 child: const Text('Exit Group'))
@@ -373,7 +373,8 @@ class _GroupSettingsState extends State<GroupSettings> {
                   backgroundColor: AppColors.notificationRed,
                   elevation: 0,
                 ),
-                onPressed: () {
+                onPressed: () async {
+                  await exitGroup();
                   Navigator.push(
                       context,
                       MaterialPageRoute(
