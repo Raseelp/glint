@@ -294,10 +294,40 @@ class _ScreenSettingsState extends State<ScreenSettings> {
 
         // Step 3: Update the modified members array back to Firestore
         await groupRef.update({'members': members});
+
         print("Updated username in group: $groupId");
+
+        await updateUserImagesName(groupId, userPhone, newusername);
       } catch (e) {
         print("Error updating username in group $groupId: $e");
       }
+    }
+  }
+
+  // Function to update the name in all the images uploaded by the user in the given group
+  Future<void> updateUserImagesName(
+      String groupId, String userPhone, String newName) async {
+    try {
+      // Get a reference to the group's images collection
+      final imagesCollection = FirebaseFirestore.instance
+          .collection('groups')
+          .doc(groupId)
+          .collection('images');
+
+      // Query all images where the 'uploadedphone' matches the user's phone number
+      final imageSnapshot = await imagesCollection
+          .where('uploadedphone', isEqualTo: userPhone)
+          .get();
+
+      // Update the 'uploadedBy' field in each image document
+      for (var imageDoc in imageSnapshot.docs) {
+        await imageDoc.reference.update({
+          'uploadedBy': newName, // Update the name to the new name
+        });
+      }
+      print("Updated image uploads for $userPhone in group: $groupId");
+    } catch (e) {
+      print("Error updating image uploads in group $groupId: $e");
     }
   }
 }

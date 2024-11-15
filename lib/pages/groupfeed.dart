@@ -504,6 +504,7 @@ class _GroupfeedState extends State<Groupfeed> {
             'url': downloadUrl,
             'uploadedBy': widget.username,
             'timestamp': FieldValue.serverTimestamp(),
+            'uploadedphone': widget.phoneNumberAsUserId,
           });
         }
       } catch (e) {
@@ -520,7 +521,6 @@ class _GroupfeedState extends State<Groupfeed> {
 
     try {
       await storageRef.delete();
-      print("Image deleted successfully from Storage");
 
       await FirebaseFirestore.instance
           .collection('groups')
@@ -608,8 +608,6 @@ class _GroupfeedState extends State<Groupfeed> {
 
   Future<void> updateReaction(String groupId, String imageId, String username,
       String reactionType) async {
-    print(groupId + imageId + username + reactionType);
-
     final imageRef = FirebaseFirestore.instance
         .collection('groups')
         .doc(groupId)
