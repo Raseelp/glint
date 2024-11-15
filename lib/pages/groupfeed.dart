@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:glint/pages/groupSettings.dart';
 import 'package:glint/pages/imageFullScreenView.dart';
+import 'package:glint/pages/splashScreen.dart';
 import 'package:glint/utils/colorPallet.dart';
 import 'package:glint/utils/reactionTray.dart';
 import 'package:image_picker/image_picker.dart';
@@ -64,7 +65,13 @@ class _GroupfeedState extends State<Groupfeed> {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SplashScreen(
+                      phonenumberToCheck: widget.phoneNumberAsUserId),
+                ),
+              );
             },
             icon: const Icon(
               Icons.arrow_back,

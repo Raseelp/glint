@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:glint/pages/joinGroup.dart';
 import 'package:glint/pages/onbordeing.dart';
 import 'package:glint/pages/splashScreen.dart';
 import 'package:glint/provider/auth_provider.dart';
@@ -58,6 +59,7 @@ class _GlintState extends State<Glint> {
         ),
       ],
       child: MaterialApp(
+        routes: {'/join': (context) => Joingroup(phonenumber: userPhone!)},
         home: isLoggedIn
             ? SplashScreen(phonenumberToCheck: userPhone!)
             : const Onbordeing(),

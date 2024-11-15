@@ -35,7 +35,7 @@ class _CreategroupState extends State<Creategroup> {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              Navigator.push(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) => SplashScreen(
