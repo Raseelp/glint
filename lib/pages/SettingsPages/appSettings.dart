@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:glint/main.dart';
 import 'package:glint/pages/onbordeing.dart';
@@ -366,6 +367,32 @@ class _AppsettingsState extends State<Appsettings> {
     User? user = auth.currentUser;
 
     try {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
+
+      if (userDoc.exists) {
+        String profilePictureUrl = userDoc['userprofilePictureUrl'];
+
+        if (profilePictureUrl.isNotEmpty) {
+          // 2. Get the reference to the file using the URL
+          Reference imageRef =
+              FirebaseStorage.instance.refFromURL(profilePictureUrl);
+
+          // 3. Delete the image from Firebase Storage
+          await imageRef.delete();
+
+          print('Profile picture deleted successfully from Firebase Storage');
+
+          print('User profile data updated successfully');
+        } else {
+          print('No profile picture found to delete');
+        }
+      } else {
+        print('User not found');
+      }
+
       // Step 1: Delete user document from "users" collection
       await firestore.collection('users').doc(userId).delete();
 
