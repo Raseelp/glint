@@ -136,51 +136,73 @@ class _MemoriesPageState extends State<MemoriesPage> {
                   }
                   bool doesExist = subcollectionSnapshot.data ?? false;
 
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
+                  return Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
                           doesExist ? 'Group: $groupName' : '',
                           style: const TextStyle(
+                              overflow: TextOverflow.ellipsis,
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                               color: AppColors.whiteText),
                         ),
-                      ),
-                      GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: images.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 2.0,
-                          mainAxisSpacing: 8.0,
+                        const SizedBox(
+                          height: 15,
                         ),
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => Imagefullscreenview(
-                                        imgUrl: images[index]['url'],
-                                        uploadedBy: ''),
-                                  ));
-                            },
-                            child: CachedNetworkImage(
-                              imageUrl: images[index]['url'],
-                              placeholder: (context, url) =>
-                                  const CircularProgressIndicator(), // Placeholder while loading
-                              errorWidget: (context, url, error) => const Icon(
-                                  Icons.error), // Error icon in case of failure
-                            ),
-                          );
-                        },
-                      ),
-                    ],
+                        GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: images.length,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 15.0,
+                            mainAxisSpacing: 15,
+                          ),
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Imagefullscreenview(
+                                          imgUrl: images[index]['url'],
+                                          uploadedBy: ''),
+                                    ));
+                              },
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(17),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            Imagefullscreenview(
+                                                imgUrl: images[index]['url'],
+                                                uploadedBy: 'uploadedBy'),
+                                      ),
+                                    );
+                                  },
+                                  child: CachedNetworkImage(
+                                    imageUrl: images[index]['url'],
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) =>
+                                        const CircularProgressIndicator(), // Placeholder while loading
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons
+                                            .error), // Error icon in case of failure
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   );
                 },
               );
@@ -253,8 +275,8 @@ class _MemoriesPageState extends State<MemoriesPage> {
             itemCount: images.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              crossAxisSpacing: 4.0,
-              mainAxisSpacing: 4.0,
+              crossAxisSpacing: 0,
+              mainAxisSpacing: 0,
             ),
             itemBuilder: (context, index) {
               return GestureDetector(
@@ -266,11 +288,29 @@ class _MemoriesPageState extends State<MemoriesPage> {
                             imgUrl: images[index]['url'], uploadedBy: ''),
                       ));
                 },
-                child: CachedNetworkImage(
-                  imageUrl: images[index]['url'],
-                  placeholder: (context, url) =>
-                      const CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(17),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Imagefullscreenview(
+                                  imgUrl: images[index]['url'], uploadedBy: ''),
+                            ));
+                      },
+                      child: CachedNetworkImage(
+                        fit: BoxFit.cover,
+                        imageUrl: images[index]['url'],
+                        placeholder: (context, url) =>
+                            const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      ),
+                    ),
+                  ),
                 ),
               );
             },

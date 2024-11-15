@@ -52,20 +52,23 @@ class _MemebersDetailsState extends State<MemebersDetails> {
               const SizedBox(
                 width: 10,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.name,
-                    style: const TextStyle(
-                        fontSize: 20, color: AppColors.whiteText),
-                  ),
-                  Text(
-                    widget.phonenumber,
-                    style: const TextStyle(
-                        fontSize: 15, color: AppColors.lightGrayText),
-                  )
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.name,
+                      style: const TextStyle(
+                          fontSize: 20, color: AppColors.whiteText),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      widget.phonenumber,
+                      style: const TextStyle(
+                          fontSize: 15, color: AppColors.lightGrayText),
+                    )
+                  ],
+                ),
               ),
             ],
           ),

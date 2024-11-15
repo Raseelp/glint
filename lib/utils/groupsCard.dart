@@ -47,16 +47,6 @@ class _GroupCardState extends State<GroupCard> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(17),
           color: AppColors.lightGray,
-          // boxShadow: [
-          //   BoxShadow(
-          //     color:
-          //         Colors.black.withOpacity(0.3), // Shadow color with opacity
-          //     spreadRadius: 3, // Spread of the shadow
-          //     blurRadius: 5, // Blur intensity
-          //     offset: const Offset(
-          //         4, 4), // Horizontal and vertical shadow position
-          //   ),
-          // ]
         ),
         height: 100,
         width: double.infinity,
@@ -70,23 +60,27 @@ class _GroupCardState extends State<GroupCard> {
                   groupId: widget.groupid,
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.groupName,
-                    style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.whiteText),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    "Today's Theme: ${widget.todayTheme}",
-                    style: const TextStyle(
-                        fontSize: 16, color: AppColors.lightGrayText),
-                  ),
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.groupName,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.whiteText),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      "Today's Theme: ${widget.todayTheme}",
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                          fontSize: 16, color: AppColors.lightGrayText),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

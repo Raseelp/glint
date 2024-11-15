@@ -51,102 +51,95 @@ class _HomepageState extends State<Homepage> {
                 borderRadius: BorderRadius.all(
                   Radius.circular(17),
                 ),
-                // boxShadow: [
-                //   BoxShadow(
-                //     color: Colors.black
-                //         .withOpacity(0.3), // Shadow color with opacity
-                //     spreadRadius: 3, // Spread of the shadow
-                //     blurRadius: 5, // Blur intensity
-                //     offset: const Offset(
-                //         6, 7), // Horizontal and vertical shadow position
-                //   ),
-                // ]
               ),
               width: double.infinity,
-              height: 180.h,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Hello,${widget.username}',
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.normal,
-                        color: Colors.white),
-                  ),
-                  const Text(
-                    'Dont\'t forget to share your Daily moment\'s',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.lightGrayText),
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pushReplacement(context, MaterialPageRoute(
-                            builder: (context) {
-                              return Creategroup(
-                                userid: widget.userid,
-                                username: widget.username,
-                                phonenumberasuserid:
-                                    widget.phoneNumberToUseAsUserId,
-                              );
-                            },
-                          ));
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(17),
-                            color: AppColors.blurple,
-                          ),
-                          width: 130.h,
-                          height: 50.h,
-                          child: const Center(
-                            child: Text(
-                              'Create',
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.white),
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Hello,${widget.username}',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.normal,
+                          color: Colors.white),
+                    ),
+                    const Text(
+                      'Dont\'t forget to share your Daily moment\'s',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.lightGrayText),
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushReplacement(context,
+                                MaterialPageRoute(
+                              builder: (context) {
+                                return Creategroup(
+                                  userid: widget.userid,
+                                  username: widget.username,
+                                  phonenumberasuserid:
+                                      widget.phoneNumberToUseAsUserId,
+                                );
+                              },
+                            ));
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(17),
+                              color: AppColors.blurple,
+                            ),
+                            width: 130.h,
+                            height: 50.h,
+                            child: const Center(
+                              child: Text(
+                                'Create',
+                                style: TextStyle(
+                                    fontSize: 20, color: Colors.white),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(context, MaterialPageRoute(
-                            builder: (context) {
-                              return Joingroup(
-                                phonenumber: widget.phoneNumberToUseAsUserId,
-                              );
-                            },
-                          ));
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(17),
-                            color: AppColors.blurple,
-                          ),
-                          width: 130.h,
-                          height: 50.h,
-                          child: const Center(
-                            child: Text(
-                              'Join',
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.white),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (context) {
+                                return Joingroup(
+                                  phonenumber: widget.phoneNumberToUseAsUserId,
+                                );
+                              },
+                            ));
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(17),
+                              color: AppColors.blurple,
+                            ),
+                            width: 130.h,
+                            height: 50.h,
+                            child: const Center(
+                              child: Text(
+                                'Join',
+                                style: TextStyle(
+                                    fontSize: 20, color: Colors.white),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -176,7 +169,7 @@ class _HomepageState extends State<Homepage> {
                       children: [
                         Text(
                           textAlign: TextAlign.center,
-                          'Join or Create Groups with your friends to Starts the Train of memories',
+                          "Connect with your loved ones by sharing daily moments. Create memories, laugh over themes, and feel closer than ever.",
                           style: TextStyle(
                               fontSize: 15, color: AppColors.lightGrayText),
                         ),

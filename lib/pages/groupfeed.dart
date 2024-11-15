@@ -96,14 +96,6 @@ class _GroupfeedState extends State<Groupfeed> {
                 decoration: BoxDecoration(
                   color: AppColors.lightGray,
                   borderRadius: BorderRadius.circular(17),
-                  // boxShadow: [
-                  //   BoxShadow(
-                  //     color: Colors.black.withOpacity(0.3),
-                  //     spreadRadius: 3,
-                  //     blurRadius: 5,
-                  //     offset: const Offset(6, 7),
-                  //   ),
-                  // ]
                 ),
                 width: double.infinity,
                 height: 180.h,
@@ -178,6 +170,18 @@ class _GroupfeedState extends State<Groupfeed> {
                     ],
                   ),
                 ),
+              ),
+              const Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 30, left: 10),
+                    child: Text('Today',
+                        style: TextStyle(
+                            color: AppColors.whiteText,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold)),
+                  ),
+                ],
               ),
               Expanded(
                 child: StreamBuilder<QuerySnapshot>(
