@@ -1,10 +1,11 @@
+import 'package:Glint/main.dart';
+import 'package:Glint/pages/onbordeing.dart';
+import 'package:Glint/utils/colorPallet.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:glint/main.dart';
-import 'package:glint/pages/onbordeing.dart';
-import 'package:glint/utils/colorPallet.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Appsettings extends StatefulWidget {

@@ -1,16 +1,17 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:Glint/pages/groupSettings.dart';
+import 'package:Glint/pages/imageFullScreenView.dart';
+import 'package:Glint/pages/splashScreen.dart';
+import 'package:Glint/utils/colorPallet.dart';
+import 'package:Glint/utils/reactionTray.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:glint/pages/groupSettings.dart';
-import 'package:glint/pages/imageFullScreenView.dart';
-import 'package:glint/pages/splashScreen.dart';
-import 'package:glint/utils/colorPallet.dart';
-import 'package:glint/utils/reactionTray.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
