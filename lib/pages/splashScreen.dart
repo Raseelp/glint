@@ -169,6 +169,23 @@ class _SplashScreenState extends State<SplashScreen> {
           }
         }
 
+        DocumentSnapshot groupDoc = await FirebaseFirestore.instance
+            .collection('groups')
+            .doc(doc.id)
+            .get();
+
+        String profilePictureUrl = groupDoc['profilePictureUrl'];
+        if (profilePictureUrl.isNotEmpty) {
+          // 4. Delete the profile picture from Firebase Storage using refFromURL
+          Reference imageRef =
+              FirebaseStorage.instance.refFromURL(profilePictureUrl);
+
+          // Delete the image
+          await imageRef.delete();
+          print(
+              'Group profile picture deleted successfully from Firebase Storage');
+        }
+
         // Delete the group
         await groupsCollection.doc(doc.id).delete();
       }

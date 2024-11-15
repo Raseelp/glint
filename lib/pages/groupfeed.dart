@@ -608,14 +608,16 @@ class _GroupfeedState extends State<Groupfeed> {
 
   Future<void> updateReaction(String groupId, String imageId, String username,
       String reactionType) async {
+    print(groupId + imageId + username + reactionType);
+
     final imageRef = FirebaseFirestore.instance
         .collection('groups')
         .doc(groupId)
         .collection('images')
         .doc(imageId);
     final snapshot = await imageRef.get();
-    Map<String, dynamic> reactions =
-        (snapshot.data()?['reactions'] ?? {}) as Map<String, dynamic>;
+    Map<dynamic, dynamic> reactions =
+        (snapshot.data()?['reactions'] ?? {}) as Map<dynamic, dynamic>;
     reactions[username] = reactionType;
 
     await imageRef.update({

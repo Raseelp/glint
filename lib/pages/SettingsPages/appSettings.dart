@@ -382,13 +382,7 @@ class _AppsettingsState extends State<Appsettings> {
 
           // 3. Delete the image from Firebase Storage
           await imageRef.delete();
-
-          print('Profile picture deleted successfully from Firebase Storage');
-
-          print('User profile data updated successfully');
-        } else {
-          print('No profile picture found to delete');
-        }
+        } else {}
       } else {
         print('User not found');
       }

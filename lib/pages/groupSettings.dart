@@ -241,6 +241,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                       decoration:
                           const InputDecoration(border: InputBorder.none),
                       controller: _themecontroller,
+                      style: const TextStyle(color: AppColors.whiteText),
                       onSubmitted: (value) {
                         todaysTheme = value;
                         isEditable = false;
