@@ -56,8 +56,8 @@ class ReactionTray extends StatelessWidget {
 }
 
 class ReactionsDisplay extends StatefulWidget {
-  final String groupId; // Group ID (e.g., BVqfV9nb201nSecbqgsE)
-  final String imageId; // Image ID (e.g., ja9gEkRa2GtFiqzhsaWD)
+  final String groupId;
+  final String imageId;
 
   ReactionsDisplay({required this.groupId, required this.imageId});
 
@@ -91,7 +91,9 @@ class _ReactionsDisplayState extends State<ReactionsDisplay> {
           }
         }
 
-        if (!snapshot.hasData || snapshot.data == null) {
+        if (!snapshot.hasData ||
+            snapshot.data == null ||
+            !snapshot.data!.exists) {
           return const Center(child: Text("No reactions yet"));
         }
 
@@ -176,7 +178,9 @@ class _ReactionsDisplayState extends State<ReactionsDisplay> {
               return const Center(child: CircularProgressIndicator());
             }
 
-            if (!snapshot.hasData || snapshot.data == null) {
+            if (!snapshot.hasData ||
+                snapshot.data == null ||
+                !snapshot.data!.exists) {
               return const Center(child: Text("No reactions available"));
             }
 

@@ -37,6 +37,7 @@ class _GroupfeedState extends State<Groupfeed> {
   Timer? _timer;
   int? _countdownEndTime;
   int? _remainingTime;
+  bool isGlintImage = false;
 
   @override
   void initState() {
@@ -296,22 +297,10 @@ class _GroupfeedState extends State<Groupfeed> {
                                       onPressed: () {
                                         // Call the delete method with imageId or imageUrl
                                         deleteImage(
-                                            widget.code, imageId, imageUrl);
-                                        const snackBar = SnackBar(
-                                          elevation: 0,
-                                          behavior: SnackBarBehavior.floating,
-                                          backgroundColor: Colors.transparent,
-                                          content: AwesomeSnackbarContent(
-                                            title: 'But Whyyyyy...',
-                                            message:
-                                                'Do You Realise You Deleted a Memmory...',
-                                            contentType: ContentType.failure,
-                                          ),
-                                        );
-
-                                        ScaffoldMessenger.of(context)
-                                          ..hideCurrentSnackBar()
-                                          ..showSnackBar(snackBar);
+                                            widget.code,
+                                            imageId,
+                                            imageUrl,
+                                            widget.phoneNumberAsUserId);
                                       },
                                     ),
                                   ),
@@ -481,6 +470,7 @@ class _GroupfeedState extends State<Groupfeed> {
         if (snapshot.exists) {
           bool glintStatus = snapshot.get('isglintactive');
           if (glintStatus == true) {
+            isGlintImage = true;
             List<dynamic> members = snapshot.get('members');
             for (var i = 0; i < members.length; i++) {
               Map<String, dynamic> member = members[i];
@@ -505,7 +495,9 @@ class _GroupfeedState extends State<Groupfeed> {
             'uploadedBy': widget.username,
             'timestamp': FieldValue.serverTimestamp(),
             'uploadedphone': widget.phoneNumberAsUserId,
+            'isglintimage': isGlintImage
           });
+          isGlintImage = false;
         }
       } catch (e) {
         SnackBar(
@@ -515,19 +507,102 @@ class _GroupfeedState extends State<Groupfeed> {
     } else {}
   }
 
-  Future<void> deleteImage(
-      String groupId, String imageId, String imageUrl) async {
+  Future<void> deleteImage(String groupId, String imageId, String imageUrl,
+      String currentUserPhone) async {
     Reference storageRef = FirebaseStorage.instance.refFromURL(imageUrl);
+    DocumentReference imageRef = FirebaseFirestore.instance
+        .collection('groups')
+        .doc(groupId)
+        .collection('images')
+        .doc(imageId);
 
     try {
-      await storageRef.delete();
+      DocumentSnapshot imageSnapshot = await imageRef.get();
+      if (imageSnapshot.exists) {
+        bool isGlintImage = imageSnapshot.get('isglintimage');
+        String uploadedPhone = imageSnapshot.get('uploadedphone');
+        if (uploadedPhone != currentUserPhone) {
+          const snackBar = SnackBar(
+            elevation: 0,
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.transparent,
+            content: AwesomeSnackbarContent(
+              title: 'Really...',
+              message: 'You Cant Delete SomeOne elses Memory',
+              contentType: ContentType.failure,
+            ),
+          );
 
-      await FirebaseFirestore.instance
-          .collection('groups')
-          .doc(groupId)
-          .collection('images')
-          .doc(imageId)
-          .delete();
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(snackBar);
+          return; // Exit the function without deleting the image
+        }
+
+        DocumentReference groupRef =
+            FirebaseFirestore.instance.collection('groups').doc(groupId);
+
+        DocumentSnapshot groupSnapshot = await groupRef.get();
+        List<dynamic> members = groupSnapshot.get('members');
+
+        bool memberFound = false;
+        for (var member in members) {
+          if (member['phone'] == uploadedPhone) {
+            int currentPoints = member['points'] ?? 0;
+            member['points'] = (currentPoints > 0) ? currentPoints - 1 : 0;
+            memberFound = true;
+            break;
+          }
+        }
+        if (memberFound) {
+          // Step 4: Update the modified members array back to Firestore
+          await groupRef.update({'members': members});
+          print("Decremented points for user with phone: $uploadedPhone");
+        } else {
+          print("Member with phone $uploadedPhone not found in group.");
+        }
+
+        // Step 2: Perform actions based on the isglintimage value
+        if (isGlintImage) {
+          await storageRef.delete();
+
+          await FirebaseFirestore.instance
+              .collection('groups')
+              .doc(groupId)
+              .collection('images')
+              .doc(imageId)
+              .delete();
+          print(
+              "This image is a glint image. Proceeding with additional actions if needed.");
+          // Add any additional actions for glint images here, if needed
+        } else {
+          print("This image is not a glint image. Proceeding with deletion.");
+
+          await storageRef.delete();
+
+          await FirebaseFirestore.instance
+              .collection('groups')
+              .doc(groupId)
+              .collection('images')
+              .doc(imageId)
+              .delete();
+        }
+
+        const snackBar = SnackBar(
+          elevation: 0,
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.transparent,
+          content: AwesomeSnackbarContent(
+            title: 'But Why...',
+            message: 'You Just Deleted A memory',
+            contentType: ContentType.failure,
+          ),
+        );
+
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(snackBar);
+      }
     } catch (e) {
       SnackBar(
         content: Text(e.toString()),
