@@ -177,6 +177,16 @@ class _GroupfeedState extends State<Groupfeed> {
                       .collection('groups')
                       .doc(widget.code)
                       .collection('images')
+                      .where('timestamp',
+                          isGreaterThanOrEqualTo: Timestamp.fromDate(DateTime(
+                              DateTime.now().year,
+                              DateTime.now().month,
+                              DateTime.now().day)))
+                      .where('timestamp',
+                          isLessThan: Timestamp.fromDate(DateTime(
+                              DateTime.now().year,
+                              DateTime.now().month,
+                              DateTime.now().day + 1)))
                       .orderBy('timestamp', descending: true)
                       .snapshots(),
                   builder: (context, snapshot) {
@@ -186,118 +196,138 @@ class _GroupfeedState extends State<Groupfeed> {
 
                     final images = snapshot.data!.docs;
 
-                    return ListWheelScrollView.useDelegate(
-                      itemExtent: 250,
-                      diameterRatio: 2.0,
-                      physics: const FixedExtentScrollPhysics(),
-                      childDelegate: ListWheelChildBuilderDelegate(
-                        builder: (context, index) {
-                          if (index < images.length) {
-                            final imageDoc = images[index];
-                            final imageUrl = imageDoc['url'];
-                            final imageId = imageDoc.id;
-                            final usernameImage = imageDoc['uploadedBy'];
+                    if (images.isEmpty) {
+                      return const Center(
+                        child: Text(
+                          textAlign: TextAlign.center,
+                          "Be the first to share today! Add a picture to start things off.",
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.lightGrayText),
+                        ),
+                      );
+                    }
 
-                            return Stack(children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(17),
-                                child: GestureDetector(
-                                  onLongPress: () {
-                                    showModalBottomSheet(
-                                      context: context,
-                                      isDismissible: true,
-                                      enableDrag: true,
-                                      elevation: 5,
-                                      builder: (context) => SizedBox(
-                                        height: 200,
-                                        child: ReactionTray(
-                                          onReactionSelected: (reaction) {
-                                            updateReaction(groupid, imageId,
-                                                widget.username, reaction);
-                                            Navigator.pop(context);
-                                          },
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              Imagefullscreenview(
-                                                  uploadedBy: usernameImage,
-                                                  imgUrl: imageUrl),
-                                        ));
-                                  },
-                                  child: CachedNetworkImage(
-                                    imageUrl: imageUrl,
-                                    width: 400,
-                                    height: 400,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                  top: 10,
-                                  left: 10,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        color: AppColors.lightGray
-                                            .withOpacity(0.5),
-                                        borderRadius:
-                                            BorderRadius.circular(17)),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        usernameImage,
-                                        style: const TextStyle(
-                                            fontSize: 15,
-                                            color: AppColors.whiteText),
+                    return RotatedBox(
+                      quarterTurns: 1,
+                      child: ListWheelScrollView.useDelegate(
+                        itemExtent: 250,
+                        diameterRatio: 2.0,
+                        physics: const FixedExtentScrollPhysics(),
+                        childDelegate: ListWheelChildBuilderDelegate(
+                          builder: (context, index) {
+                            if (index < images.length) {
+                              final imageDoc = images[index];
+                              final imageUrl = imageDoc['url'];
+                              final imageId = imageDoc.id;
+                              final usernameImage = imageDoc['uploadedBy'];
+
+                              return RotatedBox(
+                                quarterTurns: -1,
+                                child: Stack(children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(17),
+                                    child: GestureDetector(
+                                      onLongPress: () {
+                                        showModalBottomSheet(
+                                          context: context,
+                                          isDismissible: true,
+                                          enableDrag: true,
+                                          elevation: 5,
+                                          builder: (context) => SizedBox(
+                                            height: 200,
+                                            child: ReactionTray(
+                                              onReactionSelected: (reaction) {
+                                                updateReaction(groupid, imageId,
+                                                    widget.username, reaction);
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  Imagefullscreenview(
+                                                      uploadedBy: usernameImage,
+                                                      imgUrl: imageUrl),
+                                            ));
+                                      },
+                                      child: CachedNetworkImage(
+                                        imageUrl: imageUrl,
+                                        width: 400,
+                                        height: 400,
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
-                                  )),
-                              Positioned(
-                                top: 5,
-                                right: 10,
-                                child: IconButton(
-                                  icon: const Icon(
-                                    Icons.delete,
-                                    size: 30,
-                                    color: AppColors.lightGray,
                                   ),
-                                  onPressed: () {
-                                    // Call the delete method with imageId or imageUrl
-                                    deleteImage(widget.code, imageId, imageUrl);
-                                    const snackBar = SnackBar(
-                                      elevation: 0,
-                                      behavior: SnackBarBehavior.floating,
-                                      backgroundColor: Colors.transparent,
-                                      content: AwesomeSnackbarContent(
-                                        title: 'But Whyyyyy...',
-                                        message:
-                                            'Do You Realise You Deleted a Memmory...',
-                                        contentType: ContentType.failure,
+                                  Positioned(
+                                      top: 10,
+                                      left: 10,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color: AppColors.lightGray
+                                                .withOpacity(0.5),
+                                            borderRadius:
+                                                BorderRadius.circular(17)),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            usernameImage,
+                                            style: const TextStyle(
+                                                fontSize: 15,
+                                                color: AppColors.whiteText),
+                                          ),
+                                        ),
+                                      )),
+                                  Positioned(
+                                    top: 5,
+                                    right: 10,
+                                    child: IconButton(
+                                      icon: const Icon(
+                                        Icons.delete,
+                                        size: 30,
+                                        color: AppColors.lightGray,
                                       ),
-                                    );
+                                      onPressed: () {
+                                        // Call the delete method with imageId or imageUrl
+                                        deleteImage(
+                                            widget.code, imageId, imageUrl);
+                                        const snackBar = SnackBar(
+                                          elevation: 0,
+                                          behavior: SnackBarBehavior.floating,
+                                          backgroundColor: Colors.transparent,
+                                          content: AwesomeSnackbarContent(
+                                            title: 'But Whyyyyy...',
+                                            message:
+                                                'Do You Realise You Deleted a Memmory...',
+                                            contentType: ContentType.failure,
+                                          ),
+                                        );
 
-                                    ScaffoldMessenger.of(context)
-                                      ..hideCurrentSnackBar()
-                                      ..showSnackBar(snackBar);
-                                  },
-                                ),
-                              ),
-                              Positioned(
-                                  bottom: 0,
-                                  right: 10,
-                                  child: ReactionsDisplay(
-                                      groupId: groupid, imageId: imageId))
-                            ]);
-                          } else {
-                            return null;
-                          }
-                        },
-                        childCount: images.length,
+                                        ScaffoldMessenger.of(context)
+                                          ..hideCurrentSnackBar()
+                                          ..showSnackBar(snackBar);
+                                      },
+                                    ),
+                                  ),
+                                  Positioned(
+                                      bottom: 0,
+                                      right: 10,
+                                      child: ReactionsDisplay(
+                                          groupId: groupid, imageId: imageId))
+                                ]),
+                              );
+                            } else {
+                              return null;
+                            }
+                          },
+                          childCount: images.length,
+                        ),
                       ),
                     );
                   },

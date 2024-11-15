@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:glint/pages/imageFullScreenView.dart';
 import 'package:glint/utils/colorPallet.dart';
 
 class MemoriesPage extends StatefulWidget {
@@ -159,12 +160,23 @@ class _MemoriesPageState extends State<MemoriesPage> {
                           mainAxisSpacing: 8.0,
                         ),
                         itemBuilder: (context, index) {
-                          return CachedNetworkImage(
-                            imageUrl: images[index]['url'],
-                            placeholder: (context, url) =>
-                                const CircularProgressIndicator(), // Placeholder while loading
-                            errorWidget: (context, url, error) => const Icon(
-                                Icons.error), // Error icon in case of failure
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Imagefullscreenview(
+                                        imgUrl: images[index]['url'],
+                                        uploadedBy: ''),
+                                  ));
+                            },
+                            child: CachedNetworkImage(
+                              imageUrl: images[index]['url'],
+                              placeholder: (context, url) =>
+                                  const CircularProgressIndicator(), // Placeholder while loading
+                              errorWidget: (context, url, error) => const Icon(
+                                  Icons.error), // Error icon in case of failure
+                            ),
                           );
                         },
                       ),
@@ -245,11 +257,21 @@ class _MemoriesPageState extends State<MemoriesPage> {
               mainAxisSpacing: 4.0,
             ),
             itemBuilder: (context, index) {
-              return CachedNetworkImage(
-                imageUrl: images[index]['url'],
-                placeholder: (context, url) =>
-                    const CircularProgressIndicator(),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Imagefullscreenview(
+                            imgUrl: images[index]['url'], uploadedBy: ''),
+                      ));
+                },
+                child: CachedNetworkImage(
+                  imageUrl: images[index]['url'],
+                  placeholder: (context, url) =>
+                      const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                ),
               );
             },
           ),

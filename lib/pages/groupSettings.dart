@@ -202,7 +202,7 @@ class _GroupSettingsState extends State<GroupSettings> {
               ],
             ),
             const Text(
-              'Invite Code:',
+              'Todays theme:',
               style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w200,
@@ -336,18 +336,88 @@ class _GroupSettingsState extends State<GroupSettings> {
                     backgroundColor: const Color.fromARGB(255, 194, 7, 7),
                     foregroundColor: Colors.white),
                 onPressed: () async {
-                  await exitGroup();
-                  Navigator.pushReplacement(
+                  showAboutDialog(context: context);
+                  // await exitGroup();
+                },
+                child: const Text('Exit Group'))
+          ],
+        ),
+      ),
+    );
+  }
+
+  void showLogoutDiologe() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: AppColors.darkBackground,
+          title: const Text(
+            " Exit Group",
+            style: TextStyle(color: AppColors.whiteText),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Are You Sure You Want To Exit From The Group',
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                  color: AppColors.darkGrayText,
+                ),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(17)),
+                  backgroundColor: AppColors.notificationRed,
+                  elevation: 0,
+                ),
+                onPressed: () {
+                  Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
                             SplashScreen(phonenumberToCheck: widget.userphone),
                       ));
                 },
-                child: const Text('Exit Group'))
-          ],
-        ),
-      ),
+                child: const SizedBox(
+                  width: double.infinity,
+                  height: 40,
+                  child: Center(
+                    child: Text(
+                      'Exit Group',
+                      style: TextStyle(color: AppColors.whiteText),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(17)),
+                      backgroundColor: AppColors.lightGray,
+                      elevation: 0),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const SizedBox(
+                    width: double.infinity,
+                    height: 40,
+                    child: Center(
+                      child: Text(
+                        'I changed My Mind',
+                        style: TextStyle(color: AppColors.whiteText),
+                      ),
+                    ),
+                  ))
+            ],
+          ),
+        );
+      },
     );
   }
 
