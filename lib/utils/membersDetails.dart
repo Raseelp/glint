@@ -1,8 +1,8 @@
+import 'package:Glint/utils/builUserProfilePics.dart';
+import 'package:Glint/utils/colorPallet.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:glint/utils/builUserProfilePics.dart';
-import 'package:glint/utils/colorPallet.dart';
 
 class MemebersDetails extends StatefulWidget {
   final String name;

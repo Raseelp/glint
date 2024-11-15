@@ -1,12 +1,9 @@
+import 'package:Glint/pages/createGroup.dart';
+import 'package:Glint/pages/joinGroup.dart';
+import 'package:Glint/utils/colorPallet.dart';
+import 'package:Glint/utils/groupsCard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:glint/pages/Settings.dart';
-import 'package:glint/pages/createGroup.dart';
-import 'package:glint/pages/joinGroup.dart';
-import 'package:glint/utils/colorPallet.dart';
-
-import 'package:glint/utils/groupsCard.dart';
 
 class Homepage extends StatefulWidget {
   final List<Map<String, dynamic>> userGroups;

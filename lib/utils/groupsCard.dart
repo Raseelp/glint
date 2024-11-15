@@ -1,7 +1,7 @@
+import 'package:Glint/pages/groupfeed.dart';
+import 'package:Glint/utils/buildProfiePic.dart';
+import 'package:Glint/utils/colorPallet.dart';
 import 'package:flutter/material.dart';
-import 'package:glint/pages/groupfeed.dart';
-import 'package:glint/utils/buildProfiePic.dart';
-import 'package:glint/utils/colorPallet.dart';
 
 class GroupCard extends StatefulWidget {
   final String groupName;

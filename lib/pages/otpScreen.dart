@@ -1,11 +1,11 @@
+import 'package:Glint/pages/splashScreen.dart';
+import 'package:Glint/provider/auth_provider.dart';
+import 'package:Glint/utils/colorPallet.dart';
+import 'package:Glint/utils/sharedpreffs.dart';
+import 'package:Glint/utils/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:glint/pages/splashScreen.dart';
 
-import 'package:glint/provider/auth_provider.dart';
-import 'package:glint/utils/colorPallet.dart';
-import 'package:glint/utils/sharedpreffs.dart';
-import 'package:glint/utils/util.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 

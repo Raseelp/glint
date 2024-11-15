@@ -1,11 +1,10 @@
+import 'package:Glint/pages/splashScreen.dart';
+import 'package:Glint/utils/colorPallet.dart';
+import 'package:Glint/utils/sharedpreffs.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'package:glint/pages/splashScreen.dart';
-import 'package:glint/utils/colorPallet.dart';
-import 'package:glint/utils/sharedpreffs.dart';
 
 class Joingroup extends StatefulWidget {
   final String phonenumber;

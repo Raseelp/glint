@@ -1,9 +1,9 @@
+import 'package:Glint/pages/groupfeed.dart';
+import 'package:Glint/utils/colorPallet.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:glint/pages/groupfeed.dart';
-import 'package:glint/utils/colorPallet.dart';
 
 class GlintLeaderBoard extends StatefulWidget {
   final String groupId;

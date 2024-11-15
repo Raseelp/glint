@@ -1,10 +1,11 @@
+import 'package:Glint/pages/joinGroup.dart';
+import 'package:Glint/pages/onbordeing.dart';
+import 'package:Glint/pages/splashScreen.dart';
+import 'package:Glint/provider/auth_provider.dart';
+import 'package:Glint/utils/sharedpreffs.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:glint/pages/joinGroup.dart';
-import 'package:glint/pages/onbordeing.dart';
-import 'package:glint/pages/splashScreen.dart';
-import 'package:glint/provider/auth_provider.dart';
-import 'package:glint/utils/sharedpreffs.dart';
+
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

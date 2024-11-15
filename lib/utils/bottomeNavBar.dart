@@ -1,8 +1,8 @@
+import 'package:Glint/pages/Settings.dart';
+import 'package:Glint/pages/homepage.dart';
+import 'package:Glint/pages/memories.dart';
+import 'package:Glint/utils/colorPallet.dart';
 import 'package:flutter/material.dart';
-import 'package:glint/pages/Settings.dart';
-import 'package:glint/pages/homepage.dart';
-import 'package:glint/pages/memories.dart';
-import 'package:glint/utils/colorPallet.dart';
 
 class Bottomenavbar extends StatefulWidget {
   final String username;

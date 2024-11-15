@@ -7,7 +7,7 @@
 
 
     <application
-        android:label="glint"
+        android:label="Glint."
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

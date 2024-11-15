@@ -1,14 +1,15 @@
 import 'dart:io';
 
+import 'package:Glint/pages/SettingsPages/appSettings.dart';
+import 'package:Glint/pages/splashScreen.dart';
+import 'package:Glint/utils/builUserProfilePics.dart';
+import 'package:Glint/utils/colorPallet.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:glint/pages/SettingsPages/appSettings.dart';
-import 'package:glint/pages/splashScreen.dart';
-import 'package:glint/utils/builUserProfilePics.dart';
-import 'package:glint/utils/colorPallet.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

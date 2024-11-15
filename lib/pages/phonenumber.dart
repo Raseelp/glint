@@ -1,9 +1,8 @@
+import 'package:Glint/provider/auth_provider.dart';
+import 'package:Glint/utils/colorPallet.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'package:glint/provider/auth_provider.dart';
-import 'package:glint/utils/colorPallet.dart';
 import 'package:provider/provider.dart';
 
 class Phonenumber extends StatefulWidget {

@@ -1,10 +1,10 @@
+import 'package:Glint/pages/userinfo.dart';
+import 'package:Glint/utils/bottomeNavBar.dart';
+import 'package:Glint/utils/colorPallet.dart';
+import 'package:Glint/utils/sharedpreffs.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:glint/utils/bottomeNavBar.dart';
-import 'package:glint/pages/userinfo.dart';
-import 'package:glint/utils/colorPallet.dart';
-import 'package:glint/utils/sharedpreffs.dart';
 
 class SplashScreen extends StatefulWidget {
   final String phonenumberToCheck;

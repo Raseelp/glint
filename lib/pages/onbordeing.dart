@@ -1,7 +1,7 @@
+import 'package:Glint/pages/phonenumber.dart';
+import 'package:Glint/utils/colorPallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:glint/pages/phonenumber.dart';
-import 'package:glint/utils/colorPallet.dart';
 
 class Onbordeing extends StatefulWidget {
   const Onbordeing({super.key});

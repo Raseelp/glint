@@ -1,7 +1,7 @@
+import 'package:Glint/pages/otpScreen.dart';
+import 'package:Glint/utils/util.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:glint/pages/otpScreen.dart';
-import 'package:glint/utils/util.dart';
 
 class AuthProvider extends ChangeNotifier {
   final bool _isSignedin = false;

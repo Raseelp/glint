@@ -1,6 +1,6 @@
+import 'package:Glint/utils/colorPallet.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:glint/utils/colorPallet.dart';
 import 'package:like_button/like_button.dart';
 
 class ReactionTray extends StatelessWidget {
