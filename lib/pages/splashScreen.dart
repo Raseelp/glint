@@ -112,6 +112,7 @@ class _SplashScreenState extends State<SplashScreen> {
             'id': groupDoc.id, // Unique ID of the group
             'groupname': groupDoc['Groupname'], // Group
             'grouptheme': groupDoc['todaystheme'],
+            'isglintactive': groupDoc['isglintactive']
           });
         }
       }

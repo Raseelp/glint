@@ -181,6 +181,8 @@ class _HomepageState extends State<Homepage> {
                         final groupname = group['groupname'];
                         final grouptheme = group['grouptheme'];
                         final groupid = group['id'];
+                        bool isGlintActive = group['isglintactive'];
+                        print(isGlintActive);
 
                         return GroupCard(
                           userid: widget.userid,
@@ -189,6 +191,7 @@ class _HomepageState extends State<Homepage> {
                           todayTheme: grouptheme,
                           groupid: groupid,
                           phoneNumberAsUserId: widget.phoneNumberToUseAsUserId,
+                          isGlintActive: isGlintActive,
                         );
                       }),
                 ),

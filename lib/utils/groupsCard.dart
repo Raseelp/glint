@@ -10,6 +10,7 @@ class GroupCard extends StatefulWidget {
   final String phoneNumberAsUserId;
   final String username;
   final String userid;
+  final bool isGlintActive;
 
   const GroupCard({
     super.key,
@@ -19,6 +20,7 @@ class GroupCard extends StatefulWidget {
     required this.phoneNumberAsUserId,
     required this.username,
     required this.userid,
+    required this.isGlintActive,
   });
 
   @override
@@ -30,6 +32,7 @@ class _GroupCardState extends State<GroupCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        print('isthe glin acitve${widget.isGlintActive}');
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -64,13 +67,46 @@ class _GroupCardState extends State<GroupCard> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      widget.groupName,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.whiteText),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            widget.groupName,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.whiteText),
+                          ),
+                        ),
+                        widget.isGlintActive
+                            ? Padding(
+                                padding: const EdgeInsets.only(right: 20),
+                                child: Stack(children: [
+                                  Container(
+                                    height: 30,
+                                    width: 30,
+                                    decoration: BoxDecoration(
+                                        color: AppColors.notificationRed,
+                                        borderRadius:
+                                            BorderRadius.circular(100)),
+                                  ),
+                                  Positioned(
+                                      right: 8,
+                                      top: 2,
+                                      child: Text(
+                                        'G',
+                                        style: TextStyle(
+                                            color: AppColors.whiteText,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18),
+                                      ))
+                                ]),
+                              )
+                            : Text('')
+                      ],
                     ),
                     const SizedBox(height: 8),
                     Text(
