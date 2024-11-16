@@ -484,7 +484,7 @@ class _GroupfeedState extends State<Groupfeed> {
                     backgroundColor: Colors.transparent,
                     content: AwesomeSnackbarContent(
                       title: 'Todays Glint Used',
-                      message: "Try again after 24 hours...",
+                      message: "Try again after 10 hours...",
                       contentType: ContentType.failure,
                     ),
                   );
@@ -754,7 +754,7 @@ class _GroupfeedState extends State<Groupfeed> {
           currentTime.difference(lastGlintUpdated).inHours;
 
       // Check if 24 hours have passed
-      return hoursSinceLastUpdate >= 0;
+      return hoursSinceLastUpdate >= 10;
     }
 
     // If 'lastthemeupdatedat' is null (for first-time setup), allow the theme change
