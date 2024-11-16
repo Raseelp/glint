@@ -411,7 +411,71 @@ class _GroupfeedState extends State<Groupfeed> {
 
               if (iscorrectUser) {
                 if (has24hoursPassed) {
-                  startCountdown(groupId);
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      backgroundColor: AppColors.darkBackground,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(17)),
+                      title: Text(
+                        "Ready to Share a Glint?",
+                        style: TextStyle(color: AppColors.whiteText),
+                      ),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "Capture the moment! Share photos within 2 minutes to earn Glint Points. Track your points in Group Settings.",
+                            style: TextStyle(
+                                color: AppColors.lightGrayText, fontSize: 15),
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(17)),
+                              backgroundColor: AppColors.notificationRed,
+                              elevation: 0,
+                            ),
+                            onPressed: () {
+                              startCountdown(groupId);
+                              Navigator.pop(context);
+                            },
+                            child: const SizedBox(
+                              width: double.infinity,
+                              height: 40,
+                              child: Center(
+                                child: Text(
+                                  'Share Glint Now',
+                                  style: TextStyle(color: AppColors.whiteText),
+                                ),
+                              ),
+                            ),
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(17)),
+                              backgroundColor: AppColors.blurple,
+                              elevation: 0,
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const SizedBox(
+                              width: double.infinity,
+                              height: 40,
+                              child: Center(
+                                child: Text(
+                                  'Maybe Later',
+                                  style: TextStyle(color: AppColors.whiteText),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
                 } else {
                   const snackBar = SnackBar(
                     elevation: 0,
@@ -430,7 +494,7 @@ class _GroupfeedState extends State<Groupfeed> {
                 }
               }
             },
-            child: const Text('Start Countdown'),
+            child: const Text('Glint Now'),
           );
         } else {
           final minutes = countdownSeconds ~/ 60;
@@ -689,7 +753,7 @@ class _GroupfeedState extends State<Groupfeed> {
           currentTime.difference(lastGlintUpdated).inHours;
 
       // Check if 24 hours have passed
-      return hoursSinceLastUpdate >= 24;
+      return hoursSinceLastUpdate >= 0;
     }
 
     // If 'lastthemeupdatedat' is null (for first-time setup), allow the theme change

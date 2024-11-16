@@ -5,6 +5,7 @@ import 'package:Glint/provider/auth_provider.dart';
 import 'package:Glint/utils/sharedpreffs.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -60,7 +61,7 @@ class _GlintState extends State<Glint> {
         ),
       ],
       child: MaterialApp(
-        routes: {'/join': (context) => Joingroup(phonenumber: userPhone!)},
+        theme: ThemeData(textTheme: GoogleFonts.albertSansTextTheme()),
         home: isLoggedIn
             ? SplashScreen(phonenumberToCheck: userPhone!)
             : const Onbordeing(),
