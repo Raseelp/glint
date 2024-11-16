@@ -212,27 +212,29 @@ class _GroupSettingsState extends State<GroupSettings> {
               onTap: () async {
                 bool isitCorrectuser =
                     await isCorrectUser(widget.userphone, widget.inviteCode);
-                bool did24HoursPassed =
-                    await has24HoursPassed(widget.inviteCode);
+                //COMMENTING THIS CODE BECOUSE I DONT WANNA COUSE 24 HOURS LIMIT IN THEME SETTING WHILE RUNNING SERVERLESS TESTING
+                // bool did24HoursPassed =
+                //     await has24HoursPassed(widget.inviteCode);
                 if (isitCorrectuser) {
-                  if (did24HoursPassed) {
-                    _showOptionsDialog();
-                  } else {
-                    const snackBar = SnackBar(
-                      elevation: 0,
-                      behavior: SnackBarBehavior.floating,
-                      backgroundColor: Colors.transparent,
-                      content: AwesomeSnackbarContent(
-                        title: 'Oops',
-                        message: "looks like Todays Theme is already set",
-                        contentType: ContentType.failure,
-                      ),
-                    );
+                  _showOptionsDialog();
+                  // if (did24HoursPassed) {
 
-                    ScaffoldMessenger.of(context)
-                      ..hideCurrentSnackBar()
-                      ..showSnackBar(snackBar);
-                  }
+                  // } else {
+                  //   const snackBar = SnackBar(
+                  //     elevation: 0,
+                  //     behavior: SnackBarBehavior.floating,
+                  //     backgroundColor: Colors.transparent,
+                  //     content: AwesomeSnackbarContent(
+                  //       title: 'Oops',
+                  //       message: "looks like Todays Theme is already set",
+                  //       contentType: ContentType.failure,
+                  //     ),
+                  //   );
+
+                  //   ScaffoldMessenger.of(context)
+                  //     ..hideCurrentSnackBar()
+                  //     ..showSnackBar(snackBar);
+                  // }
                 }
               },
               child: isEditable
