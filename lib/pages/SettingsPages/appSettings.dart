@@ -1,5 +1,7 @@
 import 'package:Glint/main.dart';
+import 'package:Glint/pages/introPages/getStarted.dart';
 import 'package:Glint/pages/onbordeing.dart';
+import 'package:Glint/pages/phonenumber.dart';
 import 'package:Glint/utils/colorPallet.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -312,7 +314,7 @@ class _AppsettingsState extends State<Appsettings> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const Onbordeing(),
+                        builder: (context) => getStarted(),
                       ));
                 },
                 child: const SizedBox(
@@ -412,8 +414,9 @@ class _AppsettingsState extends State<Appsettings> {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-            builder: (context) =>
-                Glint()), // Replace MainScreen with the widget for main.dart
+            builder: (context) => Glint(
+                  hasSeenOnboarding: true,
+                )), // Replace MainScreen with the widget for main.dart
         (Route<dynamic> route) => false, // This removes all previous routes
       );
     } catch (e) {

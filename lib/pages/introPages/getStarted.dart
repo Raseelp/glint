@@ -1,7 +1,9 @@
+import 'package:Glint/pages/phonenumber.dart';
 import 'package:Glint/utils/colorPallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class getStarted extends StatelessWidget {
   const getStarted({super.key});
@@ -66,7 +68,9 @@ class getStarted extends StatelessWidget {
                       elevation: 0,
                       backgroundColor: AppColors.blurple,
                       foregroundColor: Colors.white),
-                  onPressed: () {},
+                  onPressed: () {
+                    _completeOnboarding(context);
+                  },
                   child: Text('Let’s do this!',
                       style:
                           TextStyle(color: AppColors.whiteText, fontSize: 18)))
@@ -75,5 +79,15 @@ class getStarted extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _completeOnboarding(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('hasSeenOnboarding', true);
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => Phonenumber()),
+    );
+    bool fordebg = prefs.getBool('hasSeenOnboarding') ?? false;
+    print(fordebg);
   }
 }

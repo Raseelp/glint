@@ -13,12 +13,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  final prefs = await SharedPreferences.getInstance();
+  final bool hasSeenOnboarding = prefs.getBool('hasSeenOnboarding') ?? false;
 
-  runApp(const Glint());
+  runApp(Glint(
+    hasSeenOnboarding: hasSeenOnboarding,
+  ));
 }
 
 class Glint extends StatefulWidget {
-  const Glint({super.key});
+  final bool hasSeenOnboarding;
+  const Glint({super.key, required this.hasSeenOnboarding});
 
   @override
   State<Glint> createState() => _GlintState();
@@ -54,6 +59,7 @@ class _GlintState extends State<Glint> {
 
   @override
   Widget build(BuildContext context) {
+    bool didonbord = widget.hasSeenOnboarding;
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -64,7 +70,7 @@ class _GlintState extends State<Glint> {
         theme: ThemeData(textTheme: GoogleFonts.albertSansTextTheme()),
         home: isLoggedIn
             ? SplashScreen(phonenumberToCheck: userPhone!)
-            : const Onbordeing(),
+            : Onbordeing(),
       ),
     );
   }
