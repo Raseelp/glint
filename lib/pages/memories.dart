@@ -32,6 +32,7 @@ class _MemoriesPageState extends State<MemoriesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: AppColors.secondaryBackground,
         title: const Center(
             child: Text(

@@ -39,6 +39,7 @@ class _ScreenSettingsState extends State<ScreenSettings> {
     ScreenUtil.init(context);
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(
               onPressed: () {

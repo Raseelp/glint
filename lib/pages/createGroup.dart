@@ -36,12 +36,7 @@ class _CreategroupState extends State<Creategroup> {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SplashScreen(
-                        phonenumberToCheck: widget.phonenumberasuserid),
-                  ));
+              Navigator.pop(context);
             },
             icon: const Icon(
               Icons.arrow_back,

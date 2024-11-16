@@ -79,8 +79,7 @@ class _HomepageState extends State<Homepage> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            Navigator.pushReplacement(context,
-                                MaterialPageRoute(
+                            Navigator.push(context, MaterialPageRoute(
                               builder: (context) {
                                 return Creategroup(
                                   userid: widget.userid,
