@@ -21,6 +21,6 @@ Users can relive their memories by viewing photos they've shared in the past. Th
 With an intuitive interface, Glint makes it easy to share moments, set themes, and participate in fun daily challenges with your loved ones.
 Whether you're separated by miles or just a few blocks away, Glint brings people closer together by turning ordinary moments into meaningful memories.
 
-# //NOTE:SINCE THIS IS NOT A COMPLETLY OPENED PROJECT,I WOULD HAVE TO ADD U AS A TEST USER SO,IF YOU ARE INTRESTED IN DOWNLOADING AND BEING A PLAYTESTER YOU CAN CONTACT ME THROUGH MY EMAIL raseelp321@gmail.com,EVN THOUGH ITS A WORKING PROTOTYPE ALMOST 90% OF THE FEATURES THAT SAID BELOW ARE COMPLETED,BUT THE DESIGN IS VERY BASIC,IF YOU WANNA CHECK IT OUT,CONTACT ME...
+# //NOTE:SINCE THIS IS NOT A PUBLISHED PROJECT,I WOULD HAVE TO ADD U AS A TEST USER SO,IF YOU ARE INTRESTED IN DOWNLOADING AND BEING A TESTER YOU CAN CONTACT ME THROUGH MY EMAIL raseelp321@gmail.com,EVN THOUGH ITS A WORKING PROTOTYPE ALMOST 90% OF THE FEATURES THAT SAID BELOW ARE COMPLETED,BUT THE DESIGN IS VERY BASIC,IF YOU WANNA CHECK IT OUT,CONTACT ME...
 
  
